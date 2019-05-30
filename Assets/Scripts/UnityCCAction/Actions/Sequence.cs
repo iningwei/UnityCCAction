@@ -4,25 +4,21 @@ using UnityEngine;
 
 namespace ZGame.cc
 {
+    /// <summary>
+    /// 顺序播放动作一次
+    /// </summary>
 
     public class Sequence : ActionInterval
     {
-        public Action[] actionSequences;
-        public Sequence(Action action1, params Action[] actions)
+        public FiniteTimeAction[] actionSequences;
+        public Sequence(params FiniteTimeAction[] actions)
         {
-            if (action1 == null)
+            if (actions == null || actions.Length == 0)
             {
-                Debug.LogError("action1 must not null");
+                Debug.LogError("actions must contain at least one");
                 return;
             }
-            int count = 1 + (actions == null ? 0 : actions.Length);
-            actionSequences = new Action[count];
-            actionSequences[0] = action1;
-            for (int i = 1; i < count; i++)
-            {
-                actionSequences[i] = actions[i - 1];
-            }
-
+            actionSequences = actions;
         }
 
         public override Action Clone()
@@ -38,6 +34,7 @@ namespace ZGame.cc
         public override void Finish()
         {
             this.isDone = true;
+            this.repeatedTimes = 0;
         }
 
         public override float GetDuration()
@@ -48,6 +45,11 @@ namespace ZGame.cc
         public override GameObject GetOriginalTarget()
         {
             throw new System.NotImplementedException();
+        }
+
+        public override int GetRepeatTimes()
+        {
+            return this.repeatTimes;
         }
 
         public override int GetTag()
@@ -65,14 +67,17 @@ namespace ZGame.cc
             return this.isDone;
         }
 
-        public override ActionInterval Repeat(uint times)
+        public override void OnPartialFinished()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override ActionInterval RepeatForever()
-        {
-            throw new System.NotImplementedException();
+            this.repeatedTimes++;
+            if (this.repeatedTimes == this.repeatTimes)
+            {
+                this.Finish();
+            }
+            else
+            {
+                this.Run();
+            }
         }
 
         public override void Reverse()
@@ -90,6 +95,12 @@ namespace ZGame.cc
             throw new System.NotImplementedException();
         }
 
+        public override FiniteTimeAction SetRepeatTimes(int times)
+        {
+            this.repeatTimes = times;
+            return this;
+        }
+
         public override void SetTag(int tag)
         {
             throw new System.NotImplementedException();
@@ -99,10 +110,10 @@ namespace ZGame.cc
         {
             this.target = target;
 
-            //同时还要为Sequence内子物体设置target
-            for (int i = 0; i < this.actionSequences.Length; i++)
+            //为Repeat内的子动作设置target
+            foreach (var item in this.actionSequences)
             {
-                this.actionSequences[i].SetTarget(this.target);
+                item.SetTarget(this.target);
             }
 
         }

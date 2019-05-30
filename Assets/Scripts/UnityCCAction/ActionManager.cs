@@ -8,25 +8,31 @@ namespace ZGame.cc
     {
         //Dictionary<GameObject,>
         //Dictionary<GameObject,List<Action>>
-        public void AddAction(Action action, GameObject target, bool paused)
+        public void AddAction(FiniteTimeAction action, GameObject target, bool paused)
         {
             action.SetTarget(target);
-            var ac = target.GetOrAddComponent<ActionComp>();
+            var actionComp = target.AddComponent<FiniteActionComp>();
 
-            if (action is Sequence)
-            {
-                ac.repeatCount = 1;
-                ac.AddAction((action as Sequence).actionSequences);
+            //////if (action is Sequence)
+            //////{
 
-            }
-            else if (action is ActionInstant || action is ActionInterval)
-            {
-                ac.repeatCount = 1;
-                ac.AddAction(action);
+            //////    actionComp.AddAction((action as Sequence).actionSequences);
 
-            }
+            //////}
+            //////else if (action is Repeat)
+            //////{
 
-            ac.Run();
+            //////    actionComp.AddAction((action as Repeat).actions);
+            //////}
+            //////else if (action is ActionInstant || action is ActionInterval)
+            //////{
+
+            //////    actionComp.AddAction(action);
+
+            //////}
+
+            actionComp.AddAction(action);
+            //////actionComp.Run();
 
         }
 

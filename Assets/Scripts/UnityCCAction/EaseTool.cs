@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//图形示例：http://hosted.zeh.com.br/tweener/docs/en-us/
+
 namespace ZGame.cc
 {
     public enum Ease
     {
-        Linear,
+        Linear,//
         InBack,
         InBounce,
         InCirc,
@@ -16,7 +18,7 @@ namespace ZGame.cc
         InQuad,
         InQuart,
         InQuint,
-        InSine,
+        InSine,//
         OutBack,
         OutBounce,
         OutCirc,
@@ -26,7 +28,7 @@ namespace ZGame.cc
         OutQuad,
         OutQuart,
         OutQuint,
-        OutSine,
+        OutSine,//
         InOutBack,
         InOutBounce,
         InOutCirc,
@@ -36,7 +38,7 @@ namespace ZGame.cc
         InOutQuad,
         InOutQuart,
         InOutQuint,
-        InOutSine,
+        InOutSine,//
     }
 
 

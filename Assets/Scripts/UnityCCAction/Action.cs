@@ -9,7 +9,7 @@ namespace ZGame.cc
     /// </summary>
     public abstract class Action
     {
-         public bool isDone = false;
+        
         public GameObject target = null;
 
 

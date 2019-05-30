@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ZGame.cc
 {
     public class DelayTime : ActionInterval
-    {              
+    {
 
         public DelayTime(float time)
         {
@@ -25,6 +25,7 @@ namespace ZGame.cc
         public override void Finish()
         {
             this.isDone = true;
+             this.repeatedTimes = 0;
         }
 
         public override float GetDuration()
@@ -35,6 +36,11 @@ namespace ZGame.cc
         public override GameObject GetOriginalTarget()
         {
             throw new System.NotImplementedException();
+        }
+
+        public override int GetRepeatTimes()
+        {
+            return this.repeatTimes;
         }
 
         public override int GetTag()
@@ -52,14 +58,17 @@ namespace ZGame.cc
             return this.isDone;
         }
 
-        public override ActionInterval Repeat(uint times)
+        public override void OnPartialFinished()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override ActionInterval RepeatForever()
-        {
-            throw new System.NotImplementedException();
+            this.repeatedTimes++;
+            if (this.repeatedTimes == this.repeatTimes)
+            {
+                this.Finish();
+            }
+            else
+            {
+                this.Run();
+            }
         }
 
         public override void Reverse()
@@ -68,14 +77,20 @@ namespace ZGame.cc
         }
 
         public override void Run()
-        {
-            this.startTime = Time.time;
+        {            
             this.isDone = false;
+            this.startTime = Time.time;             
         }
 
         public override void SetDuration(float time)
         {
             this.time = time;
+        }
+
+        public override FiniteTimeAction SetRepeatTimes(int times)
+        {
+            this.repeatTimes = times;
+            return this;
         }
 
         public override void SetTag(int tag)
@@ -85,7 +100,7 @@ namespace ZGame.cc
 
         public override void SetTarget(GameObject target)
         {
-            throw new System.NotImplementedException();
+            this.target = target;
         }
 
         public override bool Update()
@@ -97,7 +112,7 @@ namespace ZGame.cc
 
             if (Time.time - startTime > this.time && this.IsDone() == false)
             {
-                this.Finish();
+                this.OnPartialFinished();
             }
             return this.IsDone();
         }

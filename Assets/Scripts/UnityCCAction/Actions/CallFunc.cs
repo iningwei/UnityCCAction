@@ -24,8 +24,9 @@ namespace ZGame.cc
 
         public override void Run()
         {
+            this.isDone = false;
             this.func();
-            this.Finish();
+            this.OnPartialFinished();
         }
 
         public override Action Clone()
@@ -86,6 +87,32 @@ namespace ZGame.cc
         public override void Finish()
         {
             this.isDone = true;
+            this.repeatedTimes = 0;
+        }
+
+
+        public override int GetRepeatTimes()
+        {
+            return this.repeatTimes;
+        }
+
+        public override FiniteTimeAction SetRepeatTimes(int times)
+        {
+            this.repeatTimes = times;
+            return this;
+        }
+
+        public override void OnPartialFinished()
+        {
+            this.repeatedTimes++;
+            if (this.repeatedTimes == this.repeatTimes)
+            {
+                this.Finish();
+            }
+            else
+            {
+                this.Run();
+            }
         }
     }
 }

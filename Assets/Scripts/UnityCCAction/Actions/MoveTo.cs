@@ -34,6 +34,7 @@ namespace ZGame.cc
         public override void Finish()
         {
             this.isDone = true;
+            this.repeatedTimes = 0;
         }
 
         public override float GetDuration()
@@ -44,6 +45,11 @@ namespace ZGame.cc
         public override GameObject GetOriginalTarget()
         {
             throw new System.NotImplementedException();
+        }
+
+        public override int GetRepeatTimes()
+        {
+            return this.repeatTimes;
         }
 
         public override int GetTag()
@@ -61,14 +67,18 @@ namespace ZGame.cc
             return this.isDone;
         }
 
-        public override ActionInterval Repeat(uint times)
+        public override void OnPartialFinished()
         {
-            throw new System.NotImplementedException();
-        }
+            this.repeatedTimes++;
+            if (this.repeatedTimes == this.repeatTimes)
+            {
+                this.Finish();
+            }
+            else
+            {
+                this.Run();
+            }
 
-        public override ActionInterval RepeatForever()
-        {
-            throw new System.NotImplementedException();
         }
 
         public override void Reverse()
@@ -78,19 +88,24 @@ namespace ZGame.cc
 
         public override void Run()
         {
+            this.isDone = false;
+
             if (this.startPos == Vector3.zero)
             {
                 this.startPos = this.target.transform.localPosition;
             }
-
             this.startTime = Time.time;
-
-            this.isDone = false;
         }
 
         public override void SetDuration(float time)
         {
             this.time = time;
+        }
+
+        public override FiniteTimeAction SetRepeatTimes(int times)
+        {
+            this.repeatTimes = times;
+            return this;
         }
 
         public override void SetTag(int tag)
@@ -111,7 +126,7 @@ namespace ZGame.cc
             }
             if (Time.time - startTime > this.time)
             {
-                this.Finish();
+                this.OnPartialFinished();
             }
 
             var dir = this.targetPos - this.startPos;

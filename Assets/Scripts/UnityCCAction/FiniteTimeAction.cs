@@ -10,11 +10,30 @@ namespace ZGame.cc
     public abstract class FiniteTimeAction : Action
     {
         /// <summary>
+        /// 动作是否完成
+        /// 对于次数为1次的动作，一次执行完毕，即完成。否则需要满足执行次数才完成。
+        /// 对于无限次数的动作，isDone永远为false
+        /// </summary>
+        protected bool isDone = false;
+
+        /// <summary>
         /// 动作持续时间
         /// </summary>
-        public float time = 0;
-        public float startTime;//该动作开始的时间点
-      
+        protected float time = 0;
+        /// <summary>
+        /// 该动作开始的时间点
+        /// </summary>
+        protected float startTime;
+
+        /// <summary>
+        /// 1表示动作只播放一遍；2、3、4...表示动作播放指定次数; 小于1表示动作循环播放；
+        /// </summary>
+        protected int repeatTimes = 1;
+        /// <summary>
+        /// 动作已播放的次数
+        /// </summary>
+        protected int repeatedTimes = 0;
+
 
         /// <summary>
         /// 获得动作持续时间，单位秒
@@ -28,10 +47,27 @@ namespace ZGame.cc
         /// <param name="time"></param>
         public abstract void SetDuration(float time);
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="times">1表示动作只播放一遍；2、3、4...表示动作播放指定次数; 小于1表示动作循环播放；</param>
+        /// <returns></returns>
+        public abstract FiniteTimeAction SetRepeatTimes(int times);
+
+        public abstract int GetRepeatTimes();
+
+        /// <summary>
+        /// 子类需要重写该类
+        /// 某次动作完成后，判断是否完成所有动作次数的播放
+        /// </summary>
+        public abstract void OnPartialFinished();
         /// <summary>
         /// 返回一个新动作，新动作的执行与元动作完全相反
         /// </summary>
         public abstract void Reverse();
+
+
 
 
 
