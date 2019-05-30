@@ -12,28 +12,7 @@ namespace ZGame.cc
         {
             action.SetTarget(target);
             var actionComp = target.AddComponent<FiniteActionComp>();
-
-            //////if (action is Sequence)
-            //////{
-
-            //////    actionComp.AddAction((action as Sequence).actionSequences);
-
-            //////}
-            //////else if (action is Repeat)
-            //////{
-
-            //////    actionComp.AddAction((action as Repeat).actions);
-            //////}
-            //////else if (action is ActionInstant || action is ActionInterval)
-            //////{
-
-            //////    actionComp.AddAction(action);
-
-            //////}
-
             actionComp.AddAction(action);
-            //////actionComp.Run();
-
         }
 
         /// <summary>

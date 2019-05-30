@@ -67,6 +67,8 @@ namespace ZGame.cc
             return this.isDone;
         }
 
+       
+
         public override void OnPartialFinished()
         {
             this.repeatedTimes++;
@@ -132,6 +134,7 @@ namespace ZGame.cc
 
             var dir = this.targetPos - this.startPos;
             float t = (Time.time - startTime) / this.time;
+            t = t > 1 ? 1 : t;
 
             var desPos = this.startPos + dir * (this.easeFunc(t));
             this.target.transform.localPosition = desPos;

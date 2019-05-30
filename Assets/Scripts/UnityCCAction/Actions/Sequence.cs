@@ -6,12 +6,18 @@ namespace ZGame.cc
 {
     /// <summary>
     /// 顺序播放动作一次
-    /// 当然你也可以通过SetTimes()来使其变成重复播放
+    /// 也可以使用Repeat设置播放次数为1，来实现Sequence
     /// </summary>
 
     public class Sequence : ActionInterval
     {
         public FiniteTimeAction[] actionSequences;
+        Queue<FiniteTimeAction> legalActions = new Queue<FiniteTimeAction>();
+        FiniteTimeAction curRunningAction = null;
+        /// <summary>
+        /// 顺序播放动作一次
+        /// SetRepeatTimes() 设置播放次数会无效
+        /// </summary>
         public Sequence(params FiniteTimeAction[] actions)
         {
             if (actions == null || actions.Length == 0)
@@ -20,6 +26,13 @@ namespace ZGame.cc
                 return;
             }
             actionSequences = actions;
+            this.legalActions.Clear();
+            this.curRunningAction = null;
+            foreach (var item in actions)
+            {
+                this.legalActions.Enqueue(item);
+            }
+
         }
 
         public override Action Clone()
@@ -29,13 +42,15 @@ namespace ZGame.cc
 
         public override ActionInterval Easing(Ease ease)
         {
-            throw new System.NotImplementedException();
+            Debug.LogWarning("Sequence set easing will not work");
+            return this;
         }
 
         public override void Finish()
         {
             this.isDone = true;
             this.repeatedTimes = 0;
+            this.curRunningAction = null;
         }
 
         public override float GetDuration()
@@ -68,6 +83,8 @@ namespace ZGame.cc
             return this.isDone;
         }
 
+
+
         public override void OnPartialFinished()
         {
             this.repeatedTimes++;
@@ -88,7 +105,17 @@ namespace ZGame.cc
 
         public override void Run()
         {
-
+            this.isDone = false;
+            this.curRunningAction = null;
+            if (this.legalActions.Count > 0)
+            {
+                this.curRunningAction = this.legalActions.Dequeue();
+                this.curRunningAction.Run();
+            }
+            else
+            {
+                this.OnPartialFinished();
+            }
         }
 
         public override void SetDuration(float time)
@@ -98,7 +125,7 @@ namespace ZGame.cc
 
         public override FiniteTimeAction SetRepeatTimes(int times)
         {
-            this.repeatTimes = times;
+            Debug.LogWarning("Sequence setRepeatTimes will not take effect");
             return this;
         }
 
@@ -106,7 +133,7 @@ namespace ZGame.cc
         {
             this.tag = tag;
             return this;
-            
+
         }
 
         public override void SetTarget(GameObject target)
@@ -123,6 +150,18 @@ namespace ZGame.cc
 
         public override bool Update()
         {
+            if (this.IsDone())
+            {
+                return true;
+            }
+            if (this.curRunningAction != null)
+            {
+                if (this.curRunningAction.Update())
+                {
+                    this.Run();
+                }
+            }
+
             return this.IsDone();
         }
     }

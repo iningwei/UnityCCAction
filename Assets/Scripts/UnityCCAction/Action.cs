@@ -10,7 +10,7 @@ namespace ZGame.cc
     public abstract class Action
     {
         protected GameObject target = null;
-       
+
 
         public abstract void Run();
         /// <summary>
@@ -18,6 +18,7 @@ namespace ZGame.cc
         /// </summary>
         /// <returns></returns>
         public abstract bool Update();
+    
         public abstract void Finish();
 
         /// <summary>
@@ -49,6 +50,6 @@ namespace ZGame.cc
         /// <returns></returns>
         public abstract GameObject GetOriginalTarget();
 
-       
+
     }
 }

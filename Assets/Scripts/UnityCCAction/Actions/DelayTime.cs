@@ -58,6 +58,8 @@ namespace ZGame.cc
             return this.isDone;
         }
 
+       
+
         public override void OnPartialFinished()
         {
             this.repeatedTimes++;

@@ -52,34 +52,48 @@ public class TestAction : MonoBehaviour
         //    ).SetRepeatTimes(3);
 
 
-        return new cc.Repeat(2,
+        //return new cc.Repeat(2,
+        //    new cc.CallFunc(() =>
+        //    {
+        //        Debug.Log("hello1");
+        //    }),
+        //    new cc.Repeat(2,
+        //        new cc.MoveTo(2, new Vector3(0, 0, 0)).SetTag(111),
+        //        new cc.CallFunc(() =>
+        //        {
+        //            Debug.Log("yes");
+        //        })
+        //        ).SetTag(2),
+        //    new cc.DelayTime(2),
+        //    new cc.CallFunc(() =>
+        //    {
+        //        Debug.Log("hello2");
+        //    })
+        //    ).SetTag(1);
+
+
+
+
+        return new cc.Sequence(
+            new cc.DelayTime(1),
             new cc.CallFunc(() =>
             {
-                Debug.Log("hello");
-            }),
-            new cc.Repeat(3,
-                new cc.MoveTo(3, new Vector3(0, 0, 0)),
-                new cc.CallFunc(() =>
-                {
-                    Debug.Log("yes");
-                })
-                ).SetTag(2)
-            ).SetTag(1);
+                Debug.Log("hello1");
 
-
-
-
-        //return new cc.Sequence(new cc.DelayTime(1),
-        //    new cc.CallFunc(() =>
-        // {
-        //     Debug.Log("fuch!!!");
-
-        // }),
-        // new cc.DelayTime(5),
-        // new cc.CallFunc(() =>
-        // {
-        //     Debug.Log("ffff");
-        // }));
+            }).SetRepeatTimes(2),
+            new cc.DelayTime(5),
+            new cc.Repeat(2,
+                new cc.MoveTo(1, new Vector3(1, 1)),
+                new cc.Repeat(2,
+                    new cc.CallFunc(() =>
+                    {
+                        Debug.Log("dot");
+                    }))
+             ),
+         new cc.CallFunc(() =>
+         {
+             Debug.Log("hello2");
+         })).SetRepeatTimes(2);
     }
     // Update is called once per frame
     void Update()

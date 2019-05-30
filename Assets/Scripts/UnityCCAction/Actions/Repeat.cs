@@ -12,10 +12,10 @@ namespace ZGame.cc
         FiniteTimeAction[] actions;
         Queue<FiniteTimeAction> legalActions = new Queue<FiniteTimeAction>();
         Queue<FiniteTimeAction> cycleActions = new Queue<FiniteTimeAction>();
-        public FiniteTimeAction curRunningAction = null;
+        FiniteTimeAction curRunningAction = null;
 
         /// <summary>
-        /// 
+        /// 重复播放动作
         /// </summary>
         /// <param name="times">1表示动作只播放一遍；2、3、4...表示动作播放指定次数; 小于1表示动作循环播放；</param>
         /// <param name="actions"></param>
@@ -34,7 +34,7 @@ namespace ZGame.cc
             this.actions = actions;
             this.legalActions.Clear();
             this.cycleActions.Clear();
-
+            this.curRunningAction = null;
             this.repeatTimes = times;
             foreach (var item in actions)
             {
@@ -48,7 +48,8 @@ namespace ZGame.cc
 
         public override ActionInterval Easing(Ease ease)
         {
-            throw new System.NotImplementedException();
+            Debug.LogWarning("Repeat set easing will not work");
+            return this;
         }
 
         public override void Finish()
@@ -80,7 +81,7 @@ namespace ZGame.cc
 
         public override GameObject GetTarget()
         {
-            throw new System.NotImplementedException();
+            return this.target;
         }
 
         public override bool IsDone()
@@ -94,8 +95,7 @@ namespace ZGame.cc
 
             if (this.repeatedTimes == this.repeatTimes)
             {
-                Debug.LogWarning(this.GetTag() + " repeat action完成：" + this.repeatedTimes + ", 总次数：" + this.repeatTimes);
-
+                //Debug.LogWarning(this.GetTag() + " repeat action完成：" + this.repeatedTimes + ", 总次数：" + this.repeatTimes);
 
                 //完成后也要交换一下，防止出现Repeat套Repeat的情况，导致的运行结果出错
                 var tmp = this.legalActions;
@@ -113,7 +113,7 @@ namespace ZGame.cc
                     this.cycleActions = tmp;
 
 
-                    Debug.LogWarning(this.GetTag() + " repeat action完成：" + this.repeatedTimes + ", 总次数：" + this.repeatTimes);
+                    //Debug.LogWarning(this.GetTag() + " repeat action完成：" + this.repeatedTimes + ", 总次数：" + this.repeatTimes);
                     this.Run();
                 }
                 else
