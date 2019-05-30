@@ -6,11 +6,13 @@ namespace ZGame.cc
 {
     public class ActionManager : SingletonMonoBehaviour<ActionManager>
     {
+
         //Dictionary<GameObject,>
         //Dictionary<GameObject,List<Action>>
         public void AddAction(FiniteTimeAction action, GameObject target, bool paused)
         {
             action.SetTarget(target);
+
             var actionComp = target.AddComponent<FiniteActionComp>();
             actionComp.AddAction(action);
         }
