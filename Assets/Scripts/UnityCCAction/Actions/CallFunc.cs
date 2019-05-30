@@ -12,6 +12,10 @@ namespace ZGame.cc
 
         public CallFunc(System.Action func)
         {
+            if (func == null)
+            {
+                Debug.LogError("func can not be null");
+            }
             this.func = func;
         }
 
@@ -22,11 +26,15 @@ namespace ZGame.cc
 
 
 
+        bool isPartialFinished = false;
+
         public override void Run()
         {
             this.isDone = false;
+            this.isPartialFinished = false;
             this.func();
-            this.OnPartialFinished();
+            this.isPartialFinished = true;
+
         }
 
         public override Action Clone()
@@ -46,7 +54,7 @@ namespace ZGame.cc
 
         public override int GetTag()
         {
-            throw new System.NotImplementedException();
+            return this.tag;
         }
 
         public override GameObject GetTarget()
@@ -69,9 +77,11 @@ namespace ZGame.cc
             throw new System.NotImplementedException();
         }
 
-        public override void SetTag(int tag)
+        public override FiniteTimeAction SetTag(int tag)
         {
-            throw new System.NotImplementedException();
+            this.tag = tag;
+            return this;
+
         }
 
         public override void SetTarget(GameObject target)
@@ -81,6 +91,10 @@ namespace ZGame.cc
 
         public override bool Update()
         {
+            if (this.isPartialFinished)
+            {
+                this.OnPartialFinished();
+            }
             return this.IsDone();
         }
 

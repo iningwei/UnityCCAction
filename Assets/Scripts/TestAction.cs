@@ -16,10 +16,19 @@ public class TestAction : MonoBehaviour
 
     cc.FiniteTimeAction getAction()
     {
+
         //  return new cc.CallFunc(() =>
         //{
         //    Debug.Log("aaa@");
         //}).SetRepeatTimes(3);
+
+        //return new cc.MoveTo(2, new Vector3(2, 5, 0)).SetRepeatTimes(0);
+
+        //  Debug.Log("xx");
+        //  return new cc.CallFunc(() =>
+        //{
+        //    Debug.Log("aaa@" + Time.time);
+        //}).SetRepeatTimes(0);
 
 
         //return new cc.MoveTo(2, new Vector3(2, 3, 0));
@@ -28,6 +37,37 @@ public class TestAction : MonoBehaviour
         //return new cc.MoveTo(2, new Vector3(2, 3, 0)).Easing(Ease.Linear).SetRepeatTimes(2);
 
         //return new cc.DelayTime(1).SetRepeatTimes(2);
+
+
+
+
+
+        //return new cc.Repeat(2,
+        //    new cc.MoveTo(3, new Vector3(2, 5, 0)).Easing(Ease.Linear),
+        //    new cc.CallFunc(() =>
+        //    {
+        //        Debug.Log("hello");
+        //    }).SetRepeatTimes(3),
+        //    new cc.MoveTo(2, new Vector3(1, 1, 0)).Easing(Ease.Linear)
+        //    ).SetRepeatTimes(3);
+
+
+        return new cc.Repeat(2,
+            new cc.CallFunc(() =>
+            {
+                Debug.Log("hello");
+            }),
+            new cc.Repeat(3,
+                new cc.MoveTo(3, new Vector3(0, 0, 0)),
+                new cc.CallFunc(() =>
+                {
+                    Debug.Log("yes");
+                })
+                ).SetTag(2)
+            ).SetTag(1);
+
+
+
 
         //return new cc.Sequence(new cc.DelayTime(1),
         //    new cc.CallFunc(() =>
@@ -40,33 +80,6 @@ public class TestAction : MonoBehaviour
         // {
         //     Debug.Log("ffff");
         // }));
-
-
-
-        return new cc.Repeat(2,
-            new cc.MoveTo(3, new Vector3(2, 5, 0)).Easing(Ease.Linear),
-            new cc.CallFunc(() =>
-            {
-                Debug.Log("hello");
-            }).SetRepeatTimes(3),
-            new cc.MoveTo(2, new Vector3(1, 1, 0)).Easing(Ease.Linear)
-            );
-
-
-        //return new cc.Repeat(2,
-        //    new cc.MoveTo(2, new Vector3(2, 3, 0)).SetRepeatTimes(2),
-        //    new cc.CallFunc(() =>
-        //    {
-        //        Debug.Log("hello");
-        //    }).SetRepeatTimes(3),
-        //    new cc.Repeat(2,
-        //        new cc.MoveTo(3, new Vector3(0, 0, 0)).SetRepeatTimes(2),
-        //        new cc.CallFunc(() =>
-        //        {
-        //            Debug.Log("yes");
-        //        })
-        //        )
-        //    );
     }
     // Update is called once per frame
     void Update()

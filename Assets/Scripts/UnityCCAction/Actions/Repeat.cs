@@ -74,7 +74,7 @@ namespace ZGame.cc
 
         public override int GetTag()
         {
-            throw new System.NotImplementedException();
+            return this.tag;
         }
 
         public override GameObject GetTarget()
@@ -92,7 +92,7 @@ namespace ZGame.cc
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)
             {
-                Debug.LogWarning("repeat action完成：" + this.repeatedTimes + ", 总次数：" + this.repeatTimes);
+                Debug.LogWarning(this.GetTag() + " repeat action完成：" + this.repeatedTimes + ", 总次数：" + this.repeatTimes);
                 this.Finish();
             }
             else
@@ -102,7 +102,7 @@ namespace ZGame.cc
                     var tmp = this.legalActions;
                     this.legalActions = this.cycleActions;
                     this.cycleActions = tmp;
-                    Debug.LogWarning("repeat action完成：" + this.repeatedTimes + ", 总次数：" + this.repeatTimes);
+                    Debug.LogWarning(this.GetTag() + " repeat action完成：" + this.repeatedTimes + ", 总次数：" + this.repeatTimes);
                     this.Run();
                 }
                 else
@@ -149,9 +149,11 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void SetTag(int tag)
+        public override FiniteTimeAction SetTag(int tag)
         {
-            throw new System.NotImplementedException();
+            this.tag = tag;
+            return this;
+
         }
 
         public override void SetTarget(GameObject target)

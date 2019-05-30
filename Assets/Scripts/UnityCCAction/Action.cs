@@ -9,9 +9,8 @@ namespace ZGame.cc
     /// </summary>
     public abstract class Action
     {
-        
-        public GameObject target = null;
-
+        protected GameObject target = null;
+       
 
         public abstract void Run();
         /// <summary>
@@ -50,16 +49,6 @@ namespace ZGame.cc
         /// <returns></returns>
         public abstract GameObject GetOriginalTarget();
 
-        /// <summary>
-        /// 获得动作的Tag
-        /// </summary>
-        /// <returns></returns>
-        public abstract int GetTag();
-
-        /// <summary>
-        /// 为动作设置标签，用于识别动作
-        /// </summary>
-        /// <param name="tag"></param>
-        public abstract void SetTag(int tag);
+       
     }
 }

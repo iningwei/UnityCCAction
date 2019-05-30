@@ -6,6 +6,7 @@ namespace ZGame.cc
 {
     /// <summary>
     /// 顺序播放动作一次
+    /// 当然你也可以通过SetTimes()来使其变成重复播放
     /// </summary>
 
     public class Sequence : ActionInterval
@@ -54,7 +55,7 @@ namespace ZGame.cc
 
         public override int GetTag()
         {
-            throw new System.NotImplementedException();
+            return this.tag;
         }
 
         public override GameObject GetTarget()
@@ -101,9 +102,11 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void SetTag(int tag)
+        public override FiniteTimeAction SetTag(int tag)
         {
-            throw new System.NotImplementedException();
+            this.tag = tag;
+            return this;
+            
         }
 
         public override void SetTarget(GameObject target)

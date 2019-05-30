@@ -54,7 +54,7 @@ namespace ZGame.cc
 
         public override int GetTag()
         {
-            throw new System.NotImplementedException();
+            return this.tag;
         }
 
         public override GameObject GetTarget()
@@ -108,9 +108,10 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void SetTag(int tag)
+        public override FiniteTimeAction SetTag(int tag)
         {
-            throw new System.NotImplementedException();
+            this.tag = tag;
+            return this;
         }
 
         public override void SetTarget(GameObject target)
