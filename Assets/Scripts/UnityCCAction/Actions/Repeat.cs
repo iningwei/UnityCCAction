@@ -55,6 +55,7 @@ namespace ZGame.cc
         {
             this.isDone = true;
             this.repeatedTimes = 0;
+            this.curRunningAction = null;
         }
 
         public override float GetDuration()
@@ -90,9 +91,17 @@ namespace ZGame.cc
         public override void OnPartialFinished()
         {
             this.repeatedTimes++;
+
             if (this.repeatedTimes == this.repeatTimes)
             {
                 Debug.LogWarning(this.GetTag() + " repeat action完成：" + this.repeatedTimes + ", 总次数：" + this.repeatTimes);
+
+
+                //完成后也要交换一下，防止出现Repeat套Repeat的情况，导致的运行结果出错
+                var tmp = this.legalActions;
+                this.legalActions = this.cycleActions;
+                this.cycleActions = tmp;
+
                 this.Finish();
             }
             else
@@ -102,6 +111,8 @@ namespace ZGame.cc
                     var tmp = this.legalActions;
                     this.legalActions = this.cycleActions;
                     this.cycleActions = tmp;
+
+
                     Debug.LogWarning(this.GetTag() + " repeat action完成：" + this.repeatedTimes + ", 总次数：" + this.repeatTimes);
                     this.Run();
                 }
@@ -130,6 +141,7 @@ namespace ZGame.cc
                 {
                     this.cycleActions.Enqueue(this.curRunningAction);
                 }
+
                 this.curRunningAction.Run();
             }
             else
@@ -172,15 +184,23 @@ namespace ZGame.cc
 
         public override bool Update()
         {
+            if (this.IsDone())
+            {
+                return true;
+            }
+
             if (this.curRunningAction != null)
             {
                 if (this.curRunningAction.Update())
                 {
+
                     this.Run();
                 }
             }
 
             return this.IsDone();
         }
+
+
     }
 }
