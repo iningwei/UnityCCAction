@@ -18,19 +18,11 @@ namespace ZGame.cc
                 Debug.LogError("该ActionIntervalComp已经运行，无法中途插入动作");
                 return;
             }
-
-
             this.curRunningAction = action;
-
-            this.run();
-
-        }
-        
-        void run()
-        {                        
             curRunningAction.Run();
         }
-    
+
+
         void Update()
         {
             if (this.curRunningAction != null)
