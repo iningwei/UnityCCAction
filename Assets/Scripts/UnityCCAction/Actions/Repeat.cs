@@ -65,7 +65,7 @@ namespace ZGame.cc
             this.curRunningAction = null;
             if (this.completeCallback != null)
             {
-                this.completeCallback(this.completeCallbackParam);
+                this.completeCallback(this.completeCallbackParams);
             }
         }
 
@@ -99,10 +99,10 @@ namespace ZGame.cc
             return this.isDone;
         }
 
-        public override FiniteTimeAction OnComplete(Action<object> callback, object param)
+        public override FiniteTimeAction OnComplete(Action<object[]> callback, object[] param)
         {
             this.completeCallback = callback;
-            this.completeCallbackParam = param;
+            this.completeCallbackParams = param;
             return this;
         }
 

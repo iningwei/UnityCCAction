@@ -106,7 +106,7 @@ namespace ZGame.cc
             this.repeatedTimes = 0;
             if (this.completeCallback != null)
             {
-                this.completeCallback(this.completeCallbackParam);
+                this.completeCallback(this.completeCallbackParams);
             }
         }
 
@@ -135,10 +135,10 @@ namespace ZGame.cc
             }
         }
 
-        public override FiniteTimeAction OnComplete(Action<object> callback, object param)
+        public override FiniteTimeAction OnComplete(Action<object[]> callback, object[] param)
         {
             this.completeCallback = callback;
-            this.completeCallbackParam = param;
+            this.completeCallbackParams = param;
             return this;
         }
 

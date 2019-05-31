@@ -82,9 +82,9 @@ namespace ZGame.cc
 
         public abstract FiniteTimeAction Delay(float time);
 
-        public abstract FiniteTimeAction OnComplete(Action<object> callback, object param);
-        protected Action<object> completeCallback;
-        protected object completeCallbackParam;
+        public abstract FiniteTimeAction OnComplete(Action<object[]> callback, object[] param);
+        protected Action<object[]> completeCallback;
+        protected object[] completeCallbackParams;
 
     }
 }
