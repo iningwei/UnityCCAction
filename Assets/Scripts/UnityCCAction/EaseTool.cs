@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 //图形示例：http://hosted.zeh.com.br/tweener/docs/en-us/
-
+//该部分源码来自：https://github.com/setchi/EasingCore
 namespace ZGame.cc
 {
     public enum Ease
