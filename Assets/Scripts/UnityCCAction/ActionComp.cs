@@ -37,11 +37,28 @@ namespace ZGame.cc
             return this.action;
         }
 
+        float pausedTime = 0;
+        bool isPaused = false;
+        public void PauseAction()
+        {
+            this.isPaused = true;
+            this.pausedTime = 0;
+        }
+        public void ResumeAction()
+        {
+            this.isPaused = false;
+        }
 
         void Update()
         {
             if (this.action != null)
             {
+                if (isPaused)
+                {
+                    this.pausedTime += Time.deltaTime;
+                    return;
+                }
+
                 if (this.action.Update())
                 {
                     Debug.Log(this.gameObject.name + " 动作播完了 ");
