@@ -9,11 +9,11 @@ namespace ZGame.cc
 
         //Dictionary<GameObject,>
         //Dictionary<GameObject,List<Action>>
-        public void AddAction(FiniteTimeAction action, GameObject target, bool paused)
+        public void AddAction(Action action, GameObject target, bool paused)
         {
             action.SetTarget(target);
 
-            var actionComp = target.AddComponent<FiniteActionComp>();
+            var actionComp = target.AddComponent<ActionComp>();
             actionComp.AddAction(action);
         }
 

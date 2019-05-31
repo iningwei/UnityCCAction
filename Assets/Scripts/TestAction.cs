@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ZGame.cc;
@@ -8,15 +9,23 @@ public class TestAction : MonoBehaviour
 {
     cc.FiniteTimeAction action;
     cc.FiniteTimeAction scaleAction;
-
+    cc.InfiniteTimeAction rotateAction;
     void Start()
     {
-        this.transform.Rotate(1, 1, 1, Space.Self);
+        
 
-        this.action = this.getAction();
-        this.scaleAction = this.getScaleAction();
+        //this.action = this.getAction();
+        //this.scaleAction = this.getScaleAction();
+        this.rotateAction = this.getRotateAction();
+
         //this.gameObject.RunAction(this.action);
-        this.gameObject.RunAction(this.scaleAction);
+        this.gameObject.RunAction(this.rotateAction);
+        //this.gameObject.RunAction(this.scaleAction);
+    }
+
+    private InfiniteTimeAction getRotateAction()
+    {
+        return new cc.Rotate(80, 0, 0, Space.Self);
     }
 
     FiniteTimeAction getScaleAction()

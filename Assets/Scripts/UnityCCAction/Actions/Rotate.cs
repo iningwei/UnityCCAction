@@ -24,6 +24,7 @@ namespace ZGame.cc
             this.yValue = yValue;
             this.zValue = zValue;
 
+            this.relativeSpace = relativeSpace;
         }
 
         public override Action Clone()
@@ -58,7 +59,7 @@ namespace ZGame.cc
 
         public override void Run()
         {
-            throw new System.NotImplementedException();
+
         }
 
         public override InfiniteTimeAction SetTag(int tag)
