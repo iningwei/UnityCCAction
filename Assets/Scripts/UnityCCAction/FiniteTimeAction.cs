@@ -43,11 +43,7 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="time"></param>
         public abstract void SetDuration(float time);
-        /// <summary>
-        /// 获得动作的Tag
-        /// </summary>
-        /// <returns></returns>
-        public abstract int GetTag();
+     
 
         /// <summary>
         /// 为动作设置标签，用于识别动作
@@ -70,7 +66,7 @@ namespace ZGame.cc
         /// </summary>
         protected abstract void OnPartialFinished();
         /// <summary>
-        /// 返回一个新动作，新动作的执行与元动作完全相反
+        /// 返回一个新动作，新动作的执行与原动作完全相反
         /// </summary>
         public abstract void Reverse();
 

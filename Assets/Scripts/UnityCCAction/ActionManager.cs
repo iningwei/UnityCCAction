@@ -8,50 +8,91 @@ namespace ZGame.cc
     {
 
         //Dictionary<GameObject,>
-        //Dictionary<GameObject,List<Action>>
-        public void AddAction(Action action, GameObject target, bool paused)
+        Dictionary<GameObject, List<ActionComp>> dicOfActions = new Dictionary<GameObject, List<ActionComp>>();
+
+        public void AddAction(GameObject target, Action action)
         {
             action.SetTarget(target);
 
             var actionComp = target.AddComponent<ActionComp>();
             actionComp.AddAction(action);
+
+            this.addAction(target, actionComp);
+        }
+
+        bool addAction(GameObject target, ActionComp actionComp)
+        {
+            if (!dicOfActions.ContainsKey(target))
+            {
+                dicOfActions[target] = new List<ActionComp>();
+            }
+            var actionComps = dicOfActions[target];
+            for (int i = 0; i < actionComps.Count; i++)
+            {
+                if (actionComps[i].GetAction() == actionComp.GetAction())
+                {
+                    Debug.LogError("dicOfActions have the same action, can not add");
+                    return false;
+                }
+            }
+            actionComps.Add(actionComp);
+            return true;
         }
 
         /// <summary>
-        /// 移除所有对象的所有动作
+        /// remove all actions from all targets
         /// </summary>
-        public void RemoveAllActions()
+        public bool RemoveAllActions()
         {
-
+            return true;
         }
 
-        public void RemoveAllActionsFromTarget(GameObject target, bool forceDelete)
+        public bool RemoveAllActionsFromTarget(GameObject target, bool forceDelete)
         {
-
+            return true;
         }
 
 
         /// <summary>
-        /// 移除指定动作
+        /// remove action of target
         /// </summary>
         /// <param name="action"></param>
-        public void RemoveAction(Action action)
+        public bool RemoveAction(GameObject target, Action action)
         {
+            if (target == null)
+            {
+                Debug.LogError("target is null");
+                return false;
+            }
+            if (action == null)
+            {
+                Debug.LogError("action is null");
+                return false;
+            }
+            if (!dicOfActions.ContainsKey(target))
+            {
+                Debug.LogError("error dicOfActions not contain target");
+                return false;
+            }
+            var actionComps = dicOfActions[target];
+
+            return true;
 
         }
+
 
         /// <summary>
-        /// 删除指定对象下具有特定标签的一个动作，将删除首个匹配到的动作
+        /// remove action by tag from target
         /// </summary>
-        /// <param name="tag"></param>
         /// <param name="target"></param>
-        public void RemoveActionByTag(uint tag, GameObject target)
+        /// <param name="tag"></param>
+        public void RemoveActionByTag(GameObject target, int tag)
         {
 
         }
 
 
-        public Action GetActionByTag(uint tag, GameObject target)
+        public Action GetActionByTag(GameObject target, int tag)
         {
             return null;
         }

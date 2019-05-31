@@ -36,7 +36,11 @@ namespace ZGame.cc
         /// </summary>
         /// <returns></returns>
         public abstract bool IsDone();
-
+        /// <summary>
+        /// Get the tag of an action
+        /// </summary>
+        /// <returns></returns>
+        public abstract int GetTag();
         /// <summary>
         /// 获得执行当前动作的目标节点
         /// </summary>
@@ -55,6 +59,6 @@ namespace ZGame.cc
         /// <returns></returns>
         public abstract GameObject GetOriginalTarget();
 
-        
+
     }
 }
