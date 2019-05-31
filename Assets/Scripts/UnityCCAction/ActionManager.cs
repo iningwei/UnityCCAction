@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ZGame.cc
@@ -17,10 +18,10 @@ namespace ZGame.cc
             var actionComp = target.AddComponent<ActionComp>();
             actionComp.AddAction(action);
 
-            this.addAction(target, actionComp);
+            this.addActionComp(target, actionComp);
         }
 
-        bool addAction(GameObject target, ActionComp actionComp)
+        bool addActionComp(GameObject target, ActionComp actionComp)
         {
             if (!dicOfActions.ContainsKey(target))
             {
@@ -40,30 +41,55 @@ namespace ZGame.cc
         }
 
         /// <summary>
-        /// remove all actions from all targets
+        /// remove all actions of all targets
         /// </summary>
-        public bool RemoveAllActions()
+        public void RemoveAllActions()
         {
-            return true;
+            List<GameObject> allKeys = this.dicOfActions.Keys.ToList();
+            foreach (var item in allKeys)
+            {
+                this.RemoveAllActionsFromTarget(item);
+            }
+
         }
 
-        public bool RemoveAllActionsFromTarget(GameObject target, bool forceDelete)
+        public bool RemoveAllActionsFromTarget(GameObject target)
         {
+            if (target == null)
+            {
+                Debug.LogError("error, target is null");
+                return false;
+            }
+            if (!dicOfActions.ContainsKey(target))
+            {
+                Debug.LogError("error, dicOfActions not contains target");
+                return false;
+            }
+
+            var actionComps = dicOfActions[target];
+            ActionComp actionComp = null;
+            for (int i = actionComps.Count - 1; i >= 0; i--)
+            {
+                actionComp = actionComps[i];
+                GameObject.Destroy(actionComp);
+            }
+            dicOfActions.Remove(target);
             return true;
         }
 
 
         /// <summary>
-        /// remove action of target
+        /// remove action from target
         /// </summary>
         /// <param name="action"></param>
         public bool RemoveAction(GameObject target, Action action)
         {
             if (target == null)
             {
-                Debug.LogError("target is null");
+                Debug.LogError("error, target is null");
                 return false;
             }
+
             if (action == null)
             {
                 Debug.LogError("action is null");
@@ -71,12 +97,24 @@ namespace ZGame.cc
             }
             if (!dicOfActions.ContainsKey(target))
             {
-                Debug.LogError("error dicOfActions not contain target");
+                Debug.LogError("error, dicOfActions not contain target");
                 return false;
             }
             var actionComps = dicOfActions[target];
+            ActionComp actionComp = null;
+            for (int i = actionComps.Count - 1; i >= 0; i--)
+            {
+                actionComp = actionComps[i];
+                if (actionComp.GetAction() == action)
+                {
+                    actionComps.Remove(actionComp);
+                    GameObject.Destroy(actionComp);
+                    return true;
+                }
+            }
 
-            return true;
+            Debug.LogError("target does not have the action");
+            return false;
 
         }
 
@@ -86,24 +124,76 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="target"></param>
         /// <param name="tag"></param>
-        public void RemoveActionByTag(GameObject target, int tag)
+        public bool RemoveActionByTag(GameObject target, int tag)
         {
+            if (target == null)
+            {
+                Debug.LogError("error, target is null");
+                return false;
+            }
 
+            if (!dicOfActions.ContainsKey(target))
+            {
+                Debug.LogError("error, dicOfActions not contain target");
+                return false;
+            }
+            var actionComps = dicOfActions[target];
+            ActionComp actionComp = null;
+            for (int i = actionComps.Count - 1; i >= 0; i--)
+            {
+                actionComp = actionComps[i];
+                if (actionComp.actionTag == tag)
+                {
+                    actionComps.Remove(actionComp);
+                    GameObject.Destroy(actionComp);
+                    return true;
+                }
+            }
+            Debug.LogError("target does not have the action of tag:" + tag);
+            return false;
         }
+
+
 
 
         public Action GetActionByTag(GameObject target, int tag)
         {
+            if (target == null)
+            {
+                Debug.LogError("error, target is null");
+                return null;
+            }
+
+            if (!dicOfActions.ContainsKey(target))
+            {
+                Debug.LogError("error, dicOfActions not contain target");
+                return null;
+            }
+            var actionComps = dicOfActions[target];
+            ActionComp actionComp = null;
+            for (int i = actionComps.Count - 1; i >= 0; i--)
+            {
+                actionComp = actionComps[i];
+                if (actionComp.actionTag == tag)
+                {
+                    return actionComp.GetAction();
+                }
+            }
+            Debug.LogError("target does not have the action of tag:" + tag);
             return null;
         }
 
+
+
         public uint GetNumberOfRunnningActionsInTarget(GameObject target)
         {
+            //TODO:
             return 0;
         }
 
         /// <summary>
-        /// 暂停指定对象上的动作，所有正在运行的动作和新添加的动作都会暂停
+        /// Pause all actions of target.
+        /// Even you add action after the pause command, the new action still in pause state.
         /// </summary>
         /// <param name="target"></param>
         public void PauseTarget(GameObject target)
@@ -112,7 +202,7 @@ namespace ZGame.cc
         }
 
         /// <summary>
-        /// 让指定目标对象上的动作恢复运行
+        /// Resume all actions from pause state to run state.
         /// </summary>
         /// <param name="target"></param>
         public void ResumeTarget(GameObject target)

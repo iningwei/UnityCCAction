@@ -13,32 +13,32 @@ namespace ZGame.cc
 
 
         /// <summary>
-        /// 停止并移除动作
+        /// stop and remove action from target
         /// </summary>
         /// <param name="target"></param>
         /// <param name="action"></param>
-        public static void StopAction(this GameObject target, Action action)
+        public static bool StopAction(this GameObject target, Action action)
         {
-            ActionManager.Instance.RemoveAction(target, action);
+            return ActionManager.Instance.RemoveAction(target, action);
         }
 
         /// <summary>
-        /// 停止并移除target上指定tag的的动作
+        /// stop and remove action of specific tag from target
         /// </summary>
         /// <param name="target"></param>
         /// <param name="tag"></param>
-        public static void StopAction(this GameObject target, int tag)
+        public static bool StopAction(this GameObject target, int tag)
         {
-            ActionManager.Instance.RemoveActionByTag(target, tag);
+            return ActionManager.Instance.RemoveActionByTag(target, tag);
         }
 
         /// <summary>
-        /// 停止并移除target上所有的动作
+        /// stop and remove all actions from target
         /// </summary>
         /// <param name="target"></param>
-        public static void StopAllActions(this GameObject target)
+        public static bool StopAllActions(this GameObject target)
         {
-
+            return ActionManager.Instance.RemoveAllActionsFromTarget(target);
         }
     }
 }
