@@ -12,9 +12,9 @@ public class TestAction : MonoBehaviour
     void Start()
     {
         this.action = this.getAction();
-        //this.scaleAction = this.getScaleAction();
-        this.gameObject.RunAction(this.action);
-        //this.gameObject.RunAction(this.scaleAction);
+        this.scaleAction = this.getScaleAction();
+        //this.gameObject.RunAction(this.action);
+        this.gameObject.RunAction(this.scaleAction);
     }
 
     FiniteTimeAction getScaleAction()
@@ -22,13 +22,14 @@ public class TestAction : MonoBehaviour
         //return new cc.Sequence(new cc.ScaleTo(2, new Vector3(2f, 1.5f, 1.5f)),
         //    new cc.ScaleTo(2, Vector3.one));
 
-        return new cc.CallFunc(() =>
+        return new cc.CallFunc((a) =>
         {
-            Debug.Log("hello");
-        }).OnComplete((a) =>
-        {
-            Debug.Log("finished");
-        }, null).SetRepeatTimes(5);
+            Debug.Log("hello " + (a[0] as TestAction).gameObject.name);
+
+        }, this).OnComplete((a) =>
+         {
+             Debug.Log("finished");
+         }, null).SetRepeatTimes(5);
     }
     cc.FiniteTimeAction getAction()
     {
@@ -57,7 +58,7 @@ public class TestAction : MonoBehaviour
 
         return new cc.Repeat(2,
             new cc.MoveTo(2, new Vector3(2, 3, 0)).Easing(Ease.Linear),
-            new cc.CallFunc(() =>
+            new cc.CallFunc((a) =>
             {
                 Debug.Log("hello");
             }).SetRepeatTimes(3).Delay(2)

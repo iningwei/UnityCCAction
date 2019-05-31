@@ -7,16 +7,18 @@ namespace ZGame.cc
 {
     public class CallFunc : ActionInstant
     {
-        System.Action func;
+        System.Action<object[]> func;
+        object[] paras;
 
 
-        public CallFunc(System.Action func)
+        public CallFunc(System.Action<object[]> func, params object[] paras)
         {
             if (func == null)
             {
                 Debug.LogError("func can not be null");
             }
             this.func = func;
+            this.paras = paras;
         }
 
         public void Call<T>(System.Action<T> func, T param)
@@ -32,7 +34,7 @@ namespace ZGame.cc
         {
             this.isDone = false;
             this.isPartialFinished = false;
-            this.func();
+            this.func(this.paras);
             this.isPartialFinished = true;
 
         }
