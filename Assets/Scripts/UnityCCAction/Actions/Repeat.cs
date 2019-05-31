@@ -51,7 +51,7 @@ namespace ZGame.cc
 
         public override ActionInterval Easing(Ease ease)
         {
-            Debug.LogError("Repeat set easing will not work");
+            Debug.LogError("set easing for repeat action will not work");
             return this;
         }
 
@@ -204,8 +204,6 @@ namespace ZGame.cc
                 return true;
             }
 
-
-
             if (this.curRunningAction != null)
             {
                 if (this.curRunningAction.Update())
@@ -214,7 +212,6 @@ namespace ZGame.cc
                     this.Run();
                 }
             }
-
             return this.IsDone();
         }
 

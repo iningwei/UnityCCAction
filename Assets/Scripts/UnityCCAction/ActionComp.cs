@@ -59,7 +59,7 @@ namespace ZGame.cc
                     return;
                 }
 
-                if (this.action.Update())
+                if (this.action.Update())//TODO:考虑把pausedTime放到Update中注入
                 {
                     Debug.Log(this.gameObject.name + " 动作播完了 ");
                     this.action = null;
