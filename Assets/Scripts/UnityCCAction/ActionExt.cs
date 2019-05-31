@@ -40,5 +40,14 @@ namespace ZGame.cc
         {
             return ActionManager.Instance.RemoveAllActionsFromTarget(target);
         }
+
+        public static bool PauseAction(this GameObject target, Action action)
+        {
+            return ActionManager.Instance.PauseAction(target, action);
+        }
+        public static bool PauseAction(this GameObject target, int tag)
+        {
+            return ActionManager.Instance.PauseActionByTag(target, tag);
+        }
     }
 }

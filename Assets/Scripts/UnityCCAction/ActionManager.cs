@@ -210,6 +210,17 @@ namespace ZGame.cc
 
         }
 
+        public bool PauseAction(GameObject target, Action action)
+        {
+            
+            return false;
+        }
+        public bool PauseActionByTag(GameObject target, int tag)
+        {
+            Action action = GetActionByTag(target, tag);
+            return this.PauseAction(target, action);
+        }
+
 
 
         private void Update()
