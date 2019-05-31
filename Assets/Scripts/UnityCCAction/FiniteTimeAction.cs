@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -80,7 +81,9 @@ namespace ZGame.cc
 
 
 
-
+        public abstract FiniteTimeAction OnComplete(Action<object> callback, object param);
+        protected Action<object> completeCallback;
+        protected object completeCallbackParam;
 
     }
 }

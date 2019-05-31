@@ -11,9 +11,10 @@ namespace ZGame.cc
     public abstract class ActionInterval : FiniteTimeAction
     {
         protected Func<float, float> easeFunc = EaseTool.Get(Ease.Linear);
-       
-        public abstract ActionInterval Easing(Ease ease);
         
-         
+
+        public abstract ActionInterval Easing(Ease ease);        
+
+
     }
 }

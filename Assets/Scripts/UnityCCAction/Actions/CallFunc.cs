@@ -102,6 +102,10 @@ namespace ZGame.cc
         {
             this.isDone = true;
             this.repeatedTimes = 0;
+            if (this.completeCallback != null)
+            {
+                this.completeCallback(this.completeCallbackParam);
+            }
         }
 
 
@@ -129,6 +133,11 @@ namespace ZGame.cc
             }
         }
 
-       
+        public override FiniteTimeAction OnComplete(Action<object> callback, object param)
+        {
+            this.completeCallback = callback;
+            this.completeCallbackParam = param;
+            return this;
+        }
     }
 }

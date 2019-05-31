@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,6 +27,10 @@ namespace ZGame.cc
         {
             this.isDone = true;
             this.repeatedTimes = 0;
+            if (this.completeCallback != null)
+            {
+                this.completeCallback(this.completeCallbackParam);
+            }
         }
 
         public override float GetDuration()
@@ -58,7 +63,12 @@ namespace ZGame.cc
             return this.isDone;
         }
 
-       
+        public override FiniteTimeAction OnComplete(Action<object> callback, object param)
+        {
+            this.completeCallback = callback;
+            this.completeCallbackParam = param;
+            return this;
+        }
 
         public override void OnPartialFinished()
         {
@@ -99,7 +109,7 @@ namespace ZGame.cc
         {
             this.tag = tag;
             return this;
-            
+
         }
 
         public override void SetTarget(GameObject target)
