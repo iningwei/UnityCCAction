@@ -18,6 +18,17 @@ namespace ZGame.cc
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Please do not Set delay for DelayTime
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public override FiniteTimeAction Delay(float time)
+        {
+            Debug.LogError("Set delay for DelayTime will not take effect");
+            return this;
+        }
+
         public override ActionInterval Easing(Ease ease)
         {
             throw new System.NotImplementedException();
@@ -35,7 +46,7 @@ namespace ZGame.cc
 
         public override float GetDuration()
         {
-            return this.time;
+            return this.duration;
         }
 
         public override GameObject GetOriginalTarget()
@@ -96,7 +107,7 @@ namespace ZGame.cc
 
         public override void SetDuration(float time)
         {
-            this.time = time;
+            this.duration = time;
         }
 
         public override FiniteTimeAction SetRepeatTimes(int times)
@@ -124,7 +135,7 @@ namespace ZGame.cc
                 return true;
             }
 
-            if (Time.time - startTime > this.time && this.IsDone() == false)
+            if (Time.time - startTime > this.duration && this.IsDone() == false)
             {
                 this.OnPartialFinished();
             }

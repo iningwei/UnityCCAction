@@ -8,6 +8,6 @@ namespace ZGame.cc
     /// </summary>
     public abstract class ActionInstant : FiniteTimeAction
     {
-
+         
     }
 }

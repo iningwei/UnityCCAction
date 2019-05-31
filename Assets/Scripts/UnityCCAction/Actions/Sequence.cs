@@ -9,7 +9,6 @@ namespace ZGame.cc
     /// 顺序播放动作一次
     /// 也可以使用Repeat设置播放次数为1，来实现Sequence
     /// </summary>
-
     public class Sequence : ActionInterval
     {
         public FiniteTimeAction[] actionSequences;
@@ -41,9 +40,20 @@ namespace ZGame.cc
             throw new System.NotImplementedException();
         }
 
+        public override FiniteTimeAction Delay(float time)
+        {
+            return new Sequence(new DelayTime(time), this);
+        }
+
+
+        /// <summary>
+        /// do not set easing for Easing
+        /// </summary>
+        /// <param name="ease"></param>
+        /// <returns></returns>
         public override ActionInterval Easing(Ease ease)
         {
-            Debug.LogWarning("Sequence set easing will not work");
+            Debug.LogError("Sequence set easing will not work");
             return this;
         }
 
@@ -92,7 +102,7 @@ namespace ZGame.cc
         {
             this.completeCallback = callback;
             this.completeCallbackParam = param;
-            return this; throw new NotImplementedException();
+            return this;
         }
 
         public override void OnPartialFinished()
@@ -117,6 +127,7 @@ namespace ZGame.cc
         {
             this.isDone = false;
             this.curRunningAction = null;
+            this.startTime = Time.time;
             if (this.legalActions.Count > 0)
             {
                 this.curRunningAction = this.legalActions.Dequeue();
@@ -133,9 +144,15 @@ namespace ZGame.cc
             throw new System.NotImplementedException();
         }
 
+
+        /// <summary>
+        /// Do not SetRepeatTimes for Sequence.It is designed for one sequence.
+        /// </summary>
+        /// <param name="times"></param>
+        /// <returns></returns>
         public override FiniteTimeAction SetRepeatTimes(int times)
         {
-            Debug.LogWarning("Sequence setRepeatTimes will not take effect");
+            Debug.LogError("Sequence setRepeatTimes will not take effect");
             return this;
         }
 
@@ -164,6 +181,7 @@ namespace ZGame.cc
             {
                 return true;
             }
+
             if (this.curRunningAction != null)
             {
                 if (this.curRunningAction.Update())

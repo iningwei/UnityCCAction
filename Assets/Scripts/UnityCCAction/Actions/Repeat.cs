@@ -47,9 +47,14 @@ namespace ZGame.cc
             throw new System.NotImplementedException();
         }
 
+        public override FiniteTimeAction Delay(float time)
+        {
+            return new Sequence(new DelayTime(time), this);
+        }
+
         public override ActionInterval Easing(Ease ease)
         {
-            Debug.LogWarning("Repeat set easing will not work");
+            Debug.LogError("Repeat set easing will not work");
             return this;
         }
 
@@ -146,6 +151,7 @@ namespace ZGame.cc
         {
             this.isDone = false;
             this.curRunningAction = null;
+            this.startTime = Time.time;
             if (legalActions.Count > 0)
             {
                 this.curRunningAction = legalActions.Dequeue();
@@ -200,6 +206,8 @@ namespace ZGame.cc
             {
                 return true;
             }
+
+         
 
             if (this.curRunningAction != null)
             {

@@ -139,5 +139,10 @@ namespace ZGame.cc
             this.completeCallbackParam = param;
             return this;
         }
+
+        public override FiniteTimeAction Delay(float time)
+        {
+            return new Sequence(new DelayTime(time), this);
+        }
     }
 }

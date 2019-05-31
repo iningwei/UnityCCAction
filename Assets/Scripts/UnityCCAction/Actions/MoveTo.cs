@@ -15,7 +15,7 @@ namespace ZGame.cc
 
         public MoveTo(float duration, Vector3 targetPos)
         {
-            this.time = duration;
+            this.duration = duration;
 
             this.targetPos = targetPos;
 
@@ -23,6 +23,11 @@ namespace ZGame.cc
         public override Action Clone()
         {
             throw new System.NotImplementedException();
+        }
+
+        public override FiniteTimeAction Delay(float time)
+        { 
+            return new Sequence(new DelayTime(time), this);
         }
 
         public override ActionInterval Easing(Ease ease)
@@ -110,7 +115,7 @@ namespace ZGame.cc
 
         public override void SetDuration(float time)
         {
-            this.time = time;
+            this.duration = time;
         }
 
         public override FiniteTimeAction SetRepeatTimes(int times)
@@ -136,13 +141,15 @@ namespace ZGame.cc
             {
                 return true;
             }
-            if (Time.time - startTime > this.time)
+
+
+            if (Time.time - startTime > this.duration)
             {
                 this.OnPartialFinished();
             }
 
             var dir = this.targetPos - this.startPos;
-            float t = (Time.time - startTime) / this.time;
+            float t = (Time.time - startTime) / this.duration;
             t = t > 1 ? 1 : t;
 
             var desPos = this.startPos + dir * (this.easeFunc(t));

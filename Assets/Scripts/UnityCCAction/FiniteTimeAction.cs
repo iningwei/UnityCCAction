@@ -21,7 +21,7 @@ namespace ZGame.cc
         /// <summary>
         /// 动作持续时间
         /// </summary>
-        protected float time = 0;
+        protected float duration = 0;
         /// <summary>
         /// 该动作开始的时间点
         /// </summary>
@@ -80,6 +80,7 @@ namespace ZGame.cc
         public abstract void Reverse();
 
 
+        public abstract FiniteTimeAction Delay(float time);
 
         public abstract FiniteTimeAction OnComplete(Action<object> callback, object param);
         protected Action<object> completeCallback;
