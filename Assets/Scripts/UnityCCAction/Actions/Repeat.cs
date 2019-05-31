@@ -21,12 +21,7 @@ namespace ZGame.cc
         /// <param name="times">1表示动作只播放一遍；2、3、4...表示动作播放指定次数; 小于1表示动作循环播放；</param>
         /// <param name="actions"></param>
         public Repeat(int times, params FiniteTimeAction[] actions)
-        {
-            if (times == 0 || times < -1)
-            {
-                Debug.LogError("error, times not valid, times:" + times);
-                return;
-            }
+        {            
             if (actions == null || actions.Length == 0)
             {
                 Debug.LogError("error, repeat actions at leaset have one");
@@ -106,7 +101,7 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void OnPartialFinished()
+        protected override void OnPartialFinished()
         {
             this.repeatedTimes++;
 

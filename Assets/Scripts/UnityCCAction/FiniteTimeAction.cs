@@ -11,7 +11,7 @@ namespace ZGame.cc
     public abstract class FiniteTimeAction : Action
     {
         protected int tag = 0;
-    
+
 
         /// <summary>
         /// 动作持续时间
@@ -65,10 +65,10 @@ namespace ZGame.cc
         public abstract int GetRepeatTimes();
 
         /// <summary>
-        /// 子类需要重写该类
+        /// 由子类重写该类
         /// 某次动作完成后，判断是否完成所有动作次数的播放
         /// </summary>
-        public abstract void OnPartialFinished();
+        protected abstract void OnPartialFinished();
         /// <summary>
         /// 返回一个新动作，新动作的执行与元动作完全相反
         /// </summary>
@@ -77,7 +77,7 @@ namespace ZGame.cc
 
         public abstract FiniteTimeAction Delay(float time);
 
-        public abstract FiniteTimeAction OnComplete(Action<object[]> callback, object[] param);
+        public abstract FiniteTimeAction OnComplete(Action<object[]> callback, params object[] param);
         protected Action<object[]> completeCallback;
         protected object[] completeCallbackParams;
 

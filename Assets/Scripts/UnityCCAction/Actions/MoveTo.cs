@@ -5,20 +5,26 @@ using UnityEngine;
 
 namespace ZGame.cc
 {
-    /// <summary>
-    /// 坐标系统为：基于父节点
-    /// </summary>
+
     public class MoveTo : ActionInterval
     {
-        public Vector3 startPos = Vector3.zero;
-        public Vector3 targetPos;
+        Vector3 startPos = Vector3.zero;
+        Vector3 targetPos;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="duration"></param>
+        /// <param name="targetPos">坐标系统基于父节点的坐标系</param>
         public MoveTo(float duration, Vector3 targetPos)
         {
+            if (this.duration <= 0)
+            {
+                Debug.LogError("error, duration should >0");
+                return;
+            }
             this.duration = duration;
-
             this.targetPos = targetPos;
-
         }
         public override Action Clone()
         {
@@ -26,7 +32,7 @@ namespace ZGame.cc
         }
 
         public override FiniteTimeAction Delay(float time)
-        { 
+        {
             return new Sequence(new DelayTime(time), this);
         }
 
@@ -83,7 +89,7 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void OnPartialFinished()
+        protected override void OnPartialFinished()
         {
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)

@@ -81,7 +81,7 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void OnPartialFinished()
+        protected override void OnPartialFinished()
         {
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)

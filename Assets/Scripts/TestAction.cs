@@ -12,14 +12,14 @@ public class TestAction : MonoBehaviour
     cc.InfiniteTimeAction rotateAction;
     void Start()
     {
-        
 
-        //this.action = this.getAction();
+
+        this.action = this.getAction();
         //this.scaleAction = this.getScaleAction();
-        this.rotateAction = this.getRotateAction();
+        //this.rotateAction = this.getRotateAction();
 
-        //this.gameObject.RunAction(this.action);
-        this.gameObject.RunAction(this.rotateAction);
+        this.gameObject.RunAction(this.action);
+        //this.gameObject.RunAction(this.rotateAction);
         //this.gameObject.RunAction(this.scaleAction);
     }
 
@@ -67,13 +67,13 @@ public class TestAction : MonoBehaviour
         //return new cc.DelayTime(1).SetRepeatTimes(2);
 
 
-        return new cc.Repeat(2,
-            new cc.MoveTo(2, new Vector3(2, 3, 0)).Easing(Ease.Linear),
-            new cc.CallFunc((a) =>
-            {
-                Debug.Log("hello");
-            }).SetRepeatTimes(3).Delay(2)
-            );
+        //return new cc.Repeat(2,
+        //    new cc.MoveTo(2, new Vector3(2, 3, 0)).Easing(Ease.Linear),
+        //    new cc.CallFunc((a) =>
+        //    {
+        //        Debug.Log("hello");
+        //    }).SetRepeatTimes(3).Delay(2)
+        //    );
 
 
 
@@ -129,6 +129,12 @@ public class TestAction : MonoBehaviour
         // {
         //     Debug.Log("hello2");
         // })).SetRepeatTimes(2);
+
+
+        return new cc.BezierTo(3, new Vector3[] { new Vector3(-2, 2, 0) }, new Vector3(2, 5, 0)).Easing(Ease.InBack).SetRepeatTimes(3).OnComplete((a) =>
+        {
+            Debug.Log("finished bezierTo");
+        });
     }
     // Update is called once per frame
     void Update()

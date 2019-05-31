@@ -1,32 +1,48 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ZGame.cc
 {
-    /// <summary>
-    /// ����ϵͳΪ�����ڸ��ڵ�
-    /// </summary>
-    public class ScaleTo : ActionInterval
+    public class BezierTo : ActionInterval
     {
-        public Vector3 startScale = Vector3.zero;
-        public Vector3 targetScale;
+        Vector3 startPos = Vector3.zero;
+        Vector3 targetPos;
+        Vector3[] controlPoints;
 
-        public ScaleTo(float duration, Vector3 targetPos)
+        /// <summary>
+        /// 当前只支持1个和2个控制点的贝塞尔曲线
+        /// </summary>
+        /// <param name="duration"></param>
+        /// <param name="controlPoints"></param>
+        /// <param name="targetPos">移动的目标位置，基于</param>
+        public BezierTo(float duration, Vector3[] controlPoints, Vector3 targetPos)
         {
-            if (this.duration <= 0)
+            if (duration <= 0)
             {
                 Debug.LogError("error, duration should >0");
                 return;
             }
-            this.duration = duration;
-            this.targetScale = targetPos;
+            if (controlPoints == null || controlPoints.Length == 0 || controlPoints.Length > 2)
+            {
+                Debug.LogError("error, currently controlPoints only support 1 or 2 points");
+                return;
+            }
+            if (this.targetPos == null)
+            {
+                Debug.LogError("error, targetPos is null");
+                return;
+            }
+
+            this.SetDuration(duration);
+            this.controlPoints = controlPoints;
+            this.targetPos = targetPos;
 
         }
         public override Action Clone()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override FiniteTimeAction Delay(float time)
@@ -52,17 +68,17 @@ namespace ZGame.cc
 
         public override float GetDuration()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override GameObject GetOriginalTarget()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override int GetRepeatTimes()
         {
-            return this.repeatTimes;
+            throw new NotImplementedException();
         }
 
         public override int GetTag()
@@ -98,21 +114,19 @@ namespace ZGame.cc
             {
                 this.Run();
             }
-
         }
 
         public override void Reverse()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void Run()
         {
             this.isDone = false;
-
-            if (this.startScale == Vector3.zero)
+            if (this.startPos == Vector3.zero)
             {
-                this.startScale = this.target.transform.localScale;
+                this.startPos = this.target.transform.localPosition;
             }
             this.startTime = Time.time;
         }
@@ -124,7 +138,7 @@ namespace ZGame.cc
 
         public override FiniteTimeAction SetRepeatTimes(int times)
         {
-            this.repeatTimes = times;
+            this.repeatedTimes = times;
             return this;
         }
 
@@ -146,20 +160,42 @@ namespace ZGame.cc
                 return true;
             }
 
-
             if (Time.time - startTime > this.duration)
             {
                 this.OnPartialFinished();
             }
 
-            var dir = this.targetScale - this.startScale;
-            float t = (Time.time - startTime) / this.duration;
-            t = t > 1 ? 1 : t;
+            this.target.transform.localPosition = this.getBezierPos(Time.time);
 
-            var desScale = this.startScale + dir * (this.easeFunc(t));
-            this.target.transform.localScale = desScale;
 
             return this.IsDone();
+        }
+
+        Vector3 getBezierPos(float time)
+        {
+            Vector3 pos = Vector3.zero;
+            float t = (time - this.startTime) / this.duration;
+            t = t > 1 ? 1 : t;
+            var t1 = t;
+
+            t = this.easeFunc(t);
+            var t2 = t;
+            //Debug.Log("t1:" + t1 + ", t2:" + t2);
+
+            if (this.controlPoints.Length == 1)//二阶贝塞尔曲线
+            {
+                pos = (1 - t) * (1 - t) * this.startPos + 2 * t * (1 - t) * this.controlPoints[0] + t * t * this.targetPos;
+            }
+            else if (this.controlPoints.Length == 2)//三阶贝塞尔曲线
+            {
+                pos = (1 - t) * (1 - t) * (1 - t) * this.startPos + 3 * t * (1 - t) * (1 - t) * this.controlPoints[0] + 3 * t * t * (1 - t) * this.controlPoints[1] + t * t * t * this.targetPos;
+            }
+            else
+            {
+                Debug.LogError("some thing wrong");
+            }
+
+            return pos;
         }
     }
 }

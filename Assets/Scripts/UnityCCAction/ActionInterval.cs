@@ -12,13 +12,6 @@ namespace ZGame.cc
     {
         protected Func<float, float> easeFunc = EaseTool.Get(Ease.Linear);
          
-
         public abstract ActionInterval Easing(Ease ease);
-
-        
-
-        
-
-
     }
 }
