@@ -138,7 +138,7 @@ namespace ZGame.cc
 
         public override FiniteTimeAction SetRepeatTimes(int times)
         {
-            this.repeatedTimes = times;
+            this.repeatTimes = times;
             return this;
         }
 
