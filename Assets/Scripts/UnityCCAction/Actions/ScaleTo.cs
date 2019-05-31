@@ -15,12 +15,12 @@ namespace ZGame.cc
 
         public ScaleTo(float duration, Vector3 targetPos)
         {
-            if (this.duration <= 0)
+            if (duration <= 0)
             {
                 Debug.LogError("error, duration should >0");
                 return;
             }
-            this.duration = duration;
+            this.SetDuration(duration);
             this.targetScale = targetPos;
 
         }

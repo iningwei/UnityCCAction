@@ -14,13 +14,13 @@ public class TestAction : MonoBehaviour
     {
 
 
-        this.action = this.getAction();
-        //this.scaleAction = this.getScaleAction();
-        //this.rotateAction = this.getRotateAction();
+        //this.action = this.getAction();
+        this.scaleAction = this.getScaleAction();
+        this.rotateAction = this.getRotateAction();
 
-        this.gameObject.RunAction(this.action);
-        //this.gameObject.RunAction(this.rotateAction);
-        //this.gameObject.RunAction(this.scaleAction);
+        //this.gameObject.RunAction(this.action);
+        this.gameObject.RunAction(this.rotateAction);
+        this.gameObject.RunAction(this.scaleAction);
     }
 
     private InfiniteTimeAction getRotateAction()
@@ -30,17 +30,10 @@ public class TestAction : MonoBehaviour
 
     FiniteTimeAction getScaleAction()
     {
-        //return new cc.Sequence(new cc.ScaleTo(2, new Vector3(2f, 1.5f, 1.5f)),
-        //    new cc.ScaleTo(2, Vector3.one));
+        return new cc.Sequence(new cc.ScaleTo(20, new Vector3(2f, 1.5f, 1.5f)),
+            new cc.ScaleTo(20, Vector3.one));
 
-        return new cc.CallFunc((a) =>
-        {
-            Debug.Log("hello " + (a[0] as TestAction).gameObject.name);
 
-        }, this).OnComplete((a) =>
-         {
-             Debug.Log("finished");
-         }, null).SetRepeatTimes(5);
     }
     cc.FiniteTimeAction getAction()
     {
@@ -140,5 +133,17 @@ public class TestAction : MonoBehaviour
     void Update()
     {
 
+    }
+
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(10, 10, 100, 30), "移除ScaleAction"))
+        {
+            this.gameObject.StopAction(this.scaleAction);
+        }
+        if (GUI.Button(new Rect(10, 60, 100, 30), "移除所有Action"))
+        {
+            this.gameObject.StopAllActions();
+        }
     }
 }

@@ -17,6 +17,8 @@ namespace ZGame.cc
         /// </summary>
         protected bool isDone = false;
 
+
+
         public abstract void Run();
         /// <summary>
         /// 返回值指示是否完成动作

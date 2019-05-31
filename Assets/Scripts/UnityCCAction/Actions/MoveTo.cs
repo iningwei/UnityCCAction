@@ -18,12 +18,12 @@ namespace ZGame.cc
         /// <param name="targetPos">坐标系统基于父节点的坐标系</param>
         public MoveTo(float duration, Vector3 targetPos)
         {
-            if (this.duration <= 0)
+            if (duration <= 0)
             {
                 Debug.LogError("error, duration should >0");
                 return;
             }
-            this.duration = duration;
+            this.SetDuration(duration);
             this.targetPos = targetPos;
         }
         public override Action Clone()
