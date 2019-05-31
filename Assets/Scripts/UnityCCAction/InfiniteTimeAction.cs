@@ -8,13 +8,13 @@ namespace ZGame.cc
     {
         protected int tag = 0;
         /// <summary>
-        /// 获得动作的Tag
+        /// Get the tag of an action
         /// </summary>
         /// <returns></returns>
         public abstract int GetTag();
 
         /// <summary>
-        /// 为动作设置标签，用于识别动作
+        /// Set tag for an action.
         /// </summary>
         /// <param name="tag"></param>
         public abstract InfiniteTimeAction SetTag(int tag);
