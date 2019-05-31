@@ -11,6 +11,8 @@ public class TestAction : MonoBehaviour
 
     void Start()
     {
+        this.transform.Rotate(1, 1, 1, Space.Self);
+
         this.action = this.getAction();
         this.scaleAction = this.getScaleAction();
         //this.gameObject.RunAction(this.action);

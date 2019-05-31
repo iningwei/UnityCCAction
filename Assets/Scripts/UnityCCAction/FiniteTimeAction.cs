@@ -11,12 +11,7 @@ namespace ZGame.cc
     public abstract class FiniteTimeAction : Action
     {
         protected int tag = 0;
-        /// <summary>
-        /// 动作是否完成
-        /// 对于次数为1次的动作，一次执行完毕，即完成。否则需要满足执行次数才完成。
-        /// 对于无限次数的动作，isDone永远为false
-        /// </summary>
-        protected bool isDone = false;
+    
 
         /// <summary>
         /// 动作持续时间
@@ -36,17 +31,7 @@ namespace ZGame.cc
         /// </summary>
         protected int repeatedTimes = 0;
 
-        /// <summary>
-        /// 获得动作的Tag
-        /// </summary>
-        /// <returns></returns>
-        public abstract int GetTag();
 
-        /// <summary>
-        /// 为动作设置标签，用于识别动作
-        /// </summary>
-        /// <param name="tag"></param>
-        public abstract FiniteTimeAction SetTag(int tag);
         /// <summary>
         /// 获得动作持续时间，单位秒
         /// </summary>
@@ -58,7 +43,17 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="time"></param>
         public abstract void SetDuration(float time);
+        /// <summary>
+        /// 获得动作的Tag
+        /// </summary>
+        /// <returns></returns>
+        public abstract int GetTag();
 
+        /// <summary>
+        /// 为动作设置标签，用于识别动作
+        /// </summary>
+        /// <param name="tag"></param>
+        public abstract FiniteTimeAction SetTag(int tag);
 
         /// <summary>
         /// 

@@ -4,46 +4,19 @@ using UnityEngine;
 
 namespace ZGame.cc
 {
-    public class InfiniteTimeAction : Action
+    public abstract class InfiniteTimeAction : Action
     {
-        public override Action Clone()
-        {
-            throw new System.NotImplementedException();
-        }
+        protected int tag = 0;
+        /// <summary>
+        /// 获得动作的Tag
+        /// </summary>
+        /// <returns></returns>
+        public abstract int GetTag();
 
-        public override void Finish()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override GameObject GetOriginalTarget()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override GameObject GetTarget()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool IsDone()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Run()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void SetTarget(GameObject target)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override bool Update()
-        {
-            throw new System.NotImplementedException();
-        }
+        /// <summary>
+        /// 为动作设置标签，用于识别动作
+        /// </summary>
+        /// <param name="tag"></param>
+        public abstract InfiniteTimeAction SetTag(int tag);
     }
 }

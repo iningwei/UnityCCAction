@@ -11,6 +11,11 @@ namespace ZGame.cc
     {
         protected GameObject target = null;
 
+        /// <summary>
+        /// 动作是否完成
+        /// 对于次数为1次的动作，一次执行完毕，即完成。否则需要满足执行次数才完成。       
+        /// </summary>
+        protected bool isDone = false;
 
         public abstract void Run();
         /// <summary>
@@ -18,7 +23,7 @@ namespace ZGame.cc
         /// </summary>
         /// <returns></returns>
         public abstract bool Update();
-    
+
         public abstract void Finish();
 
         /// <summary>
@@ -50,6 +55,6 @@ namespace ZGame.cc
         /// <returns></returns>
         public abstract GameObject GetOriginalTarget();
 
-
+        
     }
 }
