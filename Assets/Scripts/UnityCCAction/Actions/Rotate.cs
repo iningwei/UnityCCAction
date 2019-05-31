@@ -25,6 +25,7 @@ namespace ZGame.cc
             this.zValue = zValue;
 
             this.relativeSpace = relativeSpace;
+            this.SetActionName("Rotate");
         }
 
         public override Action Clone()
@@ -35,6 +36,11 @@ namespace ZGame.cc
         public override void Finish()
         {
             this.isDone = true;
+        }
+
+        public override string GetActionName()
+        {
+            return this.actionName;
         }
 
         public override GameObject GetOriginalTarget()
@@ -60,6 +66,12 @@ namespace ZGame.cc
         public override void Run()
         {
 
+        }
+
+        public override InfiniteTimeAction SetActionName(string name)
+        {
+            this.actionName = name;
+            return this;
         }
 
         public override InfiniteTimeAction SetTag(int tag)

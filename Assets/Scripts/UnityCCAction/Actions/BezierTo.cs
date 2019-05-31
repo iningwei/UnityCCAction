@@ -38,6 +38,7 @@ namespace ZGame.cc
             this.SetDuration(duration);
             this.controlPoints = controlPoints;
             this.targetPos = targetPos;
+            this.SetActionName("BezierTo");
 
         }
         public override Action Clone()
@@ -196,6 +197,17 @@ namespace ZGame.cc
             }
 
             return pos;
+        }
+
+        public override FiniteTimeAction SetActionName(string name)
+        {
+            this.actionName = name;
+            return this;
+        }
+
+        public override string GetActionName()
+        {
+            return this.actionName;
         }
     }
 }

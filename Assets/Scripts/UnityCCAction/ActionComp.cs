@@ -13,7 +13,7 @@ namespace ZGame.cc
         /// ActionComp上挂载的最外层的动作的tag
         /// </summary>
         public int actionTag;
-
+        public string actionName;
         public bool isFinished = false;
 
         Action action = null;
@@ -25,6 +25,7 @@ namespace ZGame.cc
                 return;
             }
             this.actionTag = action.GetTag();
+            this.actionName = action.GetActionName();
             this.action = action;
 
             this.action.Run();
@@ -32,7 +33,7 @@ namespace ZGame.cc
 
         public Action GetAction()
         {
-           
+
             return this.action;
         }
 

@@ -19,6 +19,7 @@ namespace ZGame.cc
             }
             this.func = func;
             this.paras = paras;
+            this.SetActionName("CallFunc");
         }
 
         public void Call<T>(System.Action<T> func, T param)
@@ -145,6 +146,17 @@ namespace ZGame.cc
         public override FiniteTimeAction Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
+        }
+
+        public override FiniteTimeAction SetActionName(string name)
+        {
+            this.actionName = name;
+            return this;
+        }
+
+        public override string GetActionName()
+        {
+            return this.actionName;
         }
     }
 }

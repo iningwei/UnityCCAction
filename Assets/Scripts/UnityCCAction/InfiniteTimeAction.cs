@@ -6,7 +6,6 @@ namespace ZGame.cc
 {
     public abstract class InfiniteTimeAction : Action
     {
-        protected int tag = 0;
       
 
         /// <summary>
@@ -14,5 +13,8 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="tag"></param>
         public abstract InfiniteTimeAction SetTag(int tag);
+
+        public abstract InfiniteTimeAction SetActionName(string name);
+        
     }
 }

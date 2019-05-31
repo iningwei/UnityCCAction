@@ -10,9 +10,6 @@ namespace ZGame.cc
     /// </summary>
     public abstract class FiniteTimeAction : Action
     {
-        protected int tag = 0;
-
-
         /// <summary>
         /// 动作持续时间
         /// </summary>
@@ -43,7 +40,7 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="time"></param>
         public abstract void SetDuration(float time);
-     
+
 
         /// <summary>
         /// 为动作设置标签，用于识别动作
@@ -59,6 +56,10 @@ namespace ZGame.cc
         public abstract FiniteTimeAction SetRepeatTimes(int times);
 
         public abstract int GetRepeatTimes();
+
+
+        public abstract FiniteTimeAction SetActionName(string name);
+         
 
         /// <summary>
         /// 由子类重写该类

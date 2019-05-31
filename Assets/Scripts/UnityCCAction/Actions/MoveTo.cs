@@ -25,6 +25,7 @@ namespace ZGame.cc
             }
             this.SetDuration(duration);
             this.targetPos = targetPos;
+            this.SetActionName("MoveTo");
         }
         public override Action Clone()
         {
@@ -162,6 +163,16 @@ namespace ZGame.cc
             this.target.transform.localPosition = desPos;
 
             return this.IsDone();
+        }
+
+        public override FiniteTimeAction SetActionName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GetActionName()
+        {
+            throw new NotImplementedException();
         }
     }
 }

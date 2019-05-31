@@ -10,7 +10,8 @@ namespace ZGame.cc
     public abstract class Action
     {
         protected GameObject target = null;
-
+        protected int tag = 0;
+        protected string actionName = string.Empty;
         /// <summary>
         /// 动作是否完成
         /// 对于次数为1次的动作，一次执行完毕，即完成。否则需要满足执行次数才完成。       
@@ -43,6 +44,9 @@ namespace ZGame.cc
         /// </summary>
         /// <returns></returns>
         public abstract int GetTag();
+
+        public abstract string GetActionName();
+
         /// <summary>
         /// 获得执行当前动作的目标节点
         /// </summary>

@@ -21,7 +21,7 @@ namespace ZGame.cc
         /// <param name="times">1表示动作只播放一遍；2、3、4...表示动作播放指定次数; 小于1表示动作循环播放；</param>
         /// <param name="actions"></param>
         public Repeat(int times, params FiniteTimeAction[] actions)
-        {            
+        {
             if (actions == null || actions.Length == 0)
             {
                 Debug.LogError("error, repeat actions at leaset have one");
@@ -36,6 +36,8 @@ namespace ZGame.cc
             {
                 this.legalActions.Enqueue(item);
             }
+
+            this.SetActionName("Repeat");
         }
         public override Action Clone()
         {
@@ -202,7 +204,7 @@ namespace ZGame.cc
                 return true;
             }
 
-         
+
 
             if (this.curRunningAction != null)
             {
@@ -216,6 +218,15 @@ namespace ZGame.cc
             return this.IsDone();
         }
 
+        public override FiniteTimeAction SetActionName(string name)
+        {
+            this.actionName = name;
+            return this;
+        }
 
+        public override string GetActionName()
+        {
+            return this.actionName;
+        }
     }
 }
