@@ -129,6 +129,7 @@ namespace ZGame.cc
                     {
                         if (!allMaterials.Contains(mats[i]))
                         {
+                            //TODO：必须是具有透明通道的shader才支持Alpha改变
                             if (mats[i].shader.name.Contains("Standard"))
                             {
                                 Debug.LogWarning("AlphaTo not support  standard shader:" + this.GetTarget());

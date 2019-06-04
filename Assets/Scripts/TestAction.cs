@@ -26,7 +26,7 @@ public class TestAction : MonoBehaviour
 
     private FiniteTimeAction getAlphaAction()
     {
-        return new cc.AlphaTo(2, 0.2f, true).SetRepeatTimes(3);
+        return new cc.AlphaTo(2, 0f, true).SetRepeatTimes(0);
     }
 
     private InfiniteTimeAction getRotateAction()
