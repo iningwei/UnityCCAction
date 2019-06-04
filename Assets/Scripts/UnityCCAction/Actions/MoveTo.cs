@@ -55,7 +55,7 @@ namespace ZGame.cc
 
         public override float GetDuration()
         {
-            throw new System.NotImplementedException();
+            return this.duration;
         }
 
         public override GameObject GetOriginalTarget()
