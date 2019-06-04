@@ -10,17 +10,23 @@ public class TestAction : MonoBehaviour
     cc.FiniteTimeAction action;
     cc.FiniteTimeAction scaleAction;
     cc.InfiniteTimeAction rotateAction;
+    cc.FiniteTimeAction alphaAction;
     void Start()
     {
-
-
         //this.action = this.getAction();
         this.scaleAction = this.getScaleAction();
         this.rotateAction = this.getRotateAction();
+        this.alphaAction = this.getAlphaAction();
 
         //this.gameObject.RunAction(this.action);
         this.gameObject.RunAction(this.rotateAction);
         this.gameObject.RunAction(this.scaleAction);
+        this.gameObject.RunAction(this.alphaAction);
+    }
+
+    private FiniteTimeAction getAlphaAction()
+    {
+        return new cc.AlphaTo(2, 0.2f, true).SetRepeatTimes(3);
     }
 
     private InfiniteTimeAction getRotateAction()

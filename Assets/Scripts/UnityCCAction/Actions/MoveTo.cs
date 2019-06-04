@@ -113,7 +113,7 @@ namespace ZGame.cc
         {
             this.isDone = false;
 
-            if (this.startPos == Vector3.zero)
+            if (this.repeatedTimes==0)
             {
                 this.startPos = this.target.transform.localPosition;
             }

@@ -92,6 +92,7 @@ namespace ZGame.cc
                 return true;
             }
             this.target.transform.Rotate(xValue * Time.deltaTime, yValue * Time.deltaTime, zValue * Time.deltaTime, this.relativeSpace);
+
             return this.IsDone();
         }
     }
