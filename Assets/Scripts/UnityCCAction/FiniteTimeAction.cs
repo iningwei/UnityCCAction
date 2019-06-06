@@ -65,7 +65,7 @@ namespace ZGame.cc
         /// 由子类重写该类
         /// 某次动作完成后，判断是否完成所有动作次数的播放
         /// </summary>
-        protected abstract void OnPartialFinished();
+        protected abstract void OnPartialActionFinished();
         /// <summary>
         /// 返回一个新动作，新动作的执行与原动作完全相反
         /// </summary>

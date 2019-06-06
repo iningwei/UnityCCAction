@@ -184,7 +184,7 @@ namespace ZGame.cc
             }
             if (Time.time - startTime > this.duration)
             {
-                this.OnPartialFinished();
+                this.OnPartialActionFinished();
             }
 
             this.doAlphaTo(Time.time);
@@ -206,7 +206,7 @@ namespace ZGame.cc
 
         }
 
-        protected override void OnPartialFinished()
+        protected override void OnPartialActionFinished()
         {
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)

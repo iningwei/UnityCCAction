@@ -96,7 +96,7 @@ namespace ZGame.cc
         {
             if (this.isPartialFinished)
             {
-                this.OnPartialFinished();
+                this.OnPartialActionFinished();
             }
             return this.IsDone();
         }
@@ -123,7 +123,7 @@ namespace ZGame.cc
             return this;
         }
 
-        protected override void OnPartialFinished()
+        protected override void OnPartialActionFinished()
         {
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)
