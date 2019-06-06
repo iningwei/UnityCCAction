@@ -127,16 +127,16 @@ namespace ZGame.cc
                     var mats = allRenderers[i].GetMaterials();
                     for (int j = 0; j < mats.Length; j++)
                     {
-                        if (!allMaterials.Contains(mats[i]))
+                        if (!allMaterials.Contains(mats[j]))
                         {
                             //TODO：必须是具有透明通道的shader才支持Alpha改变
-                            if (mats[i].shader.name.Contains("Standard"))
+                            if (mats[j].shader.name.Contains("Standard"))
                             {
                                 Debug.LogWarning("AlphaTo not support  standard shader:" + this.GetTarget());
                                 continue;
                             }
-                            allMaterials.Add(mats[i]);
-                            startAlphas.Add(mats[i].color.a);   //目前只支持Main的Color
+                            allMaterials.Add(mats[j]);
+                            startAlphas.Add(mats[j].color.a);   //目前只支持Main的Color
                         }
                     }
                 }
