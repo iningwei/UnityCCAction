@@ -167,7 +167,8 @@ namespace ZGame.cc
 
         public override FiniteTimeAction SetActionName(string name)
         {
-            throw new NotImplementedException();
+            this.actionName = name;
+            return this;
         }
 
         public override string GetActionName()
