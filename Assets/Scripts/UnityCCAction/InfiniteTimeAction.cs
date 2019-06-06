@@ -5,9 +5,7 @@ using UnityEngine;
 namespace ZGame.cc
 {
     public abstract class InfiniteTimeAction : Action
-    {
-      
-
+    {      
         /// <summary>
         /// Set tag for an action.
         /// </summary>

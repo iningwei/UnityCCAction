@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,12 +8,37 @@ namespace ZGame.cc
 {
     public class ActionManager : SingletonMonoBehaviour<ActionManager>
     {
+        public delegate void ActionFinishedEventHandler(GameObject target, Action action);
+        public event ActionFinishedEventHandler ActionFinishedEvent;
 
-        //Dictionary<GameObject,>
+
+
         Dictionary<GameObject, List<ActionComp>> dicOfActions = new Dictionary<GameObject, List<ActionComp>>();
+
+
+        /// <summary>
+        /// Before you use any methods of ActionManager,you should call this Init() function first.
+        /// </summary>
+        public void Init()
+        {
+            this.ActionFinishedEvent += onActionFinished;
+        }
+
+        private void onActionFinished(GameObject target, Action action)
+        {
+            this.RemoveAction(target, action);
+        }
 
         public void AddAction(GameObject target, Action action)
         {
+            if (this.existSameAction(target, action))
+            {
+                Debug.LogError(target.name + "已经具有相同tag的action，不可重复添加, tag:" + action.GetTag());
+
+                return;
+            }
+
+
             action.SetTarget(target);
 
             var actionComp = target.AddComponent<ActionComp>();
@@ -21,6 +47,22 @@ namespace ZGame.cc
             this.addActionComp(target, actionComp);
         }
 
+        bool existSameAction(GameObject target, Action action)
+        {
+            if (dicOfActions.ContainsKey(target))
+            {
+                var actionComps = dicOfActions[target];
+                for (int i = 0; i < actionComps.Count; i++)
+                {
+                    if (actionComps[i].actionTag == action.GetTag())
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
         bool addActionComp(GameObject target, ActionComp actionComp)
         {
             if (!dicOfActions.ContainsKey(target))
@@ -212,20 +254,13 @@ namespace ZGame.cc
 
         public bool PauseAction(GameObject target, Action action)
         {
-            
+
             return false;
         }
         public bool PauseActionByTag(GameObject target, int tag)
         {
             Action action = GetActionByTag(target, tag);
             return this.PauseAction(target, action);
-        }
-
-
-
-        private void Update()
-        {
-
         }
     }
 }

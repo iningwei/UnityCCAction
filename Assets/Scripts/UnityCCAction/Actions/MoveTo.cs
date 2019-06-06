@@ -113,7 +113,7 @@ namespace ZGame.cc
         {
             this.isDone = false;
 
-            if (this.repeatedTimes==0)
+            if (this.repeatedTimes == 0)
             {
                 this.startPos = this.target.transform.localPosition;
             }
@@ -144,26 +144,47 @@ namespace ZGame.cc
 
         public override bool Update()
         {
+            //if (this.IsDone())
+            //{
+            //    return true;
+            //}
+
+            this.partialActionCheck();
+            this.doMove();
+
+            return this.IsDone();
+        }
+
+       private void partialActionCheck()
+        {
             if (this.IsDone())
             {
-                return true;
+                return;
             }
-
 
             if (Time.time - startTime > this.duration)
             {
                 this.OnPartialFinished();
             }
+        }
+
+
+
+
+        private void doMove()
+        {
+            if (this.IsDone())
+            {
+                return;
+            }
 
             var dir = this.targetPos - this.startPos;
             float t = (Time.time - startTime) / this.duration;
             t = t > 1 ? 1 : t;
-
             var desPos = this.startPos + dir * (this.easeFunc(t));
             this.target.transform.localPosition = desPos;
-
-            return this.IsDone();
         }
+
 
         public override FiniteTimeAction SetActionName(string name)
         {
@@ -173,7 +194,7 @@ namespace ZGame.cc
 
         public override string GetActionName()
         {
-            throw new NotImplementedException();
+            return this.actionName;
         }
     }
 }
