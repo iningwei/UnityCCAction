@@ -1,14 +1,35 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ZGame.cc
 {
+    public class ActionFinishedEventArgs : EventArgs
+    {
+        public GameObject Target { get; set; }
+        public Action Action { get; set; }
+
+        public ActionFinishedEventArgs(GameObject target, Action action)
+        {
+            this.Target = target;
+            this.Action = action;
+
+        }
+    }
+
+
+
     /// <summary>
     /// 所有动作类型的基类
     /// </summary>
     public abstract class Action
     {
+
+        public abstract event EventHandler<ActionFinishedEventArgs> ActionFinished;
+
+
+
         protected GameObject target = null;
         protected int tag = 0;
         protected string actionName = string.Empty;
@@ -28,7 +49,7 @@ namespace ZGame.cc
         public abstract bool Update();
 
         public abstract void Finish();
-
+        //public abstract void OnActionFinished(ActionFinishedEventArgs args);
         /// <summary>
         /// 返回一个克隆的对象
         /// </summary>

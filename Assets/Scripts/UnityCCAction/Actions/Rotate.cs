@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,8 @@ namespace ZGame.cc
             this.SetActionName("Rotate");
         }
 
+        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+
         public override Action Clone()
         {
             throw new System.NotImplementedException();
@@ -36,6 +39,7 @@ namespace ZGame.cc
         public override void Finish()
         {
             this.isDone = true;
+             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override string GetActionName()

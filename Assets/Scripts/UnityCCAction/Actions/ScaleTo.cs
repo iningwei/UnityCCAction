@@ -13,6 +13,8 @@ namespace ZGame.cc
         public Vector3 startScale = Vector3.zero;
         public Vector3 targetScale;
 
+        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+
         public ScaleTo(float duration, Vector3 targetPos)
         {
             if (duration <= 0)
@@ -48,6 +50,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
+             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override float GetDuration()

@@ -43,6 +43,9 @@ namespace ZGame.cc
             return this;
         }
 
+
+        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+
         public override void Finish()
         {
             this.isDone = true;
@@ -51,7 +54,11 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
+
+
+            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
+
 
         public override float GetDuration()
         {
@@ -155,7 +162,7 @@ namespace ZGame.cc
             return this.IsDone();
         }
 
-       private void partialActionCheck()
+        private void partialActionCheck()
         {
             if (this.IsDone())
             {
@@ -196,5 +203,7 @@ namespace ZGame.cc
         {
             return this.actionName;
         }
+
+
     }
 }

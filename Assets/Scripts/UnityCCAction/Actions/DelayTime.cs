@@ -14,6 +14,9 @@ namespace ZGame.cc
             this.SetActionName("DelayTime");
 
         }
+
+        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+
         public override Action Clone()
         {
             throw new System.NotImplementedException();
@@ -43,6 +46,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
+             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override float GetDuration()

@@ -8,26 +8,11 @@ namespace ZGame.cc
 {
     public class ActionManager : SingletonMonoBehaviour<ActionManager>
     {
-        public delegate void ActionFinishedEventHandler(GameObject target, Action action);
-        public event ActionFinishedEventHandler ActionFinishedEvent;
-
-
-
         Dictionary<GameObject, List<ActionComp>> dicOfActions = new Dictionary<GameObject, List<ActionComp>>();
 
 
-        /// <summary>
-        /// Before you use any methods of ActionManager,you should call this Init() function first.
-        /// </summary>
-        public void Init()
-        {
-            this.ActionFinishedEvent += onActionFinished;
-        }
 
-        private void onActionFinished(GameObject target, Action action)
-        {
-            this.RemoveAction(target, action);
-        }
+
 
         public void AddAction(GameObject target, Action action)
         {
@@ -40,11 +25,17 @@ namespace ZGame.cc
 
 
             action.SetTarget(target);
-
+            action.ActionFinished += Action_ActionFinished;
             var actionComp = target.AddComponent<ActionComp>();
             actionComp.AddAction(action);
 
             this.addActionComp(target, actionComp);
+        }
+
+        private void Action_ActionFinished(object sender, ActionFinishedEventArgs e)
+        {
+            //Debug.Log("onActionFinished:" + sender.ToString() + ", tareget:" + e.Target.ToString());
+            this.RemoveAction(e.Target, e.Action);
         }
 
         bool existSameAction(GameObject target, Action action)
@@ -191,7 +182,7 @@ namespace ZGame.cc
                     return true;
                 }
             }
-            Debug.LogError("target does not have the action of tag:" + tag);
+            Debug.LogWarning("target does not have the action of tag:" + tag);
             return false;
         }
 

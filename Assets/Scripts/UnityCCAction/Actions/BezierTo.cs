@@ -11,6 +11,8 @@ namespace ZGame.cc
         Vector3 targetPos;
         Vector3[] controlPoints;
 
+        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+
         /// <summary>
         /// 当前只支持1个和2个控制点的贝塞尔曲线
         /// </summary>
@@ -65,6 +67,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
+            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override float GetDuration()

@@ -31,6 +31,8 @@ namespace ZGame.cc
 
         bool isPartialFinished = false;
 
+        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+
         public override void Run()
         {
             this.isDone = false;
@@ -109,6 +111,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
+             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
 

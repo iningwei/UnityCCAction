@@ -14,6 +14,9 @@ namespace ZGame.cc
 
         bool includeChilds = false;
         bool includeInactive = false;
+
+        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+
         public AlphaTo(float duration, float targetAlpha, bool includeChilds = false, bool includeInactive = false)
         {
             if (duration < 0)
@@ -57,6 +60,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
+             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override string GetActionName()

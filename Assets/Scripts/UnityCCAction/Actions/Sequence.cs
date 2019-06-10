@@ -14,6 +14,9 @@ namespace ZGame.cc
         public FiniteTimeAction[] actionSequences;
         Queue<FiniteTimeAction> legalActions = new Queue<FiniteTimeAction>();
         FiniteTimeAction curRunningAction = null;
+
+        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+
         /// <summary>
         /// 顺序播放动作一次
         /// SetRepeatTimes() 设置播放次数会无效
@@ -66,6 +69,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
+             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override float GetDuration()
