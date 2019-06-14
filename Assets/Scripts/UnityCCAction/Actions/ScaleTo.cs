@@ -50,7 +50,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override float GetDuration()
@@ -148,22 +148,36 @@ namespace ZGame.cc
             {
                 return true;
             }
+            if (this.IsPause())
+            {
+                return false;
+            }
 
-
-            if (Time.time - startTime > this.duration)
+            if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
             {
                 this.OnPartialActionFinished();
             }
 
-            var dir = this.targetScale - this.startScale;
-            float t = (Time.time - startTime) / this.duration;
-            t = t > 1 ? 1 : t;
-
-            var desScale = this.startScale + dir * (this.easeFunc(t));
-            this.target.transform.localScale = desScale;
+            this.doScaleTo(Time.time);
 
             return this.IsDone();
         }
+
+        private void doScaleTo(float time)
+        {
+            if (this.IsDone())
+            {
+                return;
+            }
+
+            var dir = this.targetScale - this.startScale;
+            float t = (time - startTime - this.GetTotalPausedTime()) / this.duration;
+            t = t > 1 ? 1 : t;
+            var desScale = this.startScale + dir * (this.easeFunc(t));
+            this.target.transform.localScale = desScale;
+        }
+
+
 
         public override FiniteTimeAction SetActionName(string name)
         {
@@ -174,6 +188,37 @@ namespace ZGame.cc
         public override string GetActionName()
         {
             return this.actionName;
+        }
+
+        public override bool IsPause()
+        {
+            return this.isPause;
+        }
+
+        public override void Pause()
+        {
+            if (this.isPause)
+            {
+                return;
+            }
+
+            this.isPause = true;
+            this.lastPausedTime = Time.time;
+        }
+
+        public override void Resume()
+        {
+            if (this.isPause == false)
+            {
+                return;
+            }
+            this.isPause = false;
+            this.totalPausedTime += (Time.time - this.lastPausedTime);
+        }
+
+        public override float GetTotalPausedTime()
+        {
+            return this.totalPausedTime;
         }
     }
 }

@@ -19,6 +19,8 @@ namespace ZGame.cc
         /// </summary>
         protected float startTime;
 
+
+
         /// <summary>
         /// 1表示动作只播放一遍；2、3、4...表示动作播放指定次数; 小于1表示动作循环播放；
         /// </summary>
@@ -59,7 +61,7 @@ namespace ZGame.cc
 
 
         public abstract FiniteTimeAction SetActionName(string name);
-         
+
 
         /// <summary>
         /// 由子类重写该类
@@ -74,6 +76,13 @@ namespace ZGame.cc
 
         public abstract FiniteTimeAction Delay(float time);
 
+        /// <summary>
+        /// 动作完成后的一些回调
+        /// 若动作多次重复（即repeatTimes>1），那么必须所有动作重复完毕后才会触发回调
+        /// </summary>
+        /// <param name="callback"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
         public abstract FiniteTimeAction OnComplete(Action<object[]> callback, params object[] param);
         protected Action<object[]> completeCallback;
         protected object[] completeCallbackParams;

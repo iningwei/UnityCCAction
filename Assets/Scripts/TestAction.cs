@@ -16,6 +16,7 @@ public class TestAction : MonoBehaviour
     void Start()
     {
         this.originPos = this.gameObject.transform.position;
+        Debug.Log("originPos:" + this.originPos);
 
         //this.alphaAction = this.getAlphaAction();
         //this.gameObject.RunAction(this.alphaAction);
@@ -48,12 +49,25 @@ public class TestAction : MonoBehaviour
 
         if (GUI.Button(new Rect(10, 70, 120, 40), "移动"))
         {
-            this.gameObject.RunAction(new MoveTo(2, new Vector3(2, 2, 0)).OnComplete((a) =>
+            this.gameObject.RunAction(new MoveTo(3, new Vector3(2, 3, 0)).OnComplete((a) =>
             {
                 Debug.Log("移动结束！");
                 this.Reset();
-            }));
+            }).SetTag(999).SetRepeatTimes(3));
         }
+        if (GUI.Button(new Rect(150, 70, 100, 40), "暂停移动"))
+        {
+            this.gameObject.PauseAction(999);
+        }
+        if (GUI.Button(new Rect(260, 70, 100, 40), "恢复移动"))
+        {
+            this.gameObject.ResumeAction(999);
+        }
+
+
+
+
+
 
         if (GUI.Button(new Rect(10, 130, 120, 40), "缩放"))
         {
@@ -74,13 +88,13 @@ public class TestAction : MonoBehaviour
 
         if (GUI.Button(new Rect(10, 250, 120, 40), "移除 旋转"))
         {
-            this.gameObject.StopAction(100);
+            this.gameObject.RemoveAction(100);
         }
 
 
         if (GUI.Button(new Rect(10, 310, 120, 40), "移除所有Action"))
         {
-            this.gameObject.StopAllActions();
+            this.gameObject.RemoveAllActions();
         }
     }
 }

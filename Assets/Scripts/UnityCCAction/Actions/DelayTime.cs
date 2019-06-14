@@ -46,7 +46,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override float GetDuration()
@@ -139,8 +139,12 @@ namespace ZGame.cc
             {
                 return true;
             }
+            if (this.IsPause())
+            {
+                return false;
+            }
 
-            if (Time.time - startTime > this.duration && this.IsDone() == false)
+            if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
             {
                 this.OnPartialActionFinished();
             }
@@ -156,6 +160,39 @@ namespace ZGame.cc
         public override string GetActionName()
         {
             return this.actionName;
+        }
+
+
+
+        public override bool IsPause()
+        {
+            return this.isPause;
+        }
+
+        public override void Pause()
+        {
+            if (this.isPause)
+            {
+                return;
+            }
+
+            this.isPause = true;
+            this.lastPausedTime = Time.time;
+        }
+
+        public override void Resume()
+        {
+            if (this.isPause == false)
+            {
+                return;
+            }
+            this.isPause = false;
+            this.totalPausedTime += (Time.time - this.lastPausedTime);
+        }
+
+        public override float GetTotalPausedTime()
+        {
+            return this.totalPausedTime;
         }
     }
 }

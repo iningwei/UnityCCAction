@@ -163,22 +163,34 @@ namespace ZGame.cc
             {
                 return true;
             }
+            if (this.IsPause())
+            {
+                return false;
+            }
 
-            if (Time.time - startTime > this.duration)
+            if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
             {
                 this.OnPartialActionFinished();
             }
 
-            this.target.transform.localPosition = this.getBezierPos(Time.time);
+
+
+            this.doBezierTo(Time.time);
 
 
             return this.IsDone();
         }
 
-        Vector3 getBezierPos(float time)
+        void doBezierTo(float time)
         {
+            if (this.IsDone())
+            {
+                return;
+            }
+
+
             Vector3 pos = Vector3.zero;
-            float t = (time - this.startTime) / this.duration;
+            float t = (time - this.startTime - this.GetTotalPausedTime()) / this.duration;
             t = t > 1 ? 1 : t;
             var t1 = t;
 
@@ -199,7 +211,7 @@ namespace ZGame.cc
                 Debug.LogError("some thing wrong");
             }
 
-            return pos;
+            this.target.transform.localPosition = pos;
         }
 
         public override FiniteTimeAction SetActionName(string name)
@@ -211,6 +223,38 @@ namespace ZGame.cc
         public override string GetActionName()
         {
             return this.actionName;
+        }
+
+
+        public override bool IsPause()
+        {
+            return this.isPause;
+        }
+
+        public override void Pause()
+        {
+            if (this.isPause)
+            {
+                return;
+            }
+
+            this.isPause = true;
+            this.lastPausedTime = Time.time;
+        }
+
+        public override void Resume()
+        {
+            if (this.isPause == false)
+            {
+                return;
+            }
+            this.isPause = false;
+            this.totalPausedTime += (Time.time - this.lastPausedTime);
+        }
+
+        public override float GetTotalPausedTime()
+        {
+            return this.totalPausedTime;
         }
     }
 }

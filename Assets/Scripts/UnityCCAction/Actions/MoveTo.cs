@@ -124,7 +124,7 @@ namespace ZGame.cc
             {
                 this.startPos = this.target.transform.localPosition;
             }
-            this.startTime = Time.time;
+            this.startTime = Time.time - this.GetTotalPausedTime();//当RepeatTimes>1的时候，会再次进入Run()函数，若这之前暂停了游戏，那么这里取得的startTime就需要减去已经暂停的总时间
         }
 
         public override void SetDuration(float time)
@@ -151,34 +151,33 @@ namespace ZGame.cc
 
         public override bool Update()
         {
-            //if (this.IsDone())
-            //{
-            //    return true;
-            //}
+            if (this.IsDone())
+            {
+                return true;
+            }
 
-            this.partialActionCheck();
-            this.doMove();
+            if (this.IsPause())
+            {
+                return false;
+            }
+
+
+            if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
+            {
+                this.OnPartialActionFinished();
+            }
+
+            this.doMove(Time.time);
 
             return this.IsDone();
         }
 
-        private void partialActionCheck()
-        {
-            if (this.IsDone())
-            {
-                return;
-            }
-
-            if (Time.time - startTime > this.duration)
-            {
-                this.OnPartialActionFinished();
-            }
-        }
 
 
 
 
-        private void doMove()
+
+        private void doMove(float time)
         {
             if (this.IsDone())
             {
@@ -186,11 +185,13 @@ namespace ZGame.cc
             }
 
             var dir = this.targetPos - this.startPos;
-            float t = (Time.time - startTime) / this.duration;
+            float t = (time - startTime - this.GetTotalPausedTime()) / this.duration;
             t = t > 1 ? 1 : t;
             var desPos = this.startPos + dir * (this.easeFunc(t));
             this.target.transform.localPosition = desPos;
         }
+
+
 
 
         public override FiniteTimeAction SetActionName(string name)
@@ -203,7 +204,36 @@ namespace ZGame.cc
         {
             return this.actionName;
         }
+        public override bool IsPause()
+        {
+            return this.isPause;
+        }
 
+        public override void Pause()
+        {
+            if (this.isPause)
+            {
+                return;
+            }
+
+            this.isPause = true;
+            this.lastPausedTime = Time.time;
+        }
+
+        public override void Resume()
+        {
+            if (this.isPause == false)
+            {
+                return;
+            }
+            this.isPause = false;
+            this.totalPausedTime += (Time.time - this.lastPausedTime);
+        }
+
+        public override float GetTotalPausedTime()
+        {
+            return this.totalPausedTime;
+        }
 
     }
 }

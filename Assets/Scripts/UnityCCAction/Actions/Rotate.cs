@@ -39,7 +39,7 @@ namespace ZGame.cc
         public override void Finish()
         {
             this.isDone = true;
-             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override string GetActionName()
@@ -95,9 +95,55 @@ namespace ZGame.cc
             {
                 return true;
             }
+            if (this.IsPause())
+            {
+                return false;
+            }
+
+            this.doRotate();
+            return this.IsDone();
+        }
+
+        private void doRotate()
+        {
+            if (this.IsDone())
+            {
+                return;
+            }
             this.target.transform.Rotate(xValue * Time.deltaTime, yValue * Time.deltaTime, zValue * Time.deltaTime, this.relativeSpace);
 
-            return this.IsDone();
+        }
+
+
+        public override bool IsPause()
+        {
+            return this.isPause;
+        }
+
+        public override void Pause()
+        {
+            if (this.isPause)
+            {
+                return;
+            }
+
+            this.isPause = true;
+            this.lastPausedTime = Time.time;
+        }
+
+        public override void Resume()
+        {
+            if (this.isPause == false)
+            {
+                return;
+            }
+            this.isPause = false;
+            this.totalPausedTime += (Time.time - this.lastPausedTime);
+        }
+
+        public override float GetTotalPausedTime()
+        {
+            return this.totalPausedTime;
         }
     }
 }

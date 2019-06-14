@@ -35,7 +35,7 @@ namespace ZGame.cc
         private void Action_ActionFinished(object sender, ActionFinishedEventArgs e)
         {
             //Debug.Log("onActionFinished:" + sender.ToString() + ", tareget:" + e.Target.ToString());
-            this.RemoveAction(e.Target, e.Action);
+            this.RemoveAction(e.Target, e.Action);//目前为每一个action都监听了其播放完毕的事件，并在播放完毕后移除该action，TODO：后续会提供常驻action的功能
         }
 
         bool existSameAction(GameObject target, Action action)
@@ -167,7 +167,7 @@ namespace ZGame.cc
 
             if (!dicOfActions.ContainsKey(target))
             {
-                Debug.LogError("error, dicOfActions not contain target");
+                Debug.LogWarning("error, dicOfActions not contain target");
                 return false;
             }
             var actionComps = dicOfActions[target];
@@ -199,7 +199,7 @@ namespace ZGame.cc
 
             if (!dicOfActions.ContainsKey(target))
             {
-                Debug.LogError("error, dicOfActions not contain target");
+                Debug.LogWarning("error, dicOfActions not contain target");
                 return null;
             }
             var actionComps = dicOfActions[target];
@@ -212,7 +212,8 @@ namespace ZGame.cc
                     return actionComp.GetAction();
                 }
             }
-            Debug.LogError("target does not have the action of tag:" + tag);
+
+            Debug.LogWarning("target does not have the action of tag:" + tag);
             return null;
         }
 
@@ -243,15 +244,33 @@ namespace ZGame.cc
 
         }
 
-        public bool PauseAction(GameObject target, Action action)
+        public void PauseAction(GameObject target, Action action)
         {
+            if (action != null)
+            {
+                action.Pause();
+            }
 
-            return false;
+
         }
-        public bool PauseActionByTag(GameObject target, int tag)
+        public void PauseActionByTag(GameObject target, int tag)
         {
             Action action = GetActionByTag(target, tag);
-            return this.PauseAction(target, action);
+            this.PauseAction(target, action);
+        }
+
+        public void ResumeAction(GameObject target, Action action)
+        {
+            if (action != null)
+            {
+                action.Resume();
+            }
+        }
+
+        public void ResumeActionByTag(GameObject target, int tag)
+        {
+            Action action = GetActionByTag(target, tag);
+            this.ResumeAction(target, action);
         }
     }
 }

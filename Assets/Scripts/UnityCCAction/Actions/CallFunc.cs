@@ -111,7 +111,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
 
@@ -160,6 +160,26 @@ namespace ZGame.cc
         public override string GetActionName()
         {
             return this.actionName;
+        }
+
+        public override bool IsPause()
+        {
+            return this.isPause;
+        }
+
+        public override void Pause()
+        {
+            Debug.LogWarning("CallFunc is ActionInstant, can not Pause");
+        }
+
+        public override void Resume()
+        {
+            Debug.LogWarning("CallFunc is ActionInstant, can not Resume");
+        }
+
+        public override float GetTotalPausedTime()
+        {
+            return this.totalPausedTime;
         }
     }
 }

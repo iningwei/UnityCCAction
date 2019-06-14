@@ -35,11 +35,19 @@ namespace ZGame.cc
         protected string actionName = string.Empty;
         /// <summary>
         /// 动作是否完成
-        /// 对于次数为1次的动作，一次执行完毕，即完成。否则需要满足执行次数才完成。       
+        /// 对于次数为1次的动作，一次执行完毕，即完成。否则需要满足执行次数才完成。      
         /// </summary>
         protected bool isDone = false;
 
-
+        protected bool isPause = false;//是否处于暂停状态
+        /// <summary>
+        /// 总暂停时间（单位秒）
+        /// </summary>
+        protected float totalPausedTime;
+        /// <summary>
+        /// 上次 开始暂停时 的时间点
+        /// </summary>
+        protected float lastPausedTime;
 
         public abstract void Run();
         /// <summary>
@@ -60,6 +68,25 @@ namespace ZGame.cc
         /// </summary>
         /// <returns></returns>
         public abstract bool IsDone();
+
+
+        /// <summary>
+        /// 是否在暂停状态
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool IsPause();
+
+        /// <summary>
+        /// 暂停动作
+        /// </summary>
+        public abstract void Pause();
+        /// <summary>
+        /// 把动作从暂停中唤醒
+        /// </summary>
+        public abstract void Resume();
+
+        public abstract float GetTotalPausedTime();
+
         /// <summary>
         /// Get the tag of an action
         /// </summary>

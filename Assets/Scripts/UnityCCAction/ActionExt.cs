@@ -27,7 +27,7 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="target"></param>
         /// <param name="tag"></param>
-        public static bool StopAction(this GameObject target, int tag)
+        public static bool RemoveAction(this GameObject target, int tag)
         {
             return ActionManager.Instance.RemoveActionByTag(target, tag);
         }
@@ -36,18 +36,27 @@ namespace ZGame.cc
         /// stop and remove all actions from target
         /// </summary>
         /// <param name="target"></param>
-        public static bool StopAllActions(this GameObject target)
+        public static bool RemoveAllActions(this GameObject target)
         {
             return ActionManager.Instance.RemoveAllActionsFromTarget(target);
         }
 
-        public static bool PauseAction(this GameObject target, Action action)
+        public static void PauseAction(this GameObject target, Action action)
         {
-            return ActionManager.Instance.PauseAction(target, action);
+            ActionManager.Instance.PauseAction(target, action);
         }
-        public static bool PauseAction(this GameObject target, int tag)
+        public static void PauseAction(this GameObject target, int tag)
         {
-            return ActionManager.Instance.PauseActionByTag(target, tag);
+            ActionManager.Instance.PauseActionByTag(target, tag);
+        }
+
+        public static void ResumeAction(this GameObject target, Action action)
+        {
+            ActionManager.Instance.ResumeAction(target, action);
+        }
+        public static void ResumeAction(this GameObject target, int tag)
+        {
+            ActionManager.Instance.ResumeActionByTag(target, tag);
         }
     }
 }

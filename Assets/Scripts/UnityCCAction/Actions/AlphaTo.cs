@@ -60,7 +60,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-             this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override string GetActionName()
@@ -186,7 +186,12 @@ namespace ZGame.cc
             {
                 return true;
             }
-            if (Time.time - startTime > this.duration)
+            if (this.IsPause())
+            {
+                return false;
+            }
+
+            if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
             {
                 this.OnPartialActionFinished();
             }
@@ -199,7 +204,12 @@ namespace ZGame.cc
 
         private void doAlphaTo(float time)
         {
-            float t = (time - this.startTime) / this.duration;
+            if (this.IsDone())
+            {
+                return;
+            }
+
+            float t = (time - this.startTime - this.GetTotalPausedTime()) / this.duration;
             t = t > 1 ? 1 : t;
             Material targetMat;
             for (int i = 0; i < this.allMaterials.Count; i++)
@@ -221,6 +231,37 @@ namespace ZGame.cc
             {
                 this.Run();
             }
+        }
+
+        public override bool IsPause()
+        {
+            return this.isPause;
+        }
+
+        public override void Pause()
+        {
+            if (this.isPause)
+            {
+                return;
+            }
+
+            this.isPause = true;
+            this.lastPausedTime = Time.time;
+        }
+
+        public override void Resume()
+        {
+            if (this.isPause == false)
+            {
+                return;
+            }
+
+            this.totalPausedTime += (Time.time - this.lastPausedTime);
+        }
+
+        public override float GetTotalPausedTime()
+        {
+            return this.totalPausedTime;
         }
     }
 }
