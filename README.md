@@ -40,5 +40,22 @@ Then,it call a function.
 
 Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" action will repeat 3 times.
 
+## API
+### Finished
+- Holder actions:
+
+    ``Repeat、Sequence``
+
+- Finite actions:
+
+    ``Repeat、Sequence、BezierTo、CallFunc、DelayTime、MoveTo、ScaleTo``
+
+- Infinite actions:
+
+    ``Rotate``
+### NOT-Finished
+``AlphaTo``
+### TODO
+``RotateTo、RotateBy``
 
 ## Any problem you get,please let me know.

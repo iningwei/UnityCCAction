@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace ZGame.cc
 {
+    /// <summary>
+    /// Rotate is driven from an InfiniteTimeAction
+    /// </summary>
     public class Rotate : InfiniteTimeAction
     {
         float xValue;

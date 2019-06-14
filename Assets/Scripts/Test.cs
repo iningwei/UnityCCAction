@@ -77,7 +77,7 @@ public class Test : MonoBehaviour
                 this.Reset();
             }));
         }
-
+         
 
         #region 旋转
         if (GUI.Button(new Rect(10, 190, 70, 25), "旋转"))

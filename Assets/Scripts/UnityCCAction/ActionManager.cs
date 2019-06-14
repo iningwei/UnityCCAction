@@ -250,9 +250,8 @@ namespace ZGame.cc
             {
                 action.Pause();
             }
-
-
         }
+
         public void PauseActionByTag(GameObject target, int tag)
         {
             Action action = GetActionByTag(target, tag);

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// ×ø±êÏµÍ³Îª£º»ùÓÚ¸¸½Úµã
+    /// åæ ‡ç³»ç»Ÿä¸ºï¼šåŸºäºçˆ¶èŠ‚ç‚¹
     /// </summary>
     public class ScaleTo : ActionInterval
     {
