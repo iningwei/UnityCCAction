@@ -57,6 +57,7 @@ Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" action 
 ``AlphaTo``
 ### TODO
 ``RotateTo、RotateBy``
-Add OnUpdate(float) delegate
+- Add OnUpdate(float) delegate
+- Add TimesManager's some usefull functions
 
 ## Any problem you get,please let me know.
