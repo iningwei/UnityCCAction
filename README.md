@@ -57,5 +57,6 @@ Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" action 
 ``AlphaTo``
 ### TODO
 ``RotateTo、RotateBy``
+Add OnUpdate(float) delegate
 
 ## Any problem you get,please let me know.
