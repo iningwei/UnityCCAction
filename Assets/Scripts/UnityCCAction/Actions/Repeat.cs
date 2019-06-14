@@ -151,7 +151,8 @@ namespace ZGame.cc
         {
             this.isDone = false;
             this.curRunningAction = null;
-            this.startTime = Time.time- this.GetTotalPausedTime();
+            this.startTime = Time.time - this.GetTotalPausedTime();
+
             if (legalActions.Count > 0)
             {
                 this.curRunningAction = legalActions.Dequeue();
@@ -247,6 +248,11 @@ namespace ZGame.cc
 
             this.isPause = true;
             this.lastPausedTime = Time.time;
+
+            if (this.curRunningAction != null)
+            {
+                this.curRunningAction.Pause();
+            }
         }
 
         public override void Resume()
@@ -257,6 +263,11 @@ namespace ZGame.cc
             }
             this.isPause = false;
             this.totalPausedTime += (Time.time - this.lastPausedTime);
+
+            if (this.curRunningAction != null)
+            {
+                this.curRunningAction.Resume();
+            }
         }
 
         public override float GetTotalPausedTime()

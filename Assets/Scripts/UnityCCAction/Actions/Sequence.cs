@@ -156,7 +156,7 @@ namespace ZGame.cc
         /// <returns></returns>
         public override FiniteTimeAction SetRepeatTimes(int times)
         {
-            Debug.LogError("Sequence setRepeatTimes will not take effect");
+            Debug.LogError("SetRepeatTimes for Sequence will not take effect");
             return this;
         }
 
@@ -226,6 +226,11 @@ namespace ZGame.cc
 
             this.isPause = true;
             this.lastPausedTime = Time.time;
+
+            if (this.curRunningAction != null)
+            {
+                this.curRunningAction.Pause();
+            }
         }
 
         public override void Resume()
@@ -236,6 +241,12 @@ namespace ZGame.cc
             }
             this.isPause = false;
             this.totalPausedTime += (Time.time - this.lastPausedTime);
+
+
+            if (this.curRunningAction != null)
+            {
+                this.curRunningAction.Resume();
+            }
         }
 
         public override float GetTotalPausedTime()
