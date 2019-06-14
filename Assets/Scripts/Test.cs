@@ -103,22 +103,22 @@ public class Test : MonoBehaviour
         if (GUI.Button(new Rect(10, 250, 70, 25), "顺序序列"))
         {
             this.gameObject.RunAction(new Sequence(
-                new BezierTo(5, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0)).OnComplete((a) =>
+                new BezierTo(2, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0)).OnComplete((a) =>
                 {
                     Debug.Log("bezier finished");
                 }),
-                new DelayTime(2).OnComplete((a) =>
+                new DelayTime(1).OnComplete((a) =>
                 {
                     Debug.Log("dealy finished");
                 }),
-            new CallFunc((a) =>
-            {
-                Debug.Log("callFunc finished");
-            }),
-            new MoveTo(2, new Vector3(-2, -2, 0)).OnComplete((a) =>
-            {
-                Debug.Log("moveTo finished");
-            }).SetRepeatTimes(3)).SetTag(1000));
+                new CallFunc((a) =>
+                {
+                    Debug.Log("callFunc finished");
+                }),
+                new MoveTo(1, new Vector3(-2, -2, 0)).Easing(Ease.InBack).OnComplete((a) =>
+                {
+                    Debug.Log("moveTo finished");
+                }).SetRepeatTimes(3)).SetTag(1000));
         }
 
         if (GUI.Button(new Rect(90, 250, 70, 25), "暂停"))
