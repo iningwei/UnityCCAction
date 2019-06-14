@@ -5,7 +5,7 @@ using UnityEngine;
 using ZGame.cc;
 using cc = ZGame.cc;
 
-public class TestAction : MonoBehaviour
+public class Test : MonoBehaviour
 {
 
     Vector3 originPos;
