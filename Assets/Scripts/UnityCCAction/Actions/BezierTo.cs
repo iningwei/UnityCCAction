@@ -132,7 +132,7 @@ namespace ZGame.cc
             {
                 this.startPos = this.target.transform.localPosition;
             }
-            this.startTime = Time.time;
+            this.startTime = Time.time- this.GetTotalPausedTime();
         }
 
         public override void SetDuration(float time)

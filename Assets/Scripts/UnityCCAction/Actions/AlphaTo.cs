@@ -148,7 +148,7 @@ namespace ZGame.cc
             }
 
             //Debug.Log(this.GetTarget() + "  AlphaTo 相关mat个数：" + allMaterials.Count);
-            this.startTime = Time.time;
+            this.startTime = Time.time- this.GetTotalPausedTime();
         }
 
         public override FiniteTimeAction SetActionName(string name)

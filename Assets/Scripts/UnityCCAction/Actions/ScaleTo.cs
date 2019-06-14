@@ -117,7 +117,7 @@ namespace ZGame.cc
             {
                 this.startScale = this.target.transform.localScale;
             }
-            this.startTime = Time.time;
+            this.startTime = Time.time- this.GetTotalPausedTime();
         }
 
         public override void SetDuration(float time)

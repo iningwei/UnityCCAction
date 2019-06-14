@@ -131,7 +131,7 @@ namespace ZGame.cc
         {
             this.isDone = false;
             this.curRunningAction = null;
-            this.startTime = Time.time;
+            this.startTime = Time.time - this.GetTotalPausedTime();
             if (this.legalActions.Count > 0)
             {
                 this.curRunningAction = this.legalActions.Dequeue();

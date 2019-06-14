@@ -107,7 +107,7 @@ namespace ZGame.cc
         public override void Run()
         {
             this.isDone = false;
-            this.startTime = Time.time;
+            this.startTime = Time.time- this.GetTotalPausedTime();
         }
 
         public override void SetDuration(float time)
