@@ -6,7 +6,8 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// 重复播放动作
+    /// Repeat is a holder action,like Sequence.
+    /// All child-actions will be called one by one.
     /// </summary>
     public class Repeat : ActionInterval
     {
@@ -18,9 +19,9 @@ namespace ZGame.cc
         public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
 
         /// <summary>
-        /// 重复播放动作
+        /// 
         /// </summary>
-        /// <param name="times">1表示动作只播放一遍；2、3、4...表示动作播放指定次数; 小于1表示动作循环播放；</param>
+        /// <param name="times">1 will worked like Sequence；2、3、4...will make all childs be called one by one for specific times; less than 1 means all actions will continue played until you stop it；</param>
         /// <param name="actions"></param>
         public Repeat(int times, params FiniteTimeAction[] actions)
         {
@@ -191,7 +192,7 @@ namespace ZGame.cc
         {
             this.target = target;
 
-            //为Repeat内的子动作设置target
+            //set target for child-actions
             foreach (var item in this.actions)
             {
                 item.SetTarget(this.target);

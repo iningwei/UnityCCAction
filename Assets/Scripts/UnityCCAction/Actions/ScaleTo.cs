@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// 坐标系统为：基于父节点
+    /// ScaleTo is driven from ActionInterval
     /// </summary>
     public class ScaleTo : ActionInterval
     {
@@ -15,6 +15,12 @@ namespace ZGame.cc
 
         public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="duration"></param>
+        /// <param name="targetPos">pos is based on target obj's parent node</param>
         public ScaleTo(float duration, Vector3 targetPos)
         {
             if (duration <= 0)

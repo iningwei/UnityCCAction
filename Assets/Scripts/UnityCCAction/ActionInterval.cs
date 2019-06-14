@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// 在指定时间间隔内完成的动作
+    /// Action can finished in certain time
     /// </summary>
     public abstract class ActionInterval : FiniteTimeAction
     {

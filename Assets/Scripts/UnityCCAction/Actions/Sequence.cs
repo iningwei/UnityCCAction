@@ -6,8 +6,9 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// 顺序播放动作一次
-    /// 也可以使用Repeat设置播放次数为1，来实现Sequence
+    /// It's a holder action,like Repeat
+    /// It has some child-actions.These actions will be called one by one.
+    /// Also you can use Repeat to reallize Sequence's function.Just set repeat time to 1.
     /// </summary>
     public class Sequence : ActionInterval
     {
@@ -18,8 +19,8 @@ namespace ZGame.cc
         public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
 
         /// <summary>
-        /// 顺序播放动作一次
-        /// SetRepeatTimes() 设置播放次数会无效
+        /// child-actions will be called one by one.
+        ///  SetRepeatTimes for sequence will not work.
         /// </summary>
         public Sequence(params FiniteTimeAction[] actions)
         {
@@ -50,7 +51,7 @@ namespace ZGame.cc
 
 
         /// <summary>
-        /// do not set easing for Easing
+        /// do not set easing for sequence
         /// </summary>
         /// <param name="ease"></param>
         /// <returns></returns>
@@ -171,7 +172,7 @@ namespace ZGame.cc
         {
             this.target = target;
 
-            //为Repeat内的子动作设置target
+            //set target for child-actions            
             foreach (var item in this.actionSequences)
             {
                 item.SetTarget(this.target);

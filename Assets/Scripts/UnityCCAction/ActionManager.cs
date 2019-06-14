@@ -11,14 +11,11 @@ namespace ZGame.cc
         Dictionary<GameObject, List<ActionComp>> dicOfActions = new Dictionary<GameObject, List<ActionComp>>();
 
 
-
-
-
         public void AddAction(GameObject target, Action action)
         {
             if (this.existSameAction(target, action))
             {
-                Debug.LogError(target.name + "已经具有相同tag的action，不可重复添加, tag:" + action.GetTag());
+                Debug.LogError(target.name + "already have tag:" + action.GetTag() + ", you can not add");
 
                 return;
             }
@@ -34,8 +31,11 @@ namespace ZGame.cc
 
         private void Action_ActionFinished(object sender, ActionFinishedEventArgs e)
         {
-            //Debug.Log("onActionFinished:" + sender.ToString() + ", tareget:" + e.Target.ToString());
-            this.RemoveAction(e.Target, e.Action);//目前为每一个action都监听了其播放完毕的事件，并在播放完毕后移除该action，TODO：后续会提供常驻action的功能
+            //Currently ActionManager  listened to each actioin's finish event.
+            //ActionManager will remove finished action.
+            //TODO:action can not be remove after finish            
+            this.RemoveAction(e.Target, e.Action);
+
         }
 
         bool existSameAction(GameObject target, Action action)
