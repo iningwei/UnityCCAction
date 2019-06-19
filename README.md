@@ -60,6 +60,6 @@ Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" action 
 - It relay on a singleton,not a good idea.
 - Add OnUpdate(float) delegate
 - Add TimesManager's some usefull functions
-- Compare with itween,leantween,hottween.
+- Compare with iTween,LeanTween,HotTween.
 
 ## Any problem you get,please let me know.
