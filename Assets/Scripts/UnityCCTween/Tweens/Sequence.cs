@@ -6,45 +6,45 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// It's a holder action,like Repeat
-    /// It has some child-actions.These actions will be called one by one.
+    /// It's a holder tween,like Repeat
+    /// It has some child-tweens.These tweens will be called one by one.
     /// Also you can use Repeat to reallize Sequence's function.Just set repeat time to 1.
     /// </summary>
-    public class Sequence : ActionInterval
+    public class Sequence : TweenInterval
     {
-        public FiniteTimeAction[] actionSequences;
-        Queue<FiniteTimeAction> legalActions = new Queue<FiniteTimeAction>();
-        FiniteTimeAction curRunningAction = null;
+        public FiniteTimeTween[] tweenSequences;
+        Queue<FiniteTimeTween> legalTweens = new Queue<FiniteTimeTween>();
+        FiniteTimeTween curRunningTween = null;
 
-        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+        public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
         /// <summary>
-        /// child-actions will be called one by one.
+        /// child-tweens will be called one by one.
         ///  SetRepeatTimes for sequence will not work.
         /// </summary>
-        public Sequence(params FiniteTimeAction[] actions)
+        public Sequence(params FiniteTimeTween[] tweens)
         {
-            if (actions == null || actions.Length == 0)
+            if (tweens == null || tweens.Length == 0)
             {
-                Debug.LogError("actions must contain at least one");
+                Debug.LogError("tweens must contain at least one");
                 return;
             }
-            actionSequences = actions;
-            this.legalActions.Clear();
-            this.curRunningAction = null;
-            foreach (var item in actions)
+            tweenSequences = tweens;
+            this.legalTweens.Clear();
+            this.curRunningTween = null;
+            foreach (var item in tweens)
             {
-                this.legalActions.Enqueue(item);
+                this.legalTweens.Enqueue(item);
             }
-            this.SetActionName("Sequence");
+            this.SetTweenName("Sequence");
         }
 
-        public override Action Clone()
+        public override Tween Clone()
         {
             throw new System.NotImplementedException();
         }
 
-        public override FiniteTimeAction Delay(float time)
+        public override FiniteTimeTween Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
         }
@@ -55,7 +55,7 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="ease"></param>
         /// <returns></returns>
-        public override ActionInterval Easing(Ease ease)
+        public override TweenInterval Easing(Ease ease)
         {
             Debug.LogError("Sequence set easing will not work");
             return this;
@@ -65,12 +65,12 @@ namespace ZGame.cc
         {
             this.isDone = true;
             this.repeatedTimes = 0;
-            this.curRunningAction = null;
+            this.curRunningTween = null;
             if (this.completeCallback != null)
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override float GetDuration()
@@ -103,14 +103,14 @@ namespace ZGame.cc
             return this.isDone;
         }
 
-        public override FiniteTimeAction OnComplete(Action<object[]> callback, object[] param)
+        public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
         {
             this.completeCallback = callback;
             this.completeCallbackParams = param;
             return this;
         }
 
-        protected override void OnPartialActionFinished()
+        protected override void OnPartialTweenFinished()
         {
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)
@@ -131,16 +131,16 @@ namespace ZGame.cc
         public override void Run()
         {
             this.isDone = false;
-            this.curRunningAction = null;
+            this.curRunningTween = null;
             this.startTime = Time.time - this.GetTotalPausedTime();
-            if (this.legalActions.Count > 0)
+            if (this.legalTweens.Count > 0)
             {
-                this.curRunningAction = this.legalActions.Dequeue();
-                this.curRunningAction.Run();
+                this.curRunningTween = this.legalTweens.Dequeue();
+                this.curRunningTween.Run();
             }
             else
             {
-                this.OnPartialActionFinished();
+                this.OnPartialTweenFinished();
             }
         }
 
@@ -155,13 +155,13 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="times"></param>
         /// <returns></returns>
-        public override FiniteTimeAction SetRepeatTimes(int times)
+        public override FiniteTimeTween SetRepeatTimes(int times)
         {
             Debug.LogError("SetRepeatTimes for Sequence will not take effect");
             return this;
         }
 
-        public override FiniteTimeAction SetTag(int tag)
+        public override FiniteTimeTween SetTag(int tag)
         {
             this.tag = tag;
             return this;
@@ -172,8 +172,8 @@ namespace ZGame.cc
         {
             this.target = target;
 
-            //set target for child-actions            
-            foreach (var item in this.actionSequences)
+            //set target for child-tweens            
+            foreach (var item in this.tweenSequences)
             {
                 item.SetTarget(this.target);
             }
@@ -191,9 +191,9 @@ namespace ZGame.cc
                 return false;
             }
 
-            if (this.curRunningAction != null)
+            if (this.curRunningTween != null)
             {
-                if (this.curRunningAction.Update())
+                if (this.curRunningTween.Update())
                 {
                     this.Run();
                 }
@@ -202,15 +202,15 @@ namespace ZGame.cc
             return this.IsDone();
         }
 
-        public override FiniteTimeAction SetActionName(string name)
+        public override FiniteTimeTween SetTweenName(string name)
         {
-            this.actionName = name;
+            this.tweenName = name;
             return this;
         }
 
-        public override string GetActionName()
+        public override string GetTweenName()
         {
-            return this.actionName;
+            return this.tweenName;
         }
 
         public override bool IsPause()
@@ -228,9 +228,9 @@ namespace ZGame.cc
             this.isPause = true;
             this.lastPausedTime = Time.time;
 
-            if (this.curRunningAction != null)
+            if (this.curRunningTween != null)
             {
-                this.curRunningAction.Pause();
+                this.curRunningTween.Pause();
             }
         }
 
@@ -244,9 +244,9 @@ namespace ZGame.cc
             this.totalPausedTime += (Time.time - this.lastPausedTime);
 
 
-            if (this.curRunningAction != null)
+            if (this.curRunningTween != null)
             {
-                this.curRunningAction.Resume();
+                this.curRunningTween.Resume();
             }
         }
 

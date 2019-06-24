@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace ZGame.cc
 {
-    public class BezierTo : ActionInterval
+    public class BezierTo : TweenInterval
     {
         Vector3 startPos = Vector3.zero;
         Vector3 targetPos;
         Vector3[] controlPoints;
 
-        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+        public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
         /// <summary>
         /// 当前只支持1个和2个控制点的贝塞尔曲线
@@ -40,20 +40,20 @@ namespace ZGame.cc
             this.SetDuration(duration);
             this.controlPoints = controlPoints;
             this.targetPos = targetPos;
-            this.SetActionName("BezierTo");
+            this.SetTweenName("BezierTo");
 
         }
-        public override Action Clone()
+        public override Tween Clone()
         {
             throw new NotImplementedException();
         }
 
-        public override FiniteTimeAction Delay(float time)
+        public override FiniteTimeTween Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
         }
 
-        public override ActionInterval Easing(Ease ease)
+        public override TweenInterval Easing(Ease ease)
         {
             this.easeFunc = EaseTool.Get(ease);
             return this;
@@ -67,7 +67,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override float GetDuration()
@@ -100,14 +100,14 @@ namespace ZGame.cc
             return this.isDone;
         }
 
-        public override FiniteTimeAction OnComplete(Action<object[]> callback, object[] param)
+        public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
         {
             this.completeCallback = callback;
             this.completeCallbackParams = param;
             return this;
         }
 
-        protected override void OnPartialActionFinished()
+        protected override void OnPartialTweenFinished()
         {
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)
@@ -140,13 +140,13 @@ namespace ZGame.cc
             this.duration = time;
         }
 
-        public override FiniteTimeAction SetRepeatTimes(int times)
+        public override FiniteTimeTween SetRepeatTimes(int times)
         {
             this.repeatTimes = times;
             return this;
         }
 
-        public override FiniteTimeAction SetTag(int tag)
+        public override FiniteTimeTween SetTag(int tag)
         {
             this.tag = tag;
             return this;
@@ -170,7 +170,7 @@ namespace ZGame.cc
 
             if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
             {
-                this.OnPartialActionFinished();
+                this.OnPartialTweenFinished();
             }
 
 
@@ -214,15 +214,15 @@ namespace ZGame.cc
             this.target.transform.localPosition = pos;
         }
 
-        public override FiniteTimeAction SetActionName(string name)
+        public override FiniteTimeTween SetTweenName(string name)
         {
-            this.actionName = name;
+            this.tweenName = name;
             return this;
         }
 
-        public override string GetActionName()
+        public override string GetTweenName()
         {
-            return this.actionName;
+            return this.tweenName;
         }
 
 

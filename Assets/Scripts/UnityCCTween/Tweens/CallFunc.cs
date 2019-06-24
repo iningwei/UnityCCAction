@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace ZGame.cc
 {
-    public class CallFunc : ActionInstant
+    public class CallFunc : TweenInstant
     {
-        System.Action<object[]> func;
+        Action<object[]> func;
         object[] paras;
 
 
@@ -19,7 +19,7 @@ namespace ZGame.cc
             }
             this.func = func;
             this.paras = paras;
-            this.SetActionName("CallFunc");
+            this.SetTweenName("CallFunc");
         }
 
         public void Call<T>(System.Action<T> func, T param)
@@ -31,7 +31,7 @@ namespace ZGame.cc
 
         bool isPartialFinished = false;
 
-        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+        public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
         public override void Run()
         {
@@ -42,7 +42,7 @@ namespace ZGame.cc
 
         }
 
-        public override Action Clone()
+        public override Tween Clone()
         {
             throw new System.NotImplementedException();
         }
@@ -82,7 +82,7 @@ namespace ZGame.cc
             throw new System.NotImplementedException();
         }
 
-        public override FiniteTimeAction SetTag(int tag)
+        public override FiniteTimeTween SetTag(int tag)
         {
             this.tag = tag;
             return this;
@@ -98,7 +98,7 @@ namespace ZGame.cc
         {
             if (this.isPartialFinished)
             {
-                this.OnPartialActionFinished();
+                this.OnPartialTweenFinished();
             }
             return this.IsDone();
         }
@@ -111,7 +111,7 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
         }
 
 
@@ -120,13 +120,13 @@ namespace ZGame.cc
             return this.repeatTimes;
         }
 
-        public override FiniteTimeAction SetRepeatTimes(int times)
+        public override FiniteTimeTween SetRepeatTimes(int times)
         {
             this.repeatTimes = times;
             return this;
         }
 
-        protected override void OnPartialActionFinished()
+        protected override void OnPartialTweenFinished()
         {
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)
@@ -139,27 +139,27 @@ namespace ZGame.cc
             }
         }
 
-        public override FiniteTimeAction OnComplete(Action<object[]> callback, object[] param)
+        public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
         {
             this.completeCallback = callback;
             this.completeCallbackParams = param;
             return this;
         }
 
-        public override FiniteTimeAction Delay(float time)
+        public override FiniteTimeTween Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
         }
 
-        public override FiniteTimeAction SetActionName(string name)
+        public override FiniteTimeTween SetTweenName(string name)
         {
-            this.actionName = name;
+            this.tweenName = name;
             return this;
         }
 
-        public override string GetActionName()
+        public override string GetTweenName()
         {
-            return this.actionName;
+            return this.tweenName;
         }
 
         public override bool IsPause()
@@ -169,17 +169,19 @@ namespace ZGame.cc
 
         public override void Pause()
         {
-            Debug.LogWarning("CallFunc is ActionInstant, can not Pause");
+            Debug.LogWarning("CallFunc is TweenInstant, can not Pause");
         }
 
         public override void Resume()
         {
-            Debug.LogWarning("CallFunc is ActionInstant, can not Resume");
+            Debug.LogWarning("CallFunc is TweenInstant, can not Resume");
         }
 
         public override float GetTotalPausedTime()
         {
             return this.totalPausedTime;
         }
+
+
     }
 }

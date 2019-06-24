@@ -1,51 +1,41 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ZGame.cc
 {
-    /// <summary>
-    /// ScaleTo is driven from ActionInterval
-    /// </summary>
-    public class ScaleTo : ActionInterval
+    public class DelayTime : TweenInterval
     {
-        public Vector3 startScale = Vector3.zero;
-        public Vector3 targetScale;
 
-        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="duration"></param>
-        /// <param name="targetPos">pos is based on target obj's parent node</param>
-        public ScaleTo(float duration, Vector3 targetPos)
+        public DelayTime(float time)
         {
-            if (duration <= 0)
-            {
-                Debug.LogError("error, duration should >0");
-                return;
-            }
-            this.SetDuration(duration);
-            this.targetScale = targetPos;
-            this.SetActionName("ScaleTo");
+            this.SetDuration(time);
+            this.SetTweenName("DelayTime");
+
         }
-        public override Action Clone()
+
+        public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
+
+        public override Tween Clone()
         {
             throw new System.NotImplementedException();
         }
 
-        public override FiniteTimeAction Delay(float time)
+        /// <summary>
+        /// Please do not Set delay for DelayTime
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public override FiniteTimeTween Delay(float time)
         {
-            return new Sequence(new DelayTime(time), this);
+            Debug.LogError("Set delay for DelayTime will not take effect");
+            return this;
         }
 
-        public override ActionInterval Easing(Ease ease)
+        public override TweenInterval Easing(Ease ease)
         {
-            this.easeFunc = EaseTool.Get(ease);
-            return this;
+            throw new System.NotImplementedException();
         }
 
         public override void Finish()
@@ -56,12 +46,12 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
         }
 
         public override float GetDuration()
         {
-            throw new System.NotImplementedException();
+            return this.duration;
         }
 
         public override GameObject GetOriginalTarget()
@@ -81,7 +71,7 @@ namespace ZGame.cc
 
         public override GameObject GetTarget()
         {
-            return this.target;
+            throw new System.NotImplementedException();
         }
 
         public override bool IsDone()
@@ -89,14 +79,14 @@ namespace ZGame.cc
             return this.isDone;
         }
 
-        public override FiniteTimeAction OnComplete(Action<object[]> callback, object[] param)
+        public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
         {
             this.completeCallback = callback;
             this.completeCallbackParams = param;
             return this;
         }
 
-        protected override void OnPartialActionFinished()
+        protected override void OnPartialTweenFinished()
         {
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)
@@ -107,7 +97,6 @@ namespace ZGame.cc
             {
                 this.Run();
             }
-
         }
 
         public override void Reverse()
@@ -118,11 +107,6 @@ namespace ZGame.cc
         public override void Run()
         {
             this.isDone = false;
-
-            if (this.startScale == Vector3.zero)
-            {
-                this.startScale = this.target.transform.localScale;
-            }
             this.startTime = Time.time- this.GetTotalPausedTime();
         }
 
@@ -131,16 +115,17 @@ namespace ZGame.cc
             this.duration = time;
         }
 
-        public override FiniteTimeAction SetRepeatTimes(int times)
+        public override FiniteTimeTween SetRepeatTimes(int times)
         {
             this.repeatTimes = times;
             return this;
         }
 
-        public override FiniteTimeAction SetTag(int tag)
+        public override FiniteTimeTween SetTag(int tag)
         {
             this.tag = tag;
             return this;
+
         }
 
         public override void SetTarget(GameObject target)
@@ -161,40 +146,23 @@ namespace ZGame.cc
 
             if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
             {
-                this.OnPartialActionFinished();
+                this.OnPartialTweenFinished();
             }
-
-            this.doScaleTo(Time.time);
-
             return this.IsDone();
         }
 
-        private void doScaleTo(float time)
+        public override FiniteTimeTween SetTweenName(string name)
         {
-            if (this.IsDone())
-            {
-                return;
-            }
-
-            var dir = this.targetScale - this.startScale;
-            float t = (time - startTime - this.GetTotalPausedTime()) / this.duration;
-            t = t > 1 ? 1 : t;
-            var desScale = this.startScale + dir * (this.easeFunc(t));
-            this.target.transform.localScale = desScale;
-        }
-
-
-
-        public override FiniteTimeAction SetActionName(string name)
-        {
-            this.actionName = name;
+            this.tweenName = name;
             return this;
         }
 
-        public override string GetActionName()
+        public override string GetTweenName()
         {
-            return this.actionName;
+            return this.tweenName;
         }
+
+
 
         public override bool IsPause()
         {

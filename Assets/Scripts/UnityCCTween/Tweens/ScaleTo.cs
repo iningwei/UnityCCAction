@@ -1,50 +1,52 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace ZGame.cc
 {
-
-    public class MoveTo : ActionInterval
+    /// <summary>
+    /// ScaleTo is driven from TweenInterval
+    /// </summary>
+    public class ScaleTo : TweenInterval
     {
-        Vector3 startPos = Vector3.zero;
-        Vector3 targetPos;
+        public Vector3 startScale = Vector3.zero;
+        public Vector3 targetScale;
+
+        public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="duration"></param>
-        /// <param name="targetPos">坐标系统基于父节点的坐标系</param>
-        public MoveTo(float duration, Vector3 targetPos)
+        /// <param name="targetPos">pos is based on target obj's parent node</param>
+        public ScaleTo(float duration, Vector3 targetPos)
         {
-            if (duration < 0)
+            if (duration <= 0)
             {
-                Debug.LogError("error,MoveTo duration should >=0");
+                Debug.LogError("error, duration should >0");
                 return;
             }
             this.SetDuration(duration);
-            this.targetPos = targetPos;
-            this.SetActionName("MoveTo");
+            this.targetScale = targetPos;
+            this.SetTweenName("ScaleTo");
         }
-        public override Action Clone()
+        public override Tween Clone()
         {
             throw new System.NotImplementedException();
         }
 
-        public override FiniteTimeAction Delay(float time)
+        public override FiniteTimeTween Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
         }
 
-        public override ActionInterval Easing(Ease ease)
+        public override TweenInterval Easing(Ease ease)
         {
             this.easeFunc = EaseTool.Get(ease);
             return this;
         }
-
-
-        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
 
         public override void Finish()
         {
@@ -54,15 +56,12 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-
-
-            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
         }
-
 
         public override float GetDuration()
         {
-            return this.duration;
+            throw new System.NotImplementedException();
         }
 
         public override GameObject GetOriginalTarget()
@@ -90,14 +89,14 @@ namespace ZGame.cc
             return this.isDone;
         }
 
-        public override FiniteTimeAction OnComplete(Action<object[]> callback, object[] param)
+        public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
         {
             this.completeCallback = callback;
             this.completeCallbackParams = param;
             return this;
         }
 
-        protected override void OnPartialActionFinished()
+        protected override void OnPartialTweenFinished()
         {
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)
@@ -120,11 +119,11 @@ namespace ZGame.cc
         {
             this.isDone = false;
 
-            if (this.repeatedTimes == 0)
+            if (this.startScale == Vector3.zero)
             {
-                this.startPos = this.target.transform.localPosition;
+                this.startScale = this.target.transform.localScale;
             }
-            this.startTime = Time.time - this.GetTotalPausedTime();//当RepeatTimes>1的时候，会再次进入Run()函数，若这之前暂停了游戏，那么这里取得的startTime就需要减去已经暂停的总时间
+            this.startTime = Time.time- this.GetTotalPausedTime();
         }
 
         public override void SetDuration(float time)
@@ -132,13 +131,13 @@ namespace ZGame.cc
             this.duration = time;
         }
 
-        public override FiniteTimeAction SetRepeatTimes(int times)
+        public override FiniteTimeTween SetRepeatTimes(int times)
         {
             this.repeatTimes = times;
             return this;
         }
 
-        public override FiniteTimeAction SetTag(int tag)
+        public override FiniteTimeTween SetTag(int tag)
         {
             this.tag = tag;
             return this;
@@ -155,55 +154,48 @@ namespace ZGame.cc
             {
                 return true;
             }
-
             if (this.IsPause())
             {
                 return false;
             }
 
-
             if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
             {
-                this.OnPartialActionFinished();
+                this.OnPartialTweenFinished();
             }
 
-            this.doMove(Time.time);
+            this.doScaleTo(Time.time);
 
             return this.IsDone();
         }
 
-
-
-
-
-
-        private void doMove(float time)
+        private void doScaleTo(float time)
         {
             if (this.IsDone())
             {
                 return;
             }
 
-            var dir = this.targetPos - this.startPos;
+            var dir = this.targetScale - this.startScale;
             float t = (time - startTime - this.GetTotalPausedTime()) / this.duration;
             t = t > 1 ? 1 : t;
-            var desPos = this.startPos + dir * (this.easeFunc(t));
-            this.target.transform.localPosition = desPos;
+            var desScale = this.startScale + dir * (this.easeFunc(t));
+            this.target.transform.localScale = desScale;
         }
 
 
 
-
-        public override FiniteTimeAction SetActionName(string name)
+        public override FiniteTimeTween SetTweenName(string name)
         {
-            this.actionName = name;
+            this.tweenName = name;
             return this;
         }
 
-        public override string GetActionName()
+        public override string GetTweenName()
         {
-            return this.actionName;
+            return this.tweenName;
         }
+
         public override bool IsPause()
         {
             return this.isPause;
@@ -234,6 +226,5 @@ namespace ZGame.cc
         {
             return this.totalPausedTime;
         }
-
     }
 }

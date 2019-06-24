@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ZGame.cc
 {
-    public class AlphaTo : ActionInterval
+    public class AlphaTo : TweenInterval
     {
         float targetAlpha;
 
@@ -15,7 +15,7 @@ namespace ZGame.cc
         bool includeChilds = false;
         bool includeInactive = false;
 
-        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+        public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
         public AlphaTo(float duration, float targetAlpha, bool includeChilds = false, bool includeInactive = false)
         {
@@ -32,21 +32,21 @@ namespace ZGame.cc
 
 
 
-            this.SetActionName("AlphaTo");
+            this.SetTweenName("AlphaTo");
         }
 
 
-        public override Action Clone()
+        public override Tween Clone()
         {
             throw new NotImplementedException();
         }
 
-        public override FiniteTimeAction Delay(float time)
+        public override FiniteTimeTween Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
         }
 
-        public override ActionInterval Easing(Ease ease)
+        public override TweenInterval Easing(Ease ease)
         {
             this.easeFunc = EaseTool.Get(ease);
             return this;
@@ -60,12 +60,12 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
         }
 
-        public override string GetActionName()
+        public override string GetTweenName()
         {
-            return this.actionName;
+            return this.tweenName;
         }
 
         public override float GetDuration()
@@ -98,7 +98,7 @@ namespace ZGame.cc
             return this.isDone;
         }
 
-        public override FiniteTimeAction OnComplete(Action<object[]> callback, params object[] param)
+        public override FiniteTimeTween OnComplete(Action<object[]> callback, params object[] param)
         {
             this.completeCallback = callback;
             this.completeCallbackParams = param;
@@ -151,9 +151,9 @@ namespace ZGame.cc
             this.startTime = Time.time- this.GetTotalPausedTime();
         }
 
-        public override FiniteTimeAction SetActionName(string name)
+        public override FiniteTimeTween SetTweenName(string name)
         {
-            this.actionName = name;
+            this.tweenName = name;
             return this;
         }
 
@@ -163,13 +163,13 @@ namespace ZGame.cc
 
         }
 
-        public override FiniteTimeAction SetRepeatTimes(int times)
+        public override FiniteTimeTween SetRepeatTimes(int times)
         {
             this.repeatTimes = times;
             return this;
         }
 
-        public override FiniteTimeAction SetTag(int tag)
+        public override FiniteTimeTween SetTag(int tag)
         {
             this.tag = tag;
             return this;
@@ -193,7 +193,7 @@ namespace ZGame.cc
 
             if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
             {
-                this.OnPartialActionFinished();
+                this.OnPartialTweenFinished();
             }
 
             this.doAlphaTo(Time.time);
@@ -220,7 +220,7 @@ namespace ZGame.cc
 
         }
 
-        protected override void OnPartialActionFinished()
+        protected override void OnPartialTweenFinished()
         {
             this.repeatedTimes++;
             if (this.repeatedTimes == this.repeatTimes)

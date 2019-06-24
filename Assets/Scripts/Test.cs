@@ -12,17 +12,16 @@ public class Test : MonoBehaviour
 
 
 
-    cc.FiniteTimeAction alphaAction;
+    cc.FiniteTimeTween alphaTween;
     void Start()
     {
         this.originPos = this.gameObject.transform.position;
         Debug.Log("originPos:" + this.originPos);
 
-        //this.alphaAction = this.getAlphaAction();
-        //this.gameObject.RunAction(this.alphaAction);
+       
     }
 
-    private FiniteTimeAction getAlphaAction()
+    private FiniteTimeTween getAlphaTween()
     {
         return new cc.AlphaTo(2, 0f, true).SetRepeatTimes(0);
     }
@@ -39,7 +38,7 @@ public class Test : MonoBehaviour
     {
         if (GUI.Button(new Rect(10, 10, 80, 25), "延迟调用"))
         {
-            this.gameObject.RunAction(new CallFunc((a) =>
+            this.gameObject.RunTween(new CallFunc((a) =>
             {
                 Debug.Log("我是延迟2秒调用的");
             }).Delay(2));
@@ -49,7 +48,7 @@ public class Test : MonoBehaviour
         #region 移动
         if (GUI.Button(new Rect(10, 70, 70, 25), "移动"))
         {
-            this.gameObject.RunAction(new MoveTo(3, new Vector3(2, 3, 0)).OnComplete((a) =>
+            this.gameObject.RunTween(new MoveTo(3, new Vector3(2, 3, 0)).OnComplete((a) =>
             {
                 Debug.Log("移动结束！");
                 this.Reset();
@@ -57,11 +56,11 @@ public class Test : MonoBehaviour
         }
         if (GUI.Button(new Rect(90, 70, 70, 25), "暂停"))
         {
-            this.gameObject.PauseAction(999);
+            this.gameObject.PauseTween(999);
         }
         if (GUI.Button(new Rect(170, 70, 70, 25), "恢复"))
         {
-            this.gameObject.ResumeAction(999);
+            this.gameObject.ResumeTween(999);
         }
         #endregion
 
@@ -72,7 +71,7 @@ public class Test : MonoBehaviour
 
         if (GUI.Button(new Rect(10, 130, 70, 25), "缩放"))
         {
-            this.gameObject.RunAction(new ScaleTo(3, new Vector3(2, 2, 0)).SetRepeatTimes(2).OnComplete((a) =>
+            this.gameObject.RunTween(new ScaleTo(3, new Vector3(2, 2, 0)).SetRepeatTimes(2).OnComplete((a) =>
             {
                 this.Reset();
             }));
@@ -82,27 +81,27 @@ public class Test : MonoBehaviour
         #region 旋转
         if (GUI.Button(new Rect(10, 190, 70, 25), "旋转"))
         {
-            this.gameObject.RunAction(new Rotate(60, 0, 0, Space.Self).SetTag(100));
+            this.gameObject.RunTween(new Rotate(60, 0, 0, Space.Self).SetTag(100));
         }
 
         if (GUI.Button(new Rect(90, 190, 70, 25), "暂停旋转"))
         {
-            this.gameObject.PauseAction(100);
+            this.gameObject.PauseTween(100);
         }
         if (GUI.Button(new Rect(170, 190, 70, 25), "恢复旋转"))
         {
-            this.gameObject.ResumeAction(100);
+            this.gameObject.ResumeTween(100);
         }
         if (GUI.Button(new Rect(250, 190, 70, 25), "移除 旋转"))
         {
-            this.gameObject.RemoveAction(100);
+            this.gameObject.RemoveTween(100);
         }
         #endregion
 
         #region 顺序序列
         if (GUI.Button(new Rect(10, 250, 70, 25), "顺序序列"))
         {
-            this.gameObject.RunAction(new Sequence(
+            this.gameObject.RunTween(new Sequence(
                 new BezierTo(2, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0)).OnComplete((a) =>
                 {
                     Debug.Log("bezier finished");
@@ -123,18 +122,18 @@ public class Test : MonoBehaviour
 
         if (GUI.Button(new Rect(90, 250, 70, 25), "暂停"))
         {
-            this.gameObject.PauseAction(1000);
+            this.gameObject.PauseTween(1000);
         }
         if (GUI.Button(new Rect(170, 250, 70, 25), "恢复"))
         {
-            this.gameObject.ResumeAction(1000);
+            this.gameObject.ResumeTween(1000);
         }
         #endregion
 
         #region 重复序列
         if (GUI.Button(new Rect(10, 310, 70, 25), "重复序列"))
         {
-            this.gameObject.RunAction(new Repeat(2,
+            this.gameObject.RunTween(new Repeat(2,
                 new BezierTo(5, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0)).OnComplete((a) =>
                 {
                     Debug.Log("bezier finished");
@@ -155,17 +154,17 @@ public class Test : MonoBehaviour
 
         if (GUI.Button(new Rect(90, 310, 70, 25), "暂停"))
         {
-            this.gameObject.PauseAction(2000);
+            this.gameObject.PauseTween(2000);
         }
         if (GUI.Button(new Rect(170, 310, 70, 25), "恢复"))
         {
-            this.gameObject.ResumeAction(2000);
+            this.gameObject.ResumeTween(2000);
         }
         #endregion
 
-        if (GUI.Button(new Rect(10, 370, 120, 25), "移除所有Action"))
+        if (GUI.Button(new Rect(10, 370, 120, 25), "移除所有Tween"))
         {
-            this.gameObject.RemoveAllActions();
+            this.gameObject.RemoveAllTweens();
         }
     }
 }

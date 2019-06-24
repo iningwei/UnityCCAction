@@ -6,86 +6,88 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// 有限时长的动作
+    /// 有限时长的补间
     /// </summary>
-    public abstract class FiniteTimeAction : Action
+    public abstract class FiniteTimeTween : Tween
     {
         /// <summary>
-        /// 动作持续时间
+        /// 补间持续时间
         /// </summary>
         protected float duration = 0;
         /// <summary>
-        /// 该动作开始的时间点
+        /// 该补间开始的时间点
         /// </summary>
         protected float startTime;
 
 
 
         /// <summary>
-        /// 1表示动作只播放一遍；2、3、4...表示动作播放指定次数; 小于1表示动作循环播放；
+        /// 1表示补间只播放一遍；2、3、4...表示补间播放指定次数; 小于1表示补间循环播放；
         /// </summary>
         protected int repeatTimes = 1;
         /// <summary>
-        /// 动作已播放的次数
+        /// 补间已播放的次数
         /// </summary>
         protected int repeatedTimes = 0;
 
 
         /// <summary>
-        /// 获得动作持续时间，单位秒
+        /// 获得补间持续时间，单位秒
         /// </summary>
         /// <returns></returns>
         public abstract float GetDuration();
 
         /// <summary>
-        /// 设置动作持续时间，单位秒
+        /// 设置补间持续时间，单位秒
         /// </summary>
         /// <param name="time"></param>
         public abstract void SetDuration(float time);
 
 
         /// <summary>
-        /// 为动作设置标签，用于识别动作
+        /// 为补间设置标签，用于识别补间
         /// </summary>
         /// <param name="tag"></param>
-        public abstract FiniteTimeAction SetTag(int tag);
+        public abstract FiniteTimeTween SetTag(int tag);
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="times">1表示动作只播放一遍；2、3、4...表示动作播放指定次数; 小于1表示动作循环播放；</param>
+        /// <param name="times">1表示补间只播放一遍；2、3、4...表示补间播放指定次数; 小于1表示补间循环播放；</param>
         /// <returns></returns>
-        public abstract FiniteTimeAction SetRepeatTimes(int times);
+        public abstract FiniteTimeTween SetRepeatTimes(int times);
 
         public abstract int GetRepeatTimes();
 
 
-        public abstract FiniteTimeAction SetActionName(string name);
+        public abstract FiniteTimeTween SetTweenName(string name);
 
 
         /// <summary>
         /// 由子类重写该类
-        /// 某次动作完成后，判断是否完成所有动作次数的播放
+        /// 某次补间完成后，判断是否完成所有补间次数的播放
         /// </summary>
-        protected abstract void OnPartialActionFinished();
+        protected abstract void OnPartialTweenFinished();
         /// <summary>
-        /// 返回一个新动作，新动作的执行与原动作完全相反
+        /// 返回一个新补间，新补间的执行与原补间完全相反
         /// </summary>
         public abstract void Reverse();
 
 
-        public abstract FiniteTimeAction Delay(float time);
+        public abstract FiniteTimeTween Delay(float time);
 
         /// <summary>
-        /// 动作完成后的一些回调
-        /// 若动作多次重复（即repeatTimes>1），那么必须所有动作重复完毕后才会触发回调
+        /// 补间完成后的一些回调
+        /// 若补间多次重复（即repeatTimes>1），那么必须所有补间重复完毕后才会触发回调
         /// </summary>
         /// <param name="callback"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public abstract FiniteTimeAction OnComplete(Action<object[]> callback, params object[] param);
+        public abstract FiniteTimeTween OnComplete(Action<object[]> callback, params object[] param);
         protected Action<object[]> completeCallback;
         protected object[] completeCallbackParams;
 
+
+        
     }
 }

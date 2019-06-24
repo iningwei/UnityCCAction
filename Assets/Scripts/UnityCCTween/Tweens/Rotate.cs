@@ -5,9 +5,9 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// Rotate is driven from an InfiniteTimeAction
+    /// Rotate is driven from an InfiniteTimeTween
     /// </summary>
-    public class Rotate : InfiniteTimeAction
+    public class Rotate : InfiniteTimeTween
     {
         float xValue;
         float yValue;
@@ -29,12 +29,12 @@ namespace ZGame.cc
             this.zValue = zValue;
 
             this.relativeSpace = relativeSpace;
-            this.SetActionName("Rotate");
+            this.SetTweenName("Rotate");
         }
 
-        public override event EventHandler<ActionFinishedEventArgs> ActionFinished;
+        public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
-        public override Action Clone()
+        public override Tween Clone()
         {
             throw new System.NotImplementedException();
         }
@@ -42,12 +42,12 @@ namespace ZGame.cc
         public override void Finish()
         {
             this.isDone = true;
-            this.ActionFinished?.Invoke(this, new ActionFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
         }
 
-        public override string GetActionName()
+        public override string GetTweenName()
         {
-            return this.actionName;
+            return this.tweenName;
         }
 
         public override GameObject GetOriginalTarget()
@@ -75,13 +75,13 @@ namespace ZGame.cc
 
         }
 
-        public override InfiniteTimeAction SetActionName(string name)
+        public override InfiniteTimeTween SetTweenName(string name)
         {
-            this.actionName = name;
+            this.tweenName = name;
             return this;
         }
 
-        public override InfiniteTimeAction SetTag(int tag)
+        public override InfiniteTimeTween SetTag(int tag)
         {
             this.tag = tag;
             return this;

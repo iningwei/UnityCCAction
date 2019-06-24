@@ -5,15 +5,15 @@ using UnityEngine;
 
 namespace ZGame.cc
 {
-    public class ActionFinishedEventArgs : EventArgs
+    public class TweenFinishedEventArgs : EventArgs
     {
         public GameObject Target { get; set; }
-        public Action Action { get; set; }
+        public Tween Tween { get; set; }
 
-        public ActionFinishedEventArgs(GameObject target, Action action)
+        public TweenFinishedEventArgs(GameObject target, Tween tween)
         {
             this.Target = target;
-            this.Action = action;
+            this.Tween = tween;
 
         }
     }
@@ -21,21 +21,18 @@ namespace ZGame.cc
 
 
     /// <summary>
-    /// 所有动作类型的基类
+    /// 所有补间类型的基类
     /// </summary>
-    public abstract class Action
+    public abstract class Tween
     {
-
-        public abstract event EventHandler<ActionFinishedEventArgs> ActionFinished;
-
-
+        public abstract event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
         protected GameObject target = null;
         protected int tag = 0;
-        protected string actionName = string.Empty;
+        protected string tweenName = string.Empty;
         /// <summary>
-        /// 动作是否完成
-        /// 对于次数为1次的动作，一次执行完毕，即完成。否则需要满足执行次数才完成。      
+        /// 补间是否完成
+        /// 对于次数为1次的补间，一次执行完毕，即完成。否则需要满足执行次数才完成。      
         /// </summary>
         protected bool isDone = false;
 
@@ -51,20 +48,21 @@ namespace ZGame.cc
 
         public abstract void Run();
         /// <summary>
-        /// 返回值指示是否完成动作
+        /// 返回值指示是否完成补间
         /// </summary>
         /// <returns></returns>
         public abstract bool Update();
 
         public abstract void Finish();
-        //public abstract void OnActionFinished(ActionFinishedEventArgs args);
+
+
         /// <summary>
         /// 返回一个克隆的对象
         /// </summary>
         /// <returns></returns>
-        public abstract Action Clone();
+        public abstract Tween Clone();
         /// <summary>
-        /// 动作是否完成，true 是， false 否
+        /// 补间是否完成，true 是， false 否
         /// </summary>
         /// <returns></returns>
         public abstract bool IsDone();
@@ -77,32 +75,32 @@ namespace ZGame.cc
         public abstract bool IsPause();
 
         /// <summary>
-        /// 暂停动作
+        /// 暂停补间
         /// </summary>
         public abstract void Pause();
         /// <summary>
-        /// 把动作从暂停中唤醒
+        /// 把补间从暂停中唤醒
         /// </summary>
         public abstract void Resume();
 
         public abstract float GetTotalPausedTime();
 
         /// <summary>
-        /// Get the tag of an action
+        /// Get the tag of an tween
         /// </summary>
         /// <returns></returns>
         public abstract int GetTag();
 
-        public abstract string GetActionName();
+        public abstract string GetTweenName();
 
         /// <summary>
-        /// 获得执行当前动作的目标节点
+        /// 获得执行当前补间的目标节点
         /// </summary>
         /// <returns></returns>
         public abstract GameObject GetTarget();
 
         /// <summary>
-        /// 为动作设置执行的目标节点
+        /// 为补间设置执行的目标节点
         /// </summary>
         /// <param name="target"></param>
         public abstract void SetTarget(GameObject target);
@@ -114,5 +112,9 @@ namespace ZGame.cc
         public abstract GameObject GetOriginalTarget();
 
 
+
+        //public abstract FiniteTimeAction OnUpdate(Action<object[]> callback, params object[] param);
+        //protected Action<object[]> updateCallback;
+        //protected object[] updateCallbackParams;
     }
 }

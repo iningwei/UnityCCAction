@@ -6,12 +6,12 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// Action can finished in certain time
+    /// Tween can finished in certain time
     /// </summary>
-    public abstract class ActionInterval : FiniteTimeAction
+    public abstract class TweenInterval : FiniteTimeTween
     {
         protected Func<float, float> easeFunc = EaseTool.Get(Ease.Linear);
 
-        public abstract ActionInterval Easing(Ease ease);
+        public abstract TweenInterval Easing(Ease ease);
     }
 }

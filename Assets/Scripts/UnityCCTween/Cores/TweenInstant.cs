@@ -4,9 +4,9 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// 即时动作，这种动作会立即执行
+    /// 即时补间，这种补间会立即执行
     /// </summary>
-    public abstract class ActionInstant : FiniteTimeAction
+    public abstract class TweenInstant : FiniteTimeTween
     {
          
     }
