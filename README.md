@@ -53,7 +53,7 @@ Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" tween w
 
 - Finite tweens:
 
-    ``Repeat、Sequence、BezierTo、CallFunc、DelayTime、MoveTo、ScaleTo``
+    ``Repeat、Sequence、BezierTo、CallFunc、DelayTime、MoveTo、ScaleTo、AlphaTo``
 
 - Infinite tweens:
 
@@ -61,7 +61,7 @@ Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" tween w
 ### NOT-Finished
 
 ### TODO
-``RotateTo、RotateBy``
+- Implement ``RotateTo、RotateBy``.
 - It relay on a singleton,not a good idea.
 - Add TimesManager's some usefull functions.
 - Compare with iTween,LeanTween,HotTween,DoTween.
