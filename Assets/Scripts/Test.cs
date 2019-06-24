@@ -18,7 +18,7 @@ public class Test : MonoBehaviour
         this.originPos = this.gameObject.transform.position;
         Debug.Log("originPos:" + this.originPos);
 
-       
+
     }
 
     private FiniteTimeTween getAlphaTween()
@@ -40,8 +40,11 @@ public class Test : MonoBehaviour
         {
             this.gameObject.RunTween(new CallFunc((a) =>
             {
-                Debug.Log("我是延迟2秒调用的");
-            }).Delay(2));
+                Debug.Log("我是延迟5秒调用的");
+            }).Delay(5).OnUpdate((a) =>
+            {
+                Debug.Log(a.ToString());
+            }));
         }
 
 
@@ -52,7 +55,10 @@ public class Test : MonoBehaviour
             {
                 Debug.Log("移动结束！");
                 this.Reset();
-            }).SetTag(999).SetRepeatTimes(3));
+            }).SetTag(999).SetRepeatTimes(3).OnUpdate((a) =>
+            {
+                Debug.Log("移动时间：" + a);
+            }));
         }
         if (GUI.Button(new Rect(90, 70, 70, 25), "暂停"))
         {
@@ -76,7 +82,7 @@ public class Test : MonoBehaviour
                 this.Reset();
             }));
         }
-         
+
 
         #region 旋转
         if (GUI.Button(new Rect(10, 190, 70, 25), "旋转"))

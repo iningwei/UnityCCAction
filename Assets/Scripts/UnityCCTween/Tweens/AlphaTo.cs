@@ -148,7 +148,7 @@ namespace ZGame.cc
             }
 
             //Debug.Log(this.GetTarget() + "  AlphaTo 相关mat个数：" + allMaterials.Count);
-            this.startTime = Time.time- this.GetTotalPausedTime();
+            this.startTime = Time.time - this.GetTotalPausedTime();
         }
 
         public override FiniteTimeTween SetTweenName(string name)
@@ -191,25 +191,38 @@ namespace ZGame.cc
                 return false;
             }
 
-            if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
+            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            if (this.trueRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
             }
 
-            this.doAlphaTo(Time.time);
-
+            this.doAlphaTo();
+            this.doUpdateCallback();
 
             return this.IsDone();
         }
 
-        private void doAlphaTo(float time)
+        private void doUpdateCallback()
+        {
+            if (this.IsDone() || this.updateCallback == null)
+            {
+                return;
+            }
+
+            this.updateCallback(this.trueRunTime);
+        }
+
+
+
+        private void doAlphaTo()
         {
             if (this.IsDone())
             {
                 return;
             }
 
-            float t = (time - this.startTime - this.GetTotalPausedTime()) / this.duration;
+            float t = this.trueRunTime / this.duration;
             t = t > 1 ? 1 : t;
             Material targetMat;
             for (int i = 0; i < this.allMaterials.Count; i++)
@@ -262,6 +275,12 @@ namespace ZGame.cc
         public override float GetTotalPausedTime()
         {
             return this.totalPausedTime;
+        }
+
+        public override Tween OnUpdate(Action<float> callback)
+        {
+            this.updateCallback = callback;
+            return this;
         }
     }
 }

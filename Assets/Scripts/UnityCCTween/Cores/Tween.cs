@@ -30,6 +30,16 @@ namespace ZGame.cc
         protected GameObject target = null;
         protected int tag = 0;
         protected string tweenName = string.Empty;
+
+        /// <summary>
+        /// 该补间开始的时间点
+        /// </summary>
+        protected float startTime;
+        /// <summary>
+        /// 该补间真实运行时间
+        /// </summary>
+        protected float trueRunTime;
+
         /// <summary>
         /// 补间是否完成
         /// 对于次数为1次的补间，一次执行完毕，即完成。否则需要满足执行次数才完成。      
@@ -113,8 +123,12 @@ namespace ZGame.cc
 
 
 
-        //public abstract FiniteTimeAction OnUpdate(Action<object[]> callback, params object[] param);
-        //protected Action<object[]> updateCallback;
-        //protected object[] updateCallbackParams;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="callback">参数为update从开始到当前的时间</param>
+        /// <returns></returns>
+        public abstract Tween OnUpdate(Action<float> callback);
+        protected Action<float> updateCallback;
     }
 }

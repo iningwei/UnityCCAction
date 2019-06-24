@@ -221,8 +221,24 @@ namespace ZGame.cc
                     this.Run();
                 }
             }
+
+            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            this.doUpdateCallback();
             return this.IsDone();
         }
+
+        private void doUpdateCallback()
+        {
+            if (this.IsDone() || this.updateCallback == null)
+            {
+                return;
+            }
+
+            this.updateCallback(this.trueRunTime);
+        }
+
+
+
 
         public override FiniteTimeTween SetTweenName(string name)
         {
@@ -276,6 +292,10 @@ namespace ZGame.cc
             return this.totalPausedTime;
         }
 
-
+        public override Tween OnUpdate(Action<float> callback)
+        {
+            this.updateCallback = callback;
+            return this;
+        }
     }
 }

@@ -103,8 +103,20 @@ namespace ZGame.cc
                 return false;
             }
 
+            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
             this.doRotate();
+            this.doUpdateCallback();
+
             return this.IsDone();
+        }
+        private void doUpdateCallback()
+        {
+            if (this.IsDone() || this.updateCallback == null)
+            {
+                return;
+            }
+
+            this.updateCallback(this.trueRunTime);
         }
 
         private void doRotate()
@@ -147,6 +159,12 @@ namespace ZGame.cc
         public override float GetTotalPausedTime()
         {
             return this.totalPausedTime;
+        }
+
+        public override Tween OnUpdate(Action<float> callback)
+        {
+            this.updateCallback = callback;
+            return this;
         }
     }
 }

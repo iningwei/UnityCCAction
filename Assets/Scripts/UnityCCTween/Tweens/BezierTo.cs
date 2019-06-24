@@ -132,7 +132,7 @@ namespace ZGame.cc
             {
                 this.startPos = this.target.transform.localPosition;
             }
-            this.startTime = Time.time- this.GetTotalPausedTime();
+            this.startTime = Time.time - this.GetTotalPausedTime();
         }
 
         public override void SetDuration(float time)
@@ -168,20 +168,30 @@ namespace ZGame.cc
                 return false;
             }
 
-            if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
+            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            if (this.trueRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
             }
 
-
-
-            this.doBezierTo(Time.time);
-
+            this.doBezierTo();
+            this.doUpdateCallback();
 
             return this.IsDone();
         }
 
-        void doBezierTo(float time)
+        private void doUpdateCallback()
+        {
+            if (this.IsDone() || this.updateCallback == null)
+            {
+                return;
+            }
+
+            this.updateCallback(this.trueRunTime);
+        }
+
+
+        void doBezierTo()
         {
             if (this.IsDone())
             {
@@ -190,7 +200,7 @@ namespace ZGame.cc
 
 
             Vector3 pos = Vector3.zero;
-            float t = (time - this.startTime - this.GetTotalPausedTime()) / this.duration;
+            float t = this.trueRunTime / this.duration;
             t = t > 1 ? 1 : t;
             var t1 = t;
 
@@ -255,6 +265,12 @@ namespace ZGame.cc
         public override float GetTotalPausedTime()
         {
             return this.totalPausedTime;
+        }
+
+        public override Tween OnUpdate(Action<float> callback)
+        {
+            this.updateCallback = callback;
+            return this;
         }
     }
 }

@@ -123,7 +123,7 @@ namespace ZGame.cc
             {
                 this.startScale = this.target.transform.localScale;
             }
-            this.startTime = Time.time- this.GetTotalPausedTime();
+            this.startTime = Time.time - this.GetTotalPausedTime();
         }
 
         public override void SetDuration(float time)
@@ -159,17 +159,30 @@ namespace ZGame.cc
                 return false;
             }
 
-            if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
+            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            if (this.trueRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
             }
 
-            this.doScaleTo(Time.time);
-
+            this.doScaleTo();
+            this.doUpdateCallback();
             return this.IsDone();
         }
 
-        private void doScaleTo(float time)
+        private void doUpdateCallback()
+        {
+            if (this.IsDone() || this.updateCallback == null)
+            {
+                return;
+            }
+
+            this.updateCallback(this.trueRunTime);
+        }
+
+
+
+        private void doScaleTo()
         {
             if (this.IsDone())
             {
@@ -177,7 +190,7 @@ namespace ZGame.cc
             }
 
             var dir = this.targetScale - this.startScale;
-            float t = (time - startTime - this.GetTotalPausedTime()) / this.duration;
+            float t = this.trueRunTime / this.duration;
             t = t > 1 ? 1 : t;
             var desScale = this.startScale + dir * (this.easeFunc(t));
             this.target.transform.localScale = desScale;
@@ -225,6 +238,12 @@ namespace ZGame.cc
         public override float GetTotalPausedTime()
         {
             return this.totalPausedTime;
+        }
+
+        public override Tween OnUpdate(Action<float> callback)
+        {
+            this.updateCallback = callback;
+            return this;
         }
     }
 }

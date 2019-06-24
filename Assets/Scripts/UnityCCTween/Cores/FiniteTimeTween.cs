@@ -14,10 +14,7 @@ namespace ZGame.cc
         /// 补间持续时间
         /// </summary>
         protected float duration = 0;
-        /// <summary>
-        /// 该补间开始的时间点
-        /// </summary>
-        protected float startTime;
+       
 
 
 

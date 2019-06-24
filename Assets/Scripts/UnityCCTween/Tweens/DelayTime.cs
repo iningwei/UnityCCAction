@@ -107,7 +107,7 @@ namespace ZGame.cc
         public override void Run()
         {
             this.isDone = false;
-            this.startTime = Time.time- this.GetTotalPausedTime();
+            this.startTime = Time.time - this.GetTotalPausedTime();
         }
 
         public override void SetDuration(float time)
@@ -143,13 +143,27 @@ namespace ZGame.cc
             {
                 return false;
             }
-
-            if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
+            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            if (this.trueRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
             }
+
+            this.doUpdateCallback();
             return this.IsDone();
         }
+
+        private void doUpdateCallback()
+        {
+            if (this.IsDone() || this.updateCallback == null)
+            {
+                return;
+            }
+
+            this.updateCallback(this.trueRunTime);
+        }
+
+
 
         public override FiniteTimeTween SetTweenName(string name)
         {
@@ -193,6 +207,12 @@ namespace ZGame.cc
         public override float GetTotalPausedTime()
         {
             return this.totalPausedTime;
+        }
+
+        public override Tween OnUpdate(Action<float> callback)
+        {
+            this.updateCallback = callback;
+            return this;
         }
     }
 }

@@ -161,23 +161,31 @@ namespace ZGame.cc
                 return false;
             }
 
+            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
 
-            if (Time.time - startTime - this.GetTotalPausedTime() > this.duration)
+            if (this.trueRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
             }
-
-            this.doMove(Time.time);
-
+            this.doMove();
+            this.doUpdateCallback();
             return this.IsDone();
         }
 
 
 
+        private void doUpdateCallback()
+        {
+            if (this.IsDone() || this.updateCallback == null)
+            {
+                return;
+            }
+            this.updateCallback(this.trueRunTime);
+        }
 
 
 
-        private void doMove(float time)
+        private void doMove()
         {
             if (this.IsDone())
             {
@@ -185,7 +193,7 @@ namespace ZGame.cc
             }
 
             var dir = this.targetPos - this.startPos;
-            float t = (time - startTime - this.GetTotalPausedTime()) / this.duration;
+            float t = this.trueRunTime / this.duration;
             t = t > 1 ? 1 : t;
             var desPos = this.startPos + dir * (this.easeFunc(t));
             this.target.transform.localPosition = desPos;
@@ -235,5 +243,10 @@ namespace ZGame.cc
             return this.totalPausedTime;
         }
 
+        public override Tween OnUpdate(Action<float> callback)
+        {
+            this.updateCallback = callback;
+            return this;
+        }
     }
 }

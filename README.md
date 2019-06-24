@@ -2,7 +2,7 @@
 
 UnityCCTween is inspired by CocosCreator's action system which is really easy use and powerfull.
 
-``Note:This project old name is UnityCCAction,for action system in Unity3D is always means models or bones pose action then it was renamed with UnityCCTween.``
+``Note:This project old name is UnityCCAction.For action system in Unity3D is always means models or bones pose action,then it was renamed with UnityCCTween.``
 
 ## Usage
 ``This project is made by unity-2018.3.0f2.``
@@ -63,8 +63,7 @@ Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" tween w
 ### TODO
 ``RotateTo、RotateBy``
 - It relay on a singleton,not a good idea.
-- Add OnUpdate(float) delegate
-- Add TimesManager's some usefull functions
+- Add TimesManager's some usefull functions.
 - Compare with iTween,LeanTween,HotTween.
 
 ## Any problem you get,please let me know.
