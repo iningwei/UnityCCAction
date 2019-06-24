@@ -9,8 +9,12 @@ namespace ZGame.cc
     {
         float targetAlpha;
 
-        List<Material> allMaterials = new List<Material>();
-        List<float> startAlphas = new List<float>();
+        Dictionary<Material, float> allMaterials = new Dictionary<Material, float>();
+        Dictionary<UnityEngine.UI.Image, float> allImages = new Dictionary<UnityEngine.UI.Image, float>();
+        Dictionary<UnityEngine.UI.RawImage, float> allRawImages = new Dictionary<UnityEngine.UI.RawImage, float>();
+        Dictionary<UnityEngine.UI.Text, float> allTexts = new Dictionary<UnityEngine.UI.Text, float>();
+
+
 
         bool includeChilds = false;
         bool includeInactive = false;
@@ -116,6 +120,7 @@ namespace ZGame.cc
 
             if (this.repeatedTimes == 0)
             {
+                #region 3D物体或者Unity2D物体
                 Renderer[] allRenderers;
                 if (includeChilds)
                 {
@@ -131,19 +136,59 @@ namespace ZGame.cc
                     var mats = allRenderers[i].GetMaterials();
                     for (int j = 0; j < mats.Length; j++)
                     {
-                        if (!allMaterials.Contains(mats[j]))
+                        if (!allMaterials.ContainsKey(mats[j]))
                         {
-                            //TODO：必须是具有透明通道的shader才支持Alpha改变
-                            if (mats[j].shader.name.Contains("Standard"))
+                            //若shader不支持透明，那么即使如下设置，也不会生效
+                            if (mats[j].HasProperty("_Color"))
                             {
-                                Debug.LogWarning("AlphaTo not support  standard shader:" + this.GetTarget());
-                                continue;
+                                allMaterials.Add(mats[j], mats[j].color.a);
+
                             }
-                            allMaterials.Add(mats[j]);
-                            startAlphas.Add(mats[j].color.a);   //目前只支持Main的Color
+                            else if (mats[j].HasProperty("_TintColor"))
+                            {
+                                allMaterials.Add(mats[j], mats[j].GetColor("_TintColor").a);
+                            }
                         }
                     }
                 }
+                #endregion
+
+                #region UGUI物体
+
+                if (includeChilds)
+                {
+                    var imgs = this.GetTarget().GetComponentsInChildren<UnityEngine.UI.Image>(includeInactive);
+                    for (int i = 0; i < imgs.Length; i++)
+                    {
+                        this.allImages.Add(imgs[i], imgs[i].color.a);
+                    }
+
+                    var rawImgs = this.GetTarget().GetComponentsInChildren<UnityEngine.UI.RawImage>(includeInactive);
+                    for (int i = 0; i < rawImgs.Length; i++)
+                    {
+                        this.allRawImages.Add(rawImgs[i], rawImgs[i].color.a);
+                    }
+
+                    var texts = this.GetTarget().GetComponentsInChildren<UnityEngine.UI.Text>(includeInactive);
+                    for (int i = 0; i < texts.Length; i++)
+                    {
+                        this.allTexts.Add(texts[i], texts[i].color.a);
+                    }
+                }
+                else
+                {
+                    var img = this.GetTarget().GetComponent<UnityEngine.UI.Image>();
+                    this.allImages.Add(img, img.color.a);
+
+                    var rawImg = this.GetTarget().GetComponent<UnityEngine.UI.RawImage>();
+                    this.allRawImages.Add(rawImg, rawImg.color.a);
+
+                    var text = this.GetTarget().GetComponent<UnityEngine.UI.Text>();
+                    this.allTexts.Add(text, text.color.a);
+                }
+
+
+                #endregion
 
             }
             else
@@ -236,11 +281,38 @@ namespace ZGame.cc
 
             float t = this.trueRunTime / this.duration;
             t = t > 1 ? 1 : t;
-            Material targetMat;
-            for (int i = 0; i < this.allMaterials.Count; i++)
+
+            //Unity3D obj or Unity2D obj
+            foreach (var item in this.allMaterials)
             {
-                targetMat = this.allMaterials[i];
-                targetMat.color = new Color(targetMat.color.r, targetMat.color.g, targetMat.color.b, this.startAlphas[i] + t * (this.targetAlpha - this.startAlphas[i]));
+                var dir = this.tweenDiretion == 1 ? (this.targetAlpha - item.Value) : (item.Value - this.targetAlpha);
+                var desAlpha = (this.tweenDiretion == 1 ? item.Value : this.targetAlpha) + dir * (this.easeFunc(t));
+
+
+                item.Key.color = new Color(item.Key.color.r, item.Key.color.g, item.Key.color.b, desAlpha);
+            }
+
+
+            //UGUI obj
+            foreach (var item in this.allImages)
+            {
+                var dir = this.tweenDiretion == 1 ? (this.targetAlpha - item.Value) : (item.Value - this.targetAlpha);
+                var desAlpha = (this.tweenDiretion == 1 ? item.Value : this.targetAlpha) + dir * (this.easeFunc(t));
+                item.Key.color = new Color(item.Key.color.r, item.Key.color.g, item.Key.color.b, desAlpha);
+            }
+
+            foreach (var item in this.allRawImages)
+            {
+                var dir = this.tweenDiretion == 1 ? (this.targetAlpha - item.Value) : (item.Value - this.targetAlpha);
+                var desAlpha = (this.tweenDiretion == 1 ? item.Value : this.targetAlpha) + dir * (this.easeFunc(t));
+                item.Key.color = new Color(item.Key.color.r, item.Key.color.g, item.Key.color.b, desAlpha);
+            }
+
+            foreach (var item in this.allTexts)
+            {
+                var dir = this.tweenDiretion == 1 ? (this.targetAlpha - item.Value) : (item.Value - this.targetAlpha);
+                var desAlpha = (this.tweenDiretion == 1 ? item.Value : this.targetAlpha) + dir * (this.easeFunc(t));
+                item.Key.color = new Color(item.Key.color.r, item.Key.color.g, item.Key.color.b, desAlpha);
             }
 
         }

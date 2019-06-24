@@ -59,11 +59,11 @@ Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" tween w
 
     ``Rotate``
 ### NOT-Finished
-``AlphaTo``
+
 ### TODO
 ``RotateTo、RotateBy``
 - It relay on a singleton,not a good idea.
 - Add TimesManager's some usefull functions.
-- Compare with iTween,LeanTween,HotTween.
+- Compare with iTween,LeanTween,HotTween,DoTween.
 
 ## Any problem you get,please let me know.

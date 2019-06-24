@@ -7,19 +7,8 @@ using cc = ZGame.cc;
 
 public class Test : MonoBehaviour
 {
-
-    Vector3 originPos;
-
-
-
     cc.FiniteTimeTween alphaTween;
-    void Start()
-    {
-        this.originPos = this.gameObject.transform.position;
-        Debug.Log("originPos:" + this.originPos);
 
-
-    }
 
     private FiniteTimeTween getAlphaTween()
     {
@@ -27,12 +16,6 @@ public class Test : MonoBehaviour
     }
 
 
-
-
-    private void Reset()
-    {
-        this.gameObject.transform.position = originPos;
-    }
 
     private void OnGUI()
     {
@@ -73,12 +56,12 @@ public class Test : MonoBehaviour
 
 
 
-        if (GUI.Button(new Rect(10, 130, 70, 25), "缩放"))
+        if (GUI.Button(new Rect(10, 130, 70, 25), "alpha"))
         {
-            this.gameObject.RunTween(new ScaleTo(3, new Vector3(2, 2, 0)).SetRepeatTimes(2).OnComplete((a) =>
-            {
-                this.Reset();
-            }));
+            this.gameObject.RunTween(new AlphaTo(3, 0, true, true).SetRepeatTimes(2).OnComplete((a) =>
+              {
+
+              }).SetRepeatType(RepeatType.PingPong).SetRepeatTimes(3));
         }
 
 
