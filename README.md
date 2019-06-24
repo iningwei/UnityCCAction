@@ -2,12 +2,15 @@
 
 UnityCCTween is inspired by CocosCreator's action system which is really easy use and powerfull.
 
-''Note:This project old name is UnityCCAction,for action system in Unity3D is always means models or bones pose action then it was renamed with UnityCCTween.''
+``Note:This project old name is UnityCCAction,for action system in Unity3D is always means models or bones pose action then it was renamed with UnityCCTween.``
 
 ## Usage
-Just copy folders "Scripts/UnityCCTween" and "Plugins/Scripts" to yourself project.Then you can enjoy the fluent feeling of realizing demands about time.Such as:delay an certain time to do something or move one gameobject to target position in 2 seconds.
+``This project is made by unity-2018.3.0f2.``
 
-This project is made by unity-2018.3.0f2.
+Just copy folders ``Scripts/UnityCCTween`` and ``Plugins/Scripts`` to yourself project.Then you can enjoy the fluent feeling of realizing demands about time.
+
+Such as:delay an certain time to do something or move one gameobject to target position in 2 seconds.
+
 I have made a scene called Demo,which will let you have an clear idea of what this project is.
 
 ## Case
