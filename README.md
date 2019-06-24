@@ -1,16 +1,18 @@
-# UnityCCAction
+# UnityCCTween
 
-UnityCCAction is inspired by CocosCreator's action system which is really easy use and powerfull.
+UnityCCTween is inspired by CocosCreator's action system which is really easy use and powerfull.
+
+''Note:This project old name is UnityCCAction,for action system in Unity3D is always means models or bones pose action then it was renamed with UnityCCTween.''
 
 ## Usage
-Just copy folder "Scripts/UnityCCAction" to yourself project.Then you can enjoy the fluent feeling of realizing demands about time.Such as:delay an certain time to do something or move one gameobject to target position in 2 seconds.
+Just copy folders "Scripts/UnityCCTween" and "Plugins/Scripts" to yourself project.Then you can enjoy the fluent feeling of realizing demands about time.Such as:delay an certain time to do something or move one gameobject to target position in 2 seconds.
 
 This project is made by unity-2018.3.0f2.
 I have made a scene called Demo,which will let you have an clear idea of what this project is.
 
 ## Case
 ``` csharp
-this.gameObject.RunAction(new Sequence(
+this.gameObject.RunTween(new Sequence(
     new BezierTo(2, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0)).OnComplete((a) =>
     {
         Debug.Log("bezier finished");
@@ -30,7 +32,7 @@ this.gameObject.RunAction(new Sequence(
 
 
 ```
-The upper code run a sequence action,which was tag with 1000.The sequence action hold 4 child-actions,they will run one by one.
+The upper code run a sequence tween,which was tag with 1000.The sequence tween hold 4 child-tweens,they will run one by one.
 
 Firstly the gameobject will move to target postion (4,1,0) in 2 seconds with an trace of Bezier style.
 
@@ -38,19 +40,19 @@ After that,it will delay 1 seconds,then log "delay finished".
 
 Then,it call a function.
 
-Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" action will repeat 3 times.
+Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" tween will repeat 3 times.
 
 ## API
 ### Finished
-- Holder actions:
+- Holder tweens:
 
     ``Repeat、Sequence``
 
-- Finite actions:
+- Finite tweens:
 
     ``Repeat、Sequence、BezierTo、CallFunc、DelayTime、MoveTo、ScaleTo``
 
-- Infinite actions:
+- Infinite tweens:
 
     ``Rotate``
 ### NOT-Finished
