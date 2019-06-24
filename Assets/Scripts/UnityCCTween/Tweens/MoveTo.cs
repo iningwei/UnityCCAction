@@ -124,7 +124,20 @@ namespace ZGame.cc
             {
                 this.startPos = this.target.transform.localPosition;
             }
+            else
+            {
+                if (this.GetRepeatType() == RepeatType.Clamp)
+                {
+                    this.tweenDiretion = 1;
+                }
+                else
+                {
+                    this.tweenDiretion = -this.tweenDiretion;
+                }
+            }
             this.startTime = Time.time - this.GetTotalPausedTime();//当RepeatTimes>1的时候，会再次进入Run()函数，若这之前暂停了游戏，那么这里取得的startTime就需要减去已经暂停的总时间
+            this.trueRunTime = 0f;//补间运行时间设置为0
+
         }
 
         public override void SetDuration(float time)
@@ -192,10 +205,10 @@ namespace ZGame.cc
                 return;
             }
 
-            var dir = this.targetPos - this.startPos;
+            var dir = this.tweenDiretion == 1 ? (this.targetPos - this.startPos) : (this.startPos - this.targetPos);
             float t = this.trueRunTime / this.duration;
             t = t > 1 ? 1 : t;
-            var desPos = this.startPos + dir * (this.easeFunc(t));
+            var desPos = (this.tweenDiretion == 1 ? this.startPos : this.targetPos) + dir * (this.easeFunc(t));
             this.target.transform.localPosition = desPos;
         }
 
@@ -246,6 +259,17 @@ namespace ZGame.cc
         public override Tween OnUpdate(Action<float> callback)
         {
             this.updateCallback = callback;
+            return this;
+        }
+
+        public override RepeatType GetRepeatType()
+        {
+            return this.repeatType;
+        }
+
+        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
+        {
+            this.repeatType = repeatType;
             return this;
         }
     }

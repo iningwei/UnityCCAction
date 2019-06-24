@@ -39,7 +39,7 @@ namespace ZGame.cc
             this.isPartialFinished = false;
             this.func(this.paras);
             this.isPartialFinished = true;
-
+            this.trueRunTime = 0f;
         }
 
         public override Tween Clone()
@@ -199,6 +199,17 @@ namespace ZGame.cc
         public override Tween OnUpdate(Action<float> callback)
         {
             this.updateCallback = callback;
+            return this;
+        }
+
+        public override RepeatType GetRepeatType()
+        {
+            return this.repeatType;
+        }
+
+        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
+        {
+            Debug.LogError("you can't set repeatType for CallFunc");
             return this;
         }
     }

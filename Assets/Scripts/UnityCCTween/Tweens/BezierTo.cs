@@ -128,11 +128,23 @@ namespace ZGame.cc
         public override void Run()
         {
             this.isDone = false;
-            if (this.startPos == Vector3.zero)
+            if (this.repeatedTimes == 0)
             {
                 this.startPos = this.target.transform.localPosition;
             }
+            else
+            {
+                if (this.GetRepeatType() == RepeatType.Clamp)
+                {
+                    this.tweenDiretion = 1;
+                }
+                else
+                {
+                    this.tweenDiretion = -this.tweenDiretion;
+                }
+            }
             this.startTime = Time.time - this.GetTotalPausedTime();
+            this.trueRunTime = 0f;
         }
 
         public override void SetDuration(float time)
@@ -202,19 +214,14 @@ namespace ZGame.cc
             Vector3 pos = Vector3.zero;
             float t = this.trueRunTime / this.duration;
             t = t > 1 ? 1 : t;
-            var t1 = t;
-
             t = this.easeFunc(t);
-            var t2 = t;
-            //Debug.Log("t1:" + t1 + ", t2:" + t2);
-
             if (this.controlPoints.Length == 1)//二阶贝塞尔曲线
             {
-                pos = (1 - t) * (1 - t) * this.startPos + 2 * t * (1 - t) * this.controlPoints[0] + t * t * this.targetPos;
+                pos = (1 - t) * (1 - t) * (this.tweenDiretion == 1 ? this.startPos : this.targetPos) + 2 * t * (1 - t) * this.controlPoints[0] + t * t * (this.tweenDiretion == 1 ? this.targetPos : this.startPos);
             }
             else if (this.controlPoints.Length == 2)//三阶贝塞尔曲线
             {
-                pos = (1 - t) * (1 - t) * (1 - t) * this.startPos + 3 * t * (1 - t) * (1 - t) * this.controlPoints[0] + 3 * t * t * (1 - t) * this.controlPoints[1] + t * t * t * this.targetPos;
+                pos = (1 - t) * (1 - t) * (1 - t) * (this.tweenDiretion == 1 ? this.startPos : this.targetPos) + 3 * t * (1 - t) * (1 - t) * this.controlPoints[0] + 3 * t * t * (1 - t) * this.controlPoints[1] + t * t * t * (this.tweenDiretion == 1 ? this.targetPos : this.startPos);
             }
             else
             {
@@ -270,6 +277,17 @@ namespace ZGame.cc
         public override Tween OnUpdate(Action<float> callback)
         {
             this.updateCallback = callback;
+            return this;
+        }
+
+        public override RepeatType GetRepeatType()
+        {
+            return this.repeatType;
+        }
+
+        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
+        {
+            this.repeatType = repeatType;
             return this;
         }
     }

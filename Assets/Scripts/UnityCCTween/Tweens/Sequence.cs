@@ -133,6 +133,7 @@ namespace ZGame.cc
             this.isDone = false;
             this.curRunningTween = null;
             this.startTime = Time.time - this.GetTotalPausedTime();
+            this.trueRunTime = 0f;
             if (this.legalTweens.Count > 0)
             {
                 this.curRunningTween = this.legalTweens.Dequeue();
@@ -269,6 +270,17 @@ namespace ZGame.cc
         public override Tween OnUpdate(Action<float> callback)
         {
             this.updateCallback = callback;
+            return this;
+        }
+
+        public override RepeatType GetRepeatType()
+        {
+            return this.repeatType;
+        }
+
+        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
+        {
+            Debug.LogError("Do not set repeatType for Sequence,it will not work");
             return this;
         }
     }

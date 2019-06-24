@@ -119,11 +119,23 @@ namespace ZGame.cc
         {
             this.isDone = false;
 
-            if (this.startScale == Vector3.zero)
+            if (this.repeatedTimes == 0)
             {
                 this.startScale = this.target.transform.localScale;
             }
+            else
+            {
+                if (this.GetRepeatType() == RepeatType.Clamp)
+                {
+                    this.tweenDiretion = 1;
+                }
+                else
+                {
+                    this.tweenDiretion = -this.tweenDiretion;
+                }
+            }
             this.startTime = Time.time - this.GetTotalPausedTime();
+            this.trueRunTime = 0f;
         }
 
         public override void SetDuration(float time)
@@ -189,10 +201,10 @@ namespace ZGame.cc
                 return;
             }
 
-            var dir = this.targetScale - this.startScale;
+            var dir = this.tweenDiretion == 1 ? (this.targetScale - this.startScale) : (this.startScale - this.targetScale);
             float t = this.trueRunTime / this.duration;
             t = t > 1 ? 1 : t;
-            var desScale = this.startScale + dir * (this.easeFunc(t));
+            var desScale = (this.tweenDiretion == 1 ? this.startScale : this.targetScale) + dir * (this.easeFunc(t));
             this.target.transform.localScale = desScale;
         }
 
@@ -243,6 +255,17 @@ namespace ZGame.cc
         public override Tween OnUpdate(Action<float> callback)
         {
             this.updateCallback = callback;
+            return this;
+        }
+
+        public override RepeatType GetRepeatType()
+        {
+            return this.repeatType;
+        }
+
+        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
+        {
+            this.repeatType = repeatType;
             return this;
         }
     }

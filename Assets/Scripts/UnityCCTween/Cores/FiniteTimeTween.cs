@@ -14,9 +14,6 @@ namespace ZGame.cc
         /// 补间持续时间
         /// </summary>
         protected float duration = 0;
-       
-
-
 
         /// <summary>
         /// 1表示补间只播放一遍；2、3、4...表示补间播放指定次数; 小于1表示补间循环播放；
@@ -27,6 +24,14 @@ namespace ZGame.cc
         /// </summary>
         protected int repeatedTimes = 0;
 
+        protected RepeatType repeatType = RepeatType.Clamp;
+        public abstract RepeatType GetRepeatType();
+        public abstract FiniteTimeTween SetRepeatType(RepeatType repeatType);
+
+        /// <summary>
+        /// 1为正向，-1为反向     
+        /// </summary>
+        protected int tweenDiretion = 1;
 
         /// <summary>
         /// 获得补间持续时间，单位秒
@@ -85,6 +90,6 @@ namespace ZGame.cc
         protected object[] completeCallbackParams;
 
 
-        
+
     }
 }

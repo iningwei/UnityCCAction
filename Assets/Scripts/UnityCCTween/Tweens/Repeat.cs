@@ -5,6 +5,21 @@ using UnityEngine;
 
 namespace ZGame.cc
 {
+    public enum RepeatType
+    {
+        /// <summary>
+        /// 默认循环方式
+        /// Clamp循环方式会在补间动画完成后，若还有后续的循环次数，则会自动回到初始状；若没有循环次数了，则保持最终的状态
+        /// </summary>
+        Clamp,
+
+        /// <summary>
+        /// PingPong会在补间动画完成后，若还有循环次数，则会以当前结束的状态回到上一个状态；若没有循环次数，则保持最终的状态
+        /// </summary>
+        PingPong,
+    }
+
+
     /// <summary>
     /// Repeat is a holder tween,like Sequence.
     /// All child-tweens will be called one by one.
@@ -15,6 +30,8 @@ namespace ZGame.cc
         Queue<FiniteTimeTween> legalTweens = new Queue<FiniteTimeTween>();
         Queue<FiniteTimeTween> cycleTweens = new Queue<FiniteTimeTween>();
         FiniteTimeTween curRunningTween = null;
+
+
 
         public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
@@ -153,6 +170,7 @@ namespace ZGame.cc
             this.isDone = false;
             this.curRunningTween = null;
             this.startTime = Time.time - this.GetTotalPausedTime();
+            this.trueRunTime = 0;
 
             if (legalTweens.Count > 0)
             {
@@ -296,6 +314,16 @@ namespace ZGame.cc
         {
             this.updateCallback = callback;
             return this;
+        }
+
+        public override RepeatType GetRepeatType()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
+        {
+            throw new NotImplementedException();
         }
     }
 }

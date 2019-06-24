@@ -146,9 +146,21 @@ namespace ZGame.cc
                 }
 
             }
+            else
+            {
+                if (this.GetRepeatType() == RepeatType.Clamp)
+                {
+                    this.tweenDiretion = 1;
+                }
+                else
+                {
+                    this.tweenDiretion = -this.tweenDiretion;
+                }
+            }
 
             //Debug.Log(this.GetTarget() + "  AlphaTo 相关mat个数：" + allMaterials.Count);
             this.startTime = Time.time - this.GetTotalPausedTime();
+            this.trueRunTime = 0f;
         }
 
         public override FiniteTimeTween SetTweenName(string name)
@@ -280,6 +292,17 @@ namespace ZGame.cc
         public override Tween OnUpdate(Action<float> callback)
         {
             this.updateCallback = callback;
+            return this;
+        }
+
+        public override RepeatType GetRepeatType()
+        {
+            return this.repeatType;
+        }
+
+        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
+        {
+            this.repeatType = repeatType;
             return this;
         }
     }

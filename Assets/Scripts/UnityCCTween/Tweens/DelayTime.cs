@@ -108,6 +108,7 @@ namespace ZGame.cc
         {
             this.isDone = false;
             this.startTime = Time.time - this.GetTotalPausedTime();
+            this.trueRunTime = 0;
         }
 
         public override void SetDuration(float time)
@@ -212,6 +213,17 @@ namespace ZGame.cc
         public override Tween OnUpdate(Action<float> callback)
         {
             this.updateCallback = callback;
+            return this;
+        }
+
+        public override RepeatType GetRepeatType()
+        {
+            return this.repeatType;
+        }
+
+        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
+        {
+            Debug.LogError("Do not set repeatType to DelayTime, it will not take effect");
             return this;
         }
     }

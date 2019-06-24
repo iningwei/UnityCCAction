@@ -51,14 +51,12 @@ public class Test : MonoBehaviour
         #region 移动
         if (GUI.Button(new Rect(10, 70, 70, 25), "移动"))
         {
-            this.gameObject.RunTween(new MoveTo(3, new Vector3(2, 3, 0)).OnComplete((a) =>
-            {
-                Debug.Log("移动结束！");
-                this.Reset();
-            }).SetTag(999).SetRepeatTimes(3).OnUpdate((a) =>
-            {
-                Debug.Log("移动时间：" + a);
-            }));
+            //new MoveTo(3, new Vector3(2, 3, 0))
+            this.gameObject.RunTween(
+                new BezierTo(2, new Vector3[] { new Vector3(-3, 6) }, new Vector3(7, -1, 0)).OnComplete((a) =>
+                {
+                    Debug.Log("bezier finished");
+                }).SetTag(999).SetRepeatTimes(3).SetRepeatType(RepeatType.PingPong));
         }
         if (GUI.Button(new Rect(90, 70, 70, 25), "暂停"))
         {
