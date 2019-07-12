@@ -16,7 +16,6 @@ public class Test : MonoBehaviour
     }
 
 
-
     private void OnGUI()
     {
         if (GUI.Button(new Rect(10, 10, 80, 25), "延迟调用"))
@@ -51,11 +50,6 @@ public class Test : MonoBehaviour
         }
         #endregion
 
-
-
-
-
-
         if (GUI.Button(new Rect(10, 130, 70, 25), "alpha"))
         {
             this.gameObject.RunTween(new AlphaTo(3, 0, true, true).SetRepeatTimes(2).OnComplete((a) =>
@@ -63,7 +57,6 @@ public class Test : MonoBehaviour
 
               }).SetRepeatType(RepeatType.PingPong).SetRepeatTimes(3));
         }
-
 
         #region 旋转
         if (GUI.Button(new Rect(10, 190, 70, 25), "旋转"))
