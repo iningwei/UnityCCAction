@@ -170,7 +170,7 @@ namespace ZGame.cc
             this.isDone = false;
             this.curRunningTween = null;
             this.startTime = Time.time - this.GetTotalPausedTime();
-            this.trueRunTime = 0;
+            this.truePartialRunTime = 0;
 
             if (legalTweens.Count > 0)
             {
@@ -240,7 +240,7 @@ namespace ZGame.cc
                 }
             }
 
-            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
             this.doUpdateCallback();
             return this.IsDone();
         }
@@ -252,7 +252,7 @@ namespace ZGame.cc
                 return;
             }
 
-            this.updateCallback(this.trueRunTime);
+            this.updateCallback(this.truePartialRunTime);
         }
 
 

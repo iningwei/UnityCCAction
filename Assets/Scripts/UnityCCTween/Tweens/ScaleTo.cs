@@ -135,7 +135,7 @@ namespace ZGame.cc
                 }
             }
             this.startTime = Time.time - this.GetTotalPausedTime();
-            this.trueRunTime = 0f;
+            this.truePartialRunTime = 0f;
         }
 
         public override void SetDuration(float time)
@@ -171,8 +171,8 @@ namespace ZGame.cc
                 return false;
             }
 
-            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
-            if (this.trueRunTime > this.duration)
+            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            if (this.truePartialRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
             }
@@ -189,7 +189,7 @@ namespace ZGame.cc
                 return;
             }
 
-            this.updateCallback(this.trueRunTime);
+            this.updateCallback(this.truePartialRunTime);
         }
 
 
@@ -202,7 +202,7 @@ namespace ZGame.cc
             }
 
             var dir = this.tweenDiretion == 1 ? (this.targetScale - this.startScale) : (this.startScale - this.targetScale);
-            float t = this.trueRunTime / this.duration;
+            float t = this.truePartialRunTime / this.duration;
             t = t > 1 ? 1 : t;
             var desScale = (this.tweenDiretion == 1 ? this.startScale : this.targetScale) + dir * (this.easeFunc(t));
             this.target.transform.localScale = desScale;

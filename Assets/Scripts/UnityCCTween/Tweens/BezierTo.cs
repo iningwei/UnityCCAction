@@ -144,7 +144,7 @@ namespace ZGame.cc
                 }
             }
             this.startTime = Time.time - this.GetTotalPausedTime();
-            this.trueRunTime = 0f;
+            this.truePartialRunTime = 0f;
         }
 
         public override void SetDuration(float time)
@@ -180,8 +180,8 @@ namespace ZGame.cc
                 return false;
             }
 
-            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
-            if (this.trueRunTime > this.duration)
+            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            if (this.truePartialRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
             }
@@ -199,7 +199,7 @@ namespace ZGame.cc
                 return;
             }
 
-            this.updateCallback(this.trueRunTime);
+            this.updateCallback(this.truePartialRunTime);
         }
 
 
@@ -212,7 +212,7 @@ namespace ZGame.cc
 
 
             Vector3 pos = Vector3.zero;
-            float t = this.trueRunTime / this.duration;
+            float t = this.truePartialRunTime / this.duration;
             t = t > 1 ? 1 : t;
             t = this.easeFunc(t);
             if (this.controlPoints.Length == 1)//二阶贝塞尔曲线

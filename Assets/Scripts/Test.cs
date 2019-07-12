@@ -153,5 +153,13 @@ public class Test : MonoBehaviour
         {
             this.gameObject.RemoveAllTweens();
         }
+
+        if (GUI.Button(new Rect(10, 430, 120, 50), "RotateTo"))
+        {
+            this.gameObject.RunTween(new RotateTo(5, new Vector3(400, 0, 0)).SetRepeatTimes(2).OnUpdate((t) =>
+            {
+                Debug.Log("time:" + t + ", localEulerAngles:" + this.gameObject.transform.localEulerAngles);
+            }));
+        }
     }
 }

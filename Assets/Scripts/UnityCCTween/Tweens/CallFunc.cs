@@ -39,7 +39,7 @@ namespace ZGame.cc
             this.isPartialFinished = false;
             this.func(this.paras);
             this.isPartialFinished = true;
-            this.trueRunTime = 0f;
+            this.truePartialRunTime = 0f;
         }
 
         public override Tween Clone()
@@ -100,7 +100,7 @@ namespace ZGame.cc
             {
                 this.OnPartialTweenFinished();
             }
-            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
             this.doUpdateCallback();
             return this.IsDone();
         }
@@ -112,7 +112,7 @@ namespace ZGame.cc
                 return;
             }
 
-            this.updateCallback(this.trueRunTime);
+            this.updateCallback(this.truePartialRunTime);
         }
 
 

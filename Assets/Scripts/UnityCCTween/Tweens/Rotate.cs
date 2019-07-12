@@ -103,7 +103,7 @@ namespace ZGame.cc
                 return false;
             }
 
-            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
             this.doRotate();
             this.doUpdateCallback();
 
@@ -116,7 +116,7 @@ namespace ZGame.cc
                 return;
             }
 
-            this.updateCallback(this.trueRunTime);
+            this.updateCallback(this.truePartialRunTime);
         }
 
         private void doRotate()

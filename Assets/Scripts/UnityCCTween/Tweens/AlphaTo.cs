@@ -205,7 +205,7 @@ namespace ZGame.cc
 
             //Debug.Log(this.GetTarget() + "  AlphaTo 相关mat个数：" + allMaterials.Count);
             this.startTime = Time.time - this.GetTotalPausedTime();
-            this.trueRunTime = 0f;
+            this.truePartialRunTime = 0f;
         }
 
         public override FiniteTimeTween SetTweenName(string name)
@@ -248,8 +248,8 @@ namespace ZGame.cc
                 return false;
             }
 
-            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
-            if (this.trueRunTime > this.duration)
+            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            if (this.truePartialRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
             }
@@ -267,7 +267,7 @@ namespace ZGame.cc
                 return;
             }
 
-            this.updateCallback(this.trueRunTime);
+            this.updateCallback(this.truePartialRunTime);
         }
 
 
@@ -279,7 +279,7 @@ namespace ZGame.cc
                 return;
             }
 
-            float t = this.trueRunTime / this.duration;
+            float t = this.truePartialRunTime / this.duration;
             t = t > 1 ? 1 : t;
 
             //Unity3D obj or Unity2D obj

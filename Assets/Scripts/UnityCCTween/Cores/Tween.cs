@@ -40,7 +40,7 @@ namespace ZGame.cc
         /// <summary>
         /// 该补间真实运行时间
         /// </summary>
-        protected float trueRunTime;
+        protected float truePartialRunTime;
 
         /// <summary>
         /// 补间是否完成

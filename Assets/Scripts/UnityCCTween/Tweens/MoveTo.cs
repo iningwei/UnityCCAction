@@ -136,7 +136,7 @@ namespace ZGame.cc
                 }
             }
             this.startTime = Time.time - this.GetTotalPausedTime();//当RepeatTimes>1的时候，会再次进入Run()函数，若这之前暂停了游戏，那么这里取得的startTime就需要减去已经暂停的总时间
-            this.trueRunTime = 0f;//补间运行时间设置为0
+            this.truePartialRunTime = 0f;//补间运行时间设置为0
 
         }
 
@@ -174,9 +174,9 @@ namespace ZGame.cc
                 return false;
             }
 
-            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
 
-            if (this.trueRunTime > this.duration)
+            if (this.truePartialRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
             }
@@ -193,7 +193,7 @@ namespace ZGame.cc
             {
                 return;
             }
-            this.updateCallback(this.trueRunTime);
+            this.updateCallback(this.truePartialRunTime);
         }
 
 
@@ -206,7 +206,7 @@ namespace ZGame.cc
             }
 
             var dir = this.tweenDiretion == 1 ? (this.targetPos - this.startPos) : (this.startPos - this.targetPos);
-            float t = this.trueRunTime / this.duration;
+            float t = this.truePartialRunTime / this.duration;
             t = t > 1 ? 1 : t;
             var desPos = (this.tweenDiretion == 1 ? this.startPos : this.targetPos) + dir * (this.easeFunc(t));
             this.target.transform.localPosition = desPos;

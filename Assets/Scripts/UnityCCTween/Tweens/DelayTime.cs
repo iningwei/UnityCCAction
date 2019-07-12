@@ -108,7 +108,7 @@ namespace ZGame.cc
         {
             this.isDone = false;
             this.startTime = Time.time - this.GetTotalPausedTime();
-            this.trueRunTime = 0;
+            this.truePartialRunTime = 0;
         }
 
         public override void SetDuration(float time)
@@ -144,8 +144,8 @@ namespace ZGame.cc
             {
                 return false;
             }
-            this.trueRunTime = Time.time - startTime - this.GetTotalPausedTime();
-            if (this.trueRunTime > this.duration)
+            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            if (this.truePartialRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
             }
@@ -161,7 +161,7 @@ namespace ZGame.cc
                 return;
             }
 
-            this.updateCallback(this.trueRunTime);
+            this.updateCallback(this.truePartialRunTime);
         }
 
 
