@@ -25,7 +25,10 @@ namespace ZGame.cc
         protected int repeatedTimes = 0;
 
         protected RepeatType repeatType = RepeatType.Clamp;
-        public abstract RepeatType GetRepeatType();
+        public RepeatType GetRepeatType()
+        {
+            return this.repeatType;
+        }
         public abstract FiniteTimeTween SetRepeatType(RepeatType repeatType);
 
         /// <summary>
@@ -37,7 +40,9 @@ namespace ZGame.cc
         /// 获得补间持续时间，单位秒
         /// </summary>
         /// <returns></returns>
-        public abstract float GetDuration();
+        public float GetDuration() {
+            return this.duration;
+        }
 
         /// <summary>
         /// 设置补间持续时间，单位秒

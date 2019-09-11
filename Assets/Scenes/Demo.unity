@@ -275,6 +275,7 @@ GameObject:
   - component: {fileID: 982080656}
   - component: {fileID: 982080655}
   - component: {fileID: 982080654}
+  - component: {fileID: 982080653}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -282,6 +283,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &982080653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 982080652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a900dac3762ff9947b2c4c0d73eb2ecc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &982080654
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -312,7 +325,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c8c8d6a589519b249b4ee77e2f82a410, type: 2}
+  - {fileID: 2100000, guid: 739e515965bd874409f24109d96778a8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -524,8 +537,6 @@ GameObject:
   - component: {fileID: 1756287169}
   - component: {fileID: 1756287168}
   - component: {fileID: 1756287167}
-  - component: {fileID: 1756287171}
-  - component: {fileID: 1756287172}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -605,27 +616,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1756287171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756287166}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 812fbcf60b87d094095eedd3270a3c07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1756287172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1756287166}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be1f3b41e925ce94986b97c452d766e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

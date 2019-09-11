@@ -52,10 +52,7 @@ namespace ZGame.cc
             }
         }
 
-        public override float GetDuration()
-        {
-            return this.duration;
-        }
+   
 
         public override GameObject GetOriginalTarget()
         {
@@ -68,40 +65,9 @@ namespace ZGame.cc
 
         }
 
-        public override RepeatType GetRepeatType()
-        {
-            return this.repeatType;
-        }
+    
 
-        public override int GetTag()
-        {
-            return this.tag;
-        }
-
-        public override GameObject GetTarget()
-        {
-            return this.target;
-        }
-
-        public override float GetTotalPausedTime()
-        {
-            return this.totalPausedTime;
-        }
-
-        public override string GetTweenName()
-        {
-            return this.tweenName;
-        }
-
-        public override bool IsDone()
-        {
-            return this.isDone;
-        }
-
-        public override bool IsPause()
-        {
-            return this.isPause;
-        }
+        
 
         public override FiniteTimeTween OnComplete(Action<object[]> callback, params object[] param)
         {

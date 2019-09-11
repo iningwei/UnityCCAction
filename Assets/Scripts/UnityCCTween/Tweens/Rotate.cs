@@ -45,30 +45,17 @@ namespace ZGame.cc
             this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
         }
 
-        public override string GetTweenName()
-        {
-            return this.tweenName;
-        }
+        
 
         public override GameObject GetOriginalTarget()
         {
             throw new System.NotImplementedException();
         }
 
-        public override int GetTag()
-        {
-            return this.tag;
-        }
+     
+ 
 
-        public override GameObject GetTarget()
-        {
-            return this.target;
-        }
-
-        public override bool IsDone()
-        {
-            return this.isDone;
-        }
+     
 
         public override void Run()
         {
@@ -89,8 +76,9 @@ namespace ZGame.cc
 
         public override void SetTarget(GameObject target)
         {
-            this.target = target;
+            this.target = target;            
         }
+
 
         public override bool Update()
         {
@@ -130,10 +118,7 @@ namespace ZGame.cc
         }
 
 
-        public override bool IsPause()
-        {
-            return this.isPause;
-        }
+       
 
         public override void Pause()
         {
@@ -156,10 +141,7 @@ namespace ZGame.cc
             this.totalPausedTime += (Time.time - this.lastPausedTime);
         }
 
-        public override float GetTotalPausedTime()
-        {
-            return this.totalPausedTime;
-        }
+       
 
         public override Tween OnUpdate(Action<float> callback)
         {

@@ -87,10 +87,7 @@ namespace ZGame.cc
             this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
         }
 
-        public override float GetDuration()
-        {
-            throw new System.NotImplementedException();
-        }
+ 
 
         public override GameObject GetOriginalTarget()
         {
@@ -102,20 +99,7 @@ namespace ZGame.cc
             return this.repeatTimes;
         }
 
-        public override int GetTag()
-        {
-            return this.tag;
-        }
-
-        public override GameObject GetTarget()
-        {
-            return this.target;
-        }
-
-        public override bool IsDone()
-        {
-            return this.isDone;
-        }
+        
 
         public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
         {
@@ -215,9 +199,6 @@ namespace ZGame.cc
             {
                 item.SetTarget(this.target);
             }
-
-
-
         }
 
         public override bool Update()
@@ -264,15 +245,7 @@ namespace ZGame.cc
             return this;
         }
 
-        public override string GetTweenName()
-        {
-            return this.tweenName;
-        }
-
-        public override bool IsPause()
-        {
-            return this.isPause;
-        }
+    
 
         public override void Pause()
         {
@@ -305,10 +278,7 @@ namespace ZGame.cc
             }
         }
 
-        public override float GetTotalPausedTime()
-        {
-            return this.totalPausedTime;
-        }
+      
 
         public override Tween OnUpdate(Action<float> callback)
         {
@@ -316,10 +286,7 @@ namespace ZGame.cc
             return this;
         }
 
-        public override RepeatType GetRepeatType()
-        {
-            throw new NotImplementedException();
-        }
+     
 
         public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
         {

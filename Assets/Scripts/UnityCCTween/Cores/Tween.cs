@@ -77,14 +77,20 @@ namespace ZGame.cc
         /// 补间是否完成，true 是， false 否
         /// </summary>
         /// <returns></returns>
-        public abstract bool IsDone();
+        public bool IsDone()
+        {
+            return this.isDone;
+        }
 
 
         /// <summary>
         /// 是否在暂停状态
         /// </summary>
         /// <returns></returns>
-        public abstract bool IsPause();
+        public bool IsPause()
+        {
+            return this.isPause;
+        }
 
         /// <summary>
         /// 暂停补间
@@ -95,21 +101,33 @@ namespace ZGame.cc
         /// </summary>
         public abstract void Resume();
 
-        public abstract float GetTotalPausedTime();
+        public float GetTotalPausedTime()
+        {
+            return this.totalPausedTime;
+        }
 
         /// <summary>
         /// Get the tag of an tween
         /// </summary>
         /// <returns></returns>
-        public abstract int GetTag();
+        public int GetTag()
+        {
+            return this.tag;
+        }
 
-        public abstract string GetTweenName();
+        public string GetTweenName()
+        {
+            return this.tweenName;
+        }
 
         /// <summary>
         /// 获得执行当前补间的目标节点
         /// </summary>
         /// <returns></returns>
-        public abstract GameObject GetTarget();
+        public GameObject GetTarget()
+        {
+            return this.target;
+        }
 
         /// <summary>
         /// 为补间设置执行的目标节点
