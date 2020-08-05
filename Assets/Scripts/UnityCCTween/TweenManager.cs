@@ -8,7 +8,7 @@ namespace ZGame.cc
 {
     public class TweenManager : SingletonMonoBehaviour<TweenManager>
     {
-        Dictionary<GameObject, List<TweenComp>> dicOfTweens = new Dictionary<GameObject, List<TweenComp>>();
+        Dictionary<GameObject, List<TweenComp>> dicOfObjTweens = new Dictionary<GameObject, List<TweenComp>>();
 
 
         public void AddTween(GameObject target, Tween tween)
@@ -40,9 +40,9 @@ namespace ZGame.cc
 
         bool existSameTween(GameObject target, Tween tween)
         {
-            if (dicOfTweens.ContainsKey(target))
+            if (dicOfObjTweens.ContainsKey(target))
             {
-                var tweenComps = dicOfTweens[target];
+                var tweenComps = dicOfObjTweens[target];
                 for (int i = 0; i < tweenComps.Count; i++)
                 {
                     if (tweenComps[i].tweenTag == tween.GetTag())
@@ -56,11 +56,11 @@ namespace ZGame.cc
         }
         bool addTweenComp(GameObject target, TweenComp tweenComp)
         {
-            if (!dicOfTweens.ContainsKey(target))
+            if (!dicOfObjTweens.ContainsKey(target))
             {
-                dicOfTweens[target] = new List<TweenComp>();
+                dicOfObjTweens[target] = new List<TweenComp>();
             }
-            var tweenComps = dicOfTweens[target];
+            var tweenComps = dicOfObjTweens[target];
             for (int i = 0; i < tweenComps.Count; i++)
             {
                 if (tweenComps[i].GetTween() == tweenComp.GetTween())
@@ -78,7 +78,7 @@ namespace ZGame.cc
         /// </summary>
         public void RemoveAllTweens()
         {
-            List<GameObject> allKeys = this.dicOfTweens.Keys.ToList();
+            List<GameObject> allKeys = this.dicOfObjTweens.Keys.ToList();
             foreach (var item in allKeys)
             {
                 this.RemoveAllTweensFromTarget(item);
@@ -93,20 +93,20 @@ namespace ZGame.cc
                 Debug.LogError("error, target is null");
                 return false;
             }
-            if (!dicOfTweens.ContainsKey(target))
+            if (!dicOfObjTweens.ContainsKey(target))
             {
                 Debug.LogError("error, dicOfTweens not contains target");
                 return false;
             }
 
-            var tweenComps = dicOfTweens[target];
+            var tweenComps = dicOfObjTweens[target];
             TweenComp tweenComp = null;
             for (int i = tweenComps.Count - 1; i >= 0; i--)
             {
                 tweenComp = tweenComps[i];
                 GameObject.Destroy(tweenComp);
             }
-            dicOfTweens.Remove(target);
+            dicOfObjTweens.Remove(target);
             return true;
         }
 
@@ -128,12 +128,12 @@ namespace ZGame.cc
                 Debug.LogError("tween is null");
                 return false;
             }
-            if (!dicOfTweens.ContainsKey(target))
+            if (!dicOfObjTweens.ContainsKey(target))
             {
                 Debug.LogError("error, dicOfTweenss not contain target");
                 return false;
             }
-            var tweenComps = dicOfTweens[target];
+            var tweenComps = dicOfObjTweens[target];
             TweenComp tweenComp = null;
             for (int i = tweenComps.Count - 1; i >= 0; i--)
             {
@@ -165,12 +165,12 @@ namespace ZGame.cc
                 return false;
             }
 
-            if (!dicOfTweens.ContainsKey(target))
+            if (!dicOfObjTweens.ContainsKey(target))
             {
                 Debug.LogWarning("error, dicOfTweens not contain target");
                 return false;
             }
-            var tweenComps = dicOfTweens[target];
+            var tweenComps = dicOfObjTweens[target];
             TweenComp tweenComp = null;
             for (int i = tweenComps.Count - 1; i >= 0; i--)
             {
@@ -197,12 +197,12 @@ namespace ZGame.cc
                 return null;
             }
 
-            if (!dicOfTweens.ContainsKey(target))
+            if (!dicOfObjTweens.ContainsKey(target))
             {
                 Debug.LogWarning("error, dicOfTweens not contain target");
                 return null;
             }
-            var tweenComps = dicOfTweens[target];
+            var tweenComps = dicOfObjTweens[target];
             TweenComp tweenComp = null;
             for (int i = tweenComps.Count - 1; i >= 0; i--)
             {
