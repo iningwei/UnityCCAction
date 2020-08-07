@@ -69,8 +69,6 @@ Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" tween w
 
 # TimerTween
 ## TODO
-- Implement ease function
-- Implement Repeat()
 - Implement Timer id
 
 # Any problem you get,please let me know.

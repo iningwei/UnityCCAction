@@ -19,7 +19,7 @@ namespace ZGame.TimerTween
         private bool _hasAutoDestroyOwner;
         private float _startTime;
         private float _lastUpdateTime;
-
+        private int loopedCount;
         private Func<float, float> easeFunc = EaseTool.Get(Ease.Linear);
 
 
@@ -31,7 +31,7 @@ namespace ZGame.TimerTween
 
         public float duration { get; private set; }
 
-        public bool isLooped { get; set; }
+        public int loop { get; private set; }
 
         public bool isCompleted { get; private set; }
 
@@ -79,12 +79,12 @@ namespace ZGame.TimerTween
         }
 
 
-        public Timer(float duration, Action onComplete = null, Action<float> onUpdate = null, bool isLooped = false, bool useRealTime = false, MonoBehaviour autoDestroyOwner = null)
+        public Timer(float duration, Action onComplete = null, Action<float> onUpdate = null, int loop = 1, bool useRealTime = false, MonoBehaviour autoDestroyOwner = null)
         {
             this.duration = duration;
             this._onComplete = onComplete;
             this._onUpdate = onUpdate;
-            this.isLooped = isLooped;
+            this.loop = loop;
             this.useRealTime = useRealTime;
             this._autoDestroyOwner = autoDestroyOwner;
             this._hasAutoDestroyOwner = autoDestroyOwner != null;
@@ -109,9 +109,23 @@ namespace ZGame.TimerTween
             this._onUpdate = onUpdate;
             return this;
         }
-        public Timer SetLoop(bool isLooped)
+
+
+        /// <summary>
+        /// 0表示一直循环播放
+        /// >0表示循环播放对应次数
+        /// <0为非法输入
+        /// </summary>
+        /// <param name="loop"></param>
+        /// <returns></returns>
+        public Timer SetLoop(int loop)
         {
-            this.isLooped = isLooped;
+            if (loop < 0)
+            {
+                Debug.LogError("loop can not less than 0, we force set it to 1");
+                loop = 1;
+            }
+            this.loop = loop;
             return this;
         }
         public Timer SetUseRealTime(bool useRealTime)
@@ -156,9 +170,25 @@ namespace ZGame.TimerTween
                 {
                     this._onComplete();
                 }
-                if (this.isLooped)
+                loopedCount++;
+                if (loop != 1)
                 {
-                    this._startTime = this.GetWorldTime();
+                    if (loop == 0)
+                    {
+                        this._startTime = this.GetWorldTime();
+                    }
+                    else
+                    {
+                        if (loopedCount < loop)
+                        {
+                            this._startTime = this.GetWorldTime();
+                        }
+                        else
+                        {
+                            this.isCompleted = true;
+                        }
+                    }
+
                 }
                 else
                 {

@@ -75,10 +75,52 @@ namespace ZGame.TimerTween
         }
 
 
-        //public static Timer Repeat(float interval, int count, Func<bool> repeatCallback)
-        //{
+        public static Timer Repeat(float interval, Func<bool> repeatCallback)
+        {
+            Timer timer = new Timer(interval);
+            timer.SetLoop(0);
+            timer.SetOnComplete(() =>
+            {
+                if (repeatCallback != null)
+                {
+                    bool r = repeatCallback();
+                    if (!r)
+                    {
+                        timer.Cancel();
+                    }
+                }
+            });
 
-        //}
+            TimerManager.Instance.RegisterTimer(timer);
+            return timer;
+        }
+
+        public static Timer RepeatCount(float interval, int count, Func<bool> repeatCallback)
+        {
+            if (count < 0)
+            {
+                UnityEngine.Debug.LogError("error, count<0");
+                return null;
+            }
+            Timer timer = new Timer(interval);
+            timer.SetLoop(count);
+            timer.SetOnComplete(() =>
+            {
+                if (repeatCallback != null)
+                {
+                    bool r = repeatCallback();
+                    if (!r)
+                    {
+                        timer.Cancel();
+                    }
+                }
+            });
+
+            TimerManager.Instance.RegisterTimer(timer);
+            return timer;
+        }
+
+
 
     }
 }

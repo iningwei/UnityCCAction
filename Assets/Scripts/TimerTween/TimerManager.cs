@@ -43,6 +43,19 @@ namespace ZGame.TimerTween
             }
         }
 
+        public void CancelTimer(Timer timer)
+        {
+            if (this._timersToAdd.Contains(timer))
+            {
+                this._timersToAdd.Remove(timer);
+            }
+            if (this._timers.Contains(timer))
+            {
+                this._timers.Remove(timer);
+            }
+            timer.Cancel();            
+        }
+
         private void Update()
         {
             this.UpdateAllTimers();
