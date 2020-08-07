@@ -1,3 +1,5 @@
+This project use Unity2019.4.0f1(Android)
+
 # UnityCCTween
 
 UnityCCTween is inspired by CocosCreator's action system which is really easy use and powerfull.
@@ -65,4 +67,10 @@ Then,it move to (-2,-2,0) in an easing style of inback.And this "MoveTo" tween w
 - Add TimesManager's some usefull functions.
 - Compare with iTween,LeanTween,HotTween,DoTween.
 
-## Any problem you get,please let me know.
+# TimerTween
+## TODO
+- Implement ease function
+- Implement Repeat()
+- Implement Timer id
+
+# Any problem you get,please let me know.

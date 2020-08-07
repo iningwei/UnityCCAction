@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ZGame;
 using ZGame.cc;
 using cc = ZGame.cc;
 
