@@ -120,7 +120,14 @@ namespace ZGame.TimerTween
             return timer;
         }
 
-
+        public static void Cancel(int id)
+        {
+            if (id > 0)
+            {
+                Timer timer = TimerManager.Instance.GetTimer(id);
+                timer.Cancel();
+            }
+        }
 
     }
 }
