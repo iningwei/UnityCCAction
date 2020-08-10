@@ -9,11 +9,20 @@ namespace ZGame.TimerTween
 {
     class TimerManager : SingletonMonoBehaviour<TimerManager>
     {
+        private int id = 0;
         private List<Timer> _timers = new List<Timer>();
 
         private List<Timer> _timersToAdd = new List<Timer>();
         public void RegisterTimer(Timer timer)
         {
+            TimerGlobal.Counter++;
+            if (GetTimer(TimerGlobal.Counter) != null)
+            {
+                Debug.LogError("can not register timer, for duplicated id:" + TimerGlobal.Counter);
+                return;
+            }
+
+            timer.SetId(TimerGlobal.Counter);
             this._timersToAdd.Add(timer);
         }
         public void CancelAllTimers()
@@ -53,7 +62,36 @@ namespace ZGame.TimerTween
             {
                 this._timers.Remove(timer);
             }
-            timer.Cancel();            
+            timer.Cancel();
+        }
+
+        public Timer GetTimer(int id)
+        {
+            foreach (Timer timer in this._timersToAdd)
+            {
+                if (timer.id == id)
+                {
+
+                    return timer;
+                }
+            }
+            foreach (Timer timer in this._timers)
+            {
+                if (timer.id == id)
+                {
+                    return timer;
+                }
+            }
+            return null;
+        }
+
+        public void CancelTimer(int id)
+        {
+            Timer timer = GetTimer(id);
+            if (timer != null)
+            {
+                timer.Cancel();
+            }
         }
 
         private void Update()

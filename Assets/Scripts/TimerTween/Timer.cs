@@ -19,8 +19,9 @@ namespace ZGame.TimerTween
         private bool _hasAutoDestroyOwner;
         private float _startTime;
         private float _lastUpdateTime;
-        private int loopedCount;
+        private int loopedCount;//Already played count
         private Func<float, float> easeFunc = EaseTool.Get(Ease.Linear);
+
 
 
         private bool isOwnerDestroyed
@@ -36,6 +37,10 @@ namespace ZGame.TimerTween
         public bool isCompleted { get; private set; }
 
         public bool useRealTime { get; private set; }
+        //unique id,you can get timer or cancel timer by it
+        public int id { get; private set; }
+        //string tag, it is used for you to rectify timer
+        public string tag { get; private set; }
 
         public bool isPaused
         {
@@ -51,6 +56,7 @@ namespace ZGame.TimerTween
         {
             get { return this.isCompleted || this.isCancelled || this.isOwnerDestroyed; }
         }
+
 
 
 
@@ -90,6 +96,10 @@ namespace ZGame.TimerTween
             this._hasAutoDestroyOwner = autoDestroyOwner != null;
             this._startTime = this.GetWorldTime();
             this._lastUpdateTime = this._startTime;
+
+
+
+
         }
         public Timer SetOnComplete(Action onComplete)
         {
@@ -143,7 +153,15 @@ namespace ZGame.TimerTween
             easeFunc = EaseTool.Get(ease);
             return this;
         }
-
+        public Timer SetTag(string tag)
+        {
+            this.tag = tag;
+            return this;
+        }
+        public void SetId(int id)
+        {
+            this.id = id;
+        }
 
 
         public void Update()
