@@ -129,5 +129,23 @@ namespace ZGame.TimerTween
             }
         }
 
+        public static void Pause(int id)
+        {
+            if (id > 0)
+            {
+                Timer timer = TimerManager.Instance.GetTimer(id);
+                timer.Pause();
+            }
+        }
+
+        public static void Resume(int id)
+        {
+            if (id > 0)
+            {
+                Timer timer = TimerManager.Instance.GetTimer(id);
+                timer.Pause();
+            }
+        }
+
     }
 }
