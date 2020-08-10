@@ -11,15 +11,15 @@ namespace ZGame.TimerTween
     class Timer
     {
  
-        private Action _onComplete;
-        private Action<float> _onUpdate;
+        private Action onComplete;
+        private Action<float> onUpdate;
 
-        private float? _timeElapsedBeforePause;
-        private float? _timeElapsedBeforeCancel;
-        private MonoBehaviour _autoDestroyOwner;
-        private bool _hasAutoDestroyOwner;
-        private float _startTime;
-        private float _lastUpdateTime;
+        private float? timeElapsedBeforePause;
+        private float? timeElapsedBeforeCancel;
+        private MonoBehaviour autoDestroyOwner;
+        private bool hasAutoDestroyOwner;
+        private float startTime;
+        private float lastUpdateTime;
         private int loopedCount;//Already played count
         private Func<float, float> easeFunc = EaseTool.Get(Ease.Linear);
 
@@ -27,95 +27,95 @@ namespace ZGame.TimerTween
 
         private bool isOwnerDestroyed
         {
-            get { return this._hasAutoDestroyOwner && this._autoDestroyOwner == null; }
+            get { return this.hasAutoDestroyOwner && this.autoDestroyOwner == null; }
         }
 
 
-        public float duration { get; private set; }
+        public float Duration { get; private set; }
 
-        public int loop { get; private set; }
+        public int Loop { get; private set; }
 
-        public bool isCompleted { get; private set; }
+        public bool IsCompleted { get; private set; }
 
-        public bool useRealTime { get; private set; }
+        public bool UseRealTime { get; private set; }
         //unique id,you can get timer or cancel timer by it
-        public int id { get; private set; }
+        public int ID { get; private set; }
         //string tag, it is used for you to rectify timer
-        public string tag { get; private set; }
+        public string Tag { get; private set; }
 
-        public bool isPaused
+        public bool IsPaused
         {
-            get { return this._timeElapsedBeforePause.HasValue; }
+            get { return this.timeElapsedBeforePause.HasValue; }
         }
 
-        public bool isCancelled
+        public bool IsCancelled
         {
-            get { return this._timeElapsedBeforeCancel.HasValue; }
+            get { return this.timeElapsedBeforeCancel.HasValue; }
         }
 
-        public bool isDone
+        public bool IsDone
         {
-            get { return this.isCompleted || this.isCancelled || this.isOwnerDestroyed; }
+            get { return this.IsCompleted || this.IsCancelled || this.isOwnerDestroyed; }
         }
 
 
 
 
-        private float GetWorldTime()
+        private float getWorldTime()
         {
-            return this.useRealTime ? Time.realtimeSinceStartup : Time.time;
+            return this.UseRealTime ? Time.realtimeSinceStartup : Time.time;
         }
-        private float GetFireTime()
+        private float getFireTime()
         {
-            return this._startTime + this.duration;
+            return this.startTime + this.Duration;
         }
-        private float GetTimeDelta()
+        private float getTimeDelta()
         {
-            return this.GetWorldTime() - this._lastUpdateTime;
+            return this.getWorldTime() - this.lastUpdateTime;
         }
 
-        public float GetTimeElapsed()
+        public float getTimeElapsed()
         {
-            if (this.isCompleted || this.GetWorldTime() >= this.GetFireTime())
+            if (this.IsCompleted || this.getWorldTime() >= this.getFireTime())
             {
-                return this.duration;
+                return this.Duration;
             }
-            return this._timeElapsedBeforeCancel ??
-                this._timeElapsedBeforePause ??
-                this.GetWorldTime() - this._startTime;
+            return this.timeElapsedBeforeCancel ??
+                this.timeElapsedBeforePause ??
+                this.getWorldTime() - this.startTime;
         }
 
 
         public Timer(float duration,   Action onComplete = null, Action<float> onUpdate = null, int loop = 1, bool useRealTime = false, MonoBehaviour autoDestroyOwner = null)
         {
-            this.duration = duration;             
-            this._onComplete = onComplete;
-            this._onUpdate = onUpdate;
-            this.loop = loop;
-            this.useRealTime = useRealTime;
-            this._autoDestroyOwner = autoDestroyOwner;
-            this._hasAutoDestroyOwner = autoDestroyOwner != null;
-            this._startTime = this.GetWorldTime();
-            this._lastUpdateTime = this._startTime;
+            this.Duration = duration;             
+            this.onComplete = onComplete;
+            this.onUpdate = onUpdate;
+            this.Loop = loop;
+            this.UseRealTime = useRealTime;
+            this.autoDestroyOwner = autoDestroyOwner;
+            this.hasAutoDestroyOwner = autoDestroyOwner != null;
+            this.startTime = this.getWorldTime();
+            this.lastUpdateTime = this.startTime;
         }
 
         
         public Timer SetOnComplete(Action onComplete)
         {
-            if (this._onComplete != null)
+            if (this.onComplete != null)
             {
                 Debug.LogWarning("Timer already has onComplete function,you will override it");
             }
-            this._onComplete = onComplete;
+            this.onComplete = onComplete;
             return this;
         }
         public Timer SetOnUpdate(Action<float> onUpdate)
         {
-            if (this._onUpdate != null)
+            if (this.onUpdate != null)
             {
                 Debug.LogWarning("Timer already has onUpdate function,you will override it");
             }
-            this._onUpdate = onUpdate;
+            this.onUpdate = onUpdate;
             return this;
         }
 
@@ -136,18 +136,18 @@ namespace ZGame.TimerTween
                 Debug.LogError("loop can not less than 0, we force set it to 1");
                 loop = 1;
             }
-            this.loop = loop;
+            this.Loop = loop;
             return this;
         }
 
         public Timer SetUseRealTime(bool useRealTime)
         {
-            this.useRealTime = useRealTime;
+            this.UseRealTime = useRealTime;
             return this;
         }
         public Timer SetOwner(MonoBehaviour owner)
         {
-            this._autoDestroyOwner = owner;
+            this.autoDestroyOwner = owner;
             return this;
         }
         public Timer SetEase(Ease ease)
@@ -157,108 +157,105 @@ namespace ZGame.TimerTween
         }
         public Timer SetTag(string tag)
         {
-            this.tag = tag;
+            this.Tag = tag;
             return this;
         }
         public void SetId(int id)
         {
-            this.id = id;
+            this.ID = id;
         }
 
 
         public void Update()
         {
-            if (this.isDone)
+            if (this.IsDone)
             {
                 return;
             }
-            if (this.isPaused)
+            if (this.IsPaused)
             {
-                this._startTime += this.GetTimeDelta();
-                this._lastUpdateTime = this.GetWorldTime();
+                this.startTime += this.getTimeDelta();
+                this.lastUpdateTime = this.getWorldTime();
                 return;
             }
 
-            this._lastUpdateTime = this.GetWorldTime();
-            if (this._onUpdate != null)
+            this.lastUpdateTime = this.getWorldTime();
+            if (this.onUpdate != null)
             {
-                this._onUpdate(this.easeFunc(this.GetTimeElapsed() / this.duration));
+                this.onUpdate(this.easeFunc(this.getTimeElapsed() / this.Duration));
             }
-            if (this.GetWorldTime() >= this.GetFireTime())
+            if (this.getWorldTime() >= this.getFireTime())
             {
-                if (this._onComplete != null)
+                if (this.onComplete != null)
                 {
-                    this._onComplete();
+                    this.onComplete();
                 }
                 loopedCount++;
-                if (loop != 1)
+                if (Loop != 1)
                 {
-                    if (loop == 0)
+                    if (Loop == 0)
                     {
-                        this._startTime = this.GetWorldTime();
+                        this.startTime = this.getWorldTime();
                     }
                     else
                     {
-                        if (loopedCount < loop)
+                        if (loopedCount < Loop)
                         {
-                            this._startTime = this.GetWorldTime();
+                            this.startTime = this.getWorldTime();
                         }
                         else
                         {
-                            this.isCompleted = true;
+                            this.IsCompleted = true;
                         }
                     }
 
                 }
                 else
                 {
-                    this.isCompleted = true;
+                    this.IsCompleted = true;
                 }
             }
         }
 
         public void Cancel()
         {
-            if (this.isDone)
+            if (this.IsDone)
             {
                 return;
             }
-            this._timeElapsedBeforeCancel = this.GetTimeElapsed();
-            this._timeElapsedBeforePause = null;
+            this.timeElapsedBeforeCancel = this.getTimeElapsed();
+            this.timeElapsedBeforePause = null;
         }
         public void Pause()
         {
-            if (this.isPaused || this.isDone)
+            if (this.IsPaused || this.IsDone)
             {
                 return;
             }
-            this._timeElapsedBeforePause = this.GetTimeElapsed();
+            this.timeElapsedBeforePause = this.getTimeElapsed();
         }
 
         public void Resume()
         {
-            if (!this.isPaused || this.isDone)
+            if (!this.IsPaused || this.IsDone)
             {
                 return;
             }
-            this._timeElapsedBeforePause = null;
+            this.timeElapsedBeforePause = null;
         }
 
         public float GetTimeRemaining()
         {
-            return this.duration - this.GetTimeElapsed();
+            return this.Duration - this.getTimeElapsed();
         }
 
         public float GetRatioComplete()
         {
-            return this.GetTimeElapsed() / this.duration;
+            return this.getTimeElapsed() / this.Duration;
         }
         public float GetRatioRemaining()
         {
-            return this.GetTimeRemaining() / this.duration;
+            return this.GetTimeRemaining() / this.Duration;
         }
-
-
-
     }
 }

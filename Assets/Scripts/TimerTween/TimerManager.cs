@@ -8,11 +8,10 @@ using UnityEngine;
 namespace ZGame.TimerTween
 {
     class TimerManager : SingletonMonoBehaviour<TimerManager>
-    {
-        private int id = 0;
-        private List<Timer> _timers = new List<Timer>();
+    {        
+        private List<Timer> timers = new List<Timer>();
 
-        private List<Timer> _timersToAdd = new List<Timer>();
+        private List<Timer> timersToAdd = new List<Timer>();
 
 
         public void RegisterTimer(Timer timer)
@@ -25,22 +24,23 @@ namespace ZGame.TimerTween
             }
 
             timer.SetId(TimerGlobal.Counter);
-            this._timersToAdd.Add(timer);
+            this.timersToAdd.Add(timer);
         }
+
         public void CancelAllTimers()
         {
-            foreach (Timer timer in this._timers)
+            foreach (Timer timer in this.timers)
             {
                 timer.Cancel();
             }
 
-            this._timers = new List<Timer>();
-            this._timersToAdd = new List<Timer>();
+            this.timers = new List<Timer>();
+            this.timersToAdd = new List<Timer>();
         }
 
         public void PauseAllTimers()
         {
-            foreach (Timer timer in _timers)
+            foreach (Timer timer in timers)
             {
                 timer.Pause();
             }
@@ -48,7 +48,7 @@ namespace ZGame.TimerTween
 
         public void ResumeAllTimers()
         {
-            foreach (Timer timer in _timers)
+            foreach (Timer timer in timers)
             {
                 timer.Resume();
             }
@@ -56,30 +56,30 @@ namespace ZGame.TimerTween
 
         public void CancelTimer(Timer timer)
         {
-            if (this._timersToAdd.Contains(timer))
+            if (this.timersToAdd.Contains(timer))
             {
-                this._timersToAdd.Remove(timer);
+                this.timersToAdd.Remove(timer);
             }
-            if (this._timers.Contains(timer))
+            if (this.timers.Contains(timer))
             {
-                this._timers.Remove(timer);
+                this.timers.Remove(timer);
             }
             timer.Cancel();
         }
 
         public Timer GetTimer(int id)
         {
-            foreach (Timer timer in this._timersToAdd)
+            foreach (Timer timer in this.timersToAdd)
             {
-                if (timer.id == id)
+                if (timer.ID == id)
                 {
 
                     return timer;
                 }
             }
-            foreach (Timer timer in this._timers)
+            foreach (Timer timer in this.timers)
             {
-                if (timer.id == id)
+                if (timer.ID == id)
                 {
                     return timer;
                 }
@@ -98,25 +98,22 @@ namespace ZGame.TimerTween
 
         private void Update()
         {
-            this.UpdateAllTimers();
+            this.updateAllTimers();
         }
-        void UpdateAllTimers()
+        void updateAllTimers()
         {
-            if (this._timersToAdd.Count > 0)
+            if (this.timersToAdd.Count > 0)
             {
-                this._timers.AddRange(this._timersToAdd);
-                this._timersToAdd.Clear();
+                this.timers.AddRange(this.timersToAdd);
+                this.timersToAdd.Clear();
             }
-            foreach (Timer timer in _timers)
+            foreach (Timer timer in timers)
             {
                 timer.Update();
             }
 
-            this._timers.RemoveAll(t => t.isDone);
+            this.timers.RemoveAll(t => t.IsDone);
 
         }
-
-
-
     }
 }
