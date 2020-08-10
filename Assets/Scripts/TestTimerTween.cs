@@ -17,7 +17,7 @@ class TestTimerTween : MonoBehaviour
     {
         Application.targetFrameRate = 30;
         y = obj.transform.position.y;
-        z = obj.transform.position.z;
+        z = obj.transform.position.z; 
     }
     private void Start()
     {

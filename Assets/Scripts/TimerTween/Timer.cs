@@ -10,6 +10,7 @@ namespace ZGame.TimerTween
 {
     class Timer
     {
+ 
         private Action _onComplete;
         private Action<float> _onUpdate;
 
@@ -85,9 +86,9 @@ namespace ZGame.TimerTween
         }
 
 
-        public Timer(float duration, Action onComplete = null, Action<float> onUpdate = null, int loop = 1, bool useRealTime = false, MonoBehaviour autoDestroyOwner = null)
+        public Timer(float duration,   Action onComplete = null, Action<float> onUpdate = null, int loop = 1, bool useRealTime = false, MonoBehaviour autoDestroyOwner = null)
         {
-            this.duration = duration;
+            this.duration = duration;             
             this._onComplete = onComplete;
             this._onUpdate = onUpdate;
             this.loop = loop;
@@ -96,11 +97,9 @@ namespace ZGame.TimerTween
             this._hasAutoDestroyOwner = autoDestroyOwner != null;
             this._startTime = this.GetWorldTime();
             this._lastUpdateTime = this._startTime;
-
-
-
-
         }
+
+        
         public Timer SetOnComplete(Action onComplete)
         {
             if (this._onComplete != null)
@@ -140,6 +139,7 @@ namespace ZGame.TimerTween
             this.loop = loop;
             return this;
         }
+
         public Timer SetUseRealTime(bool useRealTime)
         {
             this.useRealTime = useRealTime;

@@ -13,6 +13,8 @@ namespace ZGame.TimerTween
         private List<Timer> _timers = new List<Timer>();
 
         private List<Timer> _timersToAdd = new List<Timer>();
+
+
         public void RegisterTimer(Timer timer)
         {
             TimerGlobal.Counter++;
