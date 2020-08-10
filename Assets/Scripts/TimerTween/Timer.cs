@@ -122,11 +122,13 @@ namespace ZGame.TimerTween
 
 
         /// <summary>
-        /// 0表示一直循环播放
-        /// >0表示循环播放对应次数
-        /// <0为非法输入
+
         /// </summary>
-        /// <param name="loop"></param>
+        /// <param name="loop">
+        /// 0 means loop forever
+        /// >0 means loop play specific times
+        /// <0 is invalid input
+        /// </param>
         /// <returns></returns>
         public Timer SetLoop(int loop)
         {
