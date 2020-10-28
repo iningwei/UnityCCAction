@@ -112,7 +112,7 @@ public class Test : MonoBehaviour
         #endregion
 
         #region 重复序列
-        if (GUI.Button(new Rect(10, 310, 70, 25), "重复序列"))
+        if (GUI.Button(new Rect(10, 310, 70, 25), "repeated tween"))
         {
             this.gameObject.RunTween(new Repeat(2,
                 new BezierTo(5, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0)).OnComplete((a) =>
@@ -133,27 +133,27 @@ public class Test : MonoBehaviour
             }).SetRepeatTimes(3)).SetTag(2000));
         }
 
-        if (GUI.Button(new Rect(90, 310, 70, 25), "暂停"))
+        if (GUI.Button(new Rect(90, 310, 70, 25), "pause"))
         {
             this.gameObject.PauseTween(2000);
         }
-        if (GUI.Button(new Rect(170, 310, 70, 25), "恢复"))
+        if (GUI.Button(new Rect(170, 310, 70, 25), "resume"))
         {
             this.gameObject.ResumeTween(2000);
         }
         #endregion
 
-        if (GUI.Button(new Rect(10, 370, 120, 25), "移除所有Tween"))
+        if (GUI.Button(new Rect(10, 370, 120, 25), "remove all Tweens"))
         {
             this.gameObject.RemoveAllTweens();
         }
 
         if (GUI.Button(new Rect(10, 430, 120, 50), "RotateTo"))
         {
-            this.gameObject.RunTween(new RotateTo(5, new Vector3(400, 0, 0)).SetRepeatTimes(2).OnUpdate((t) =>
-            {
-                Debug.Log("time:" + t + ", localEulerAngles:" + this.gameObject.transform.localEulerAngles);
-            }));
+            this.gameObject.RunTween(new RotateTo(5, new Vector3(400, 0, 0), Space.Self).SetRepeatTimes(2).OnUpdate((t) =>
+             {
+                 Debug.Log("time:" + t + ", localEulerAngles:" + this.gameObject.transform.localEulerAngles);
+             }));
         }
     }
 }

@@ -43,10 +43,7 @@ namespace ZGame.cc
             this.SetTweenName("BezierTo");
 
         }
-        public override Tween Clone()
-        {
-            throw new NotImplementedException();
-        }
+   
 
         public override FiniteTimeTween Delay(float time)
         {
@@ -67,15 +64,12 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetHolder(), this));
         }
 
     
 
-        public override GameObject GetOriginalTarget()
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public override int GetRepeatTimes()
         {
@@ -114,7 +108,7 @@ namespace ZGame.cc
             this.isDone = false;
             if (this.repeatedTimes == 0)
             {
-                this.startPos = this.target.transform.localPosition;
+                this.startPos = this.holder.transform.localPosition;
             }
             else
             {
@@ -148,9 +142,9 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void SetTarget(GameObject target)
+        public override void SetHolder(GameObject target)
         {
-            this.target = target;
+            this.holder = target;
         }
 
         public override bool Update()
@@ -212,7 +206,7 @@ namespace ZGame.cc
                 Debug.LogError("some thing wrong");
             }
 
-            this.target.transform.localPosition = pos;
+            this.holder.transform.localPosition = pos;
         }
 
         public override FiniteTimeTween SetTweenName(string name)

@@ -59,10 +59,7 @@ namespace ZGame.cc
 
             this.SetTweenName("Repeat");
         }
-        public override Tween Clone()
-        {
-            throw new System.NotImplementedException();
-        }
+      
 
         public override FiniteTimeTween Delay(float time)
         {
@@ -84,15 +81,12 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetHolder(), this));
         }
 
  
 
-        public override GameObject GetOriginalTarget()
-        {
-            throw new System.NotImplementedException();
-        }
+       
 
         public override int GetRepeatTimes()
         {
@@ -190,14 +184,14 @@ namespace ZGame.cc
 
         }
 
-        public override void SetTarget(GameObject target)
+        public override void SetHolder(GameObject target)
         {
-            this.target = target;
+            this.holder = target;
 
             //set target for child-tweens
             foreach (var item in this.tweens)
             {
-                item.SetTarget(this.target);
+                item.SetHolder(this.holder);
             }
         }
 

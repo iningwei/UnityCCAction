@@ -5,8 +5,6 @@ using UnityEngine;
 
 namespace ZGame.cc
 {
-
-
     public class TweenFinishedEventArgs : EventArgs
     {
         public GameObject Target { get; set; }
@@ -22,45 +20,47 @@ namespace ZGame.cc
 
 
 
-    /// <summary>
-    /// 所有补间类型的基类
-    /// </summary>
+
     public abstract class Tween
     {
         public abstract event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
-        protected GameObject target = null;
+        protected GameObject holder = null;
         protected int tag = 0;
         protected string tweenName = string.Empty;
 
+
         /// <summary>
-        /// 该补间开始的时间点
+        /// The tween stated time,unit by seconds
         /// </summary>
         protected float startTime;
         /// <summary>
-        /// 该补间真实运行时间
+        /// The real run time of this tween
         /// </summary>
         protected float truePartialRunTime;
 
         /// <summary>
-        /// 补间是否完成
-        /// 对于次数为1次的补间，一次执行完毕，即完成。否则需要满足执行次数才完成。      
+        /// If the tween has finished.
+        /// If the tween repeats more than once,finish means the tween finished the repeats
         /// </summary>
         protected bool isDone = false;
 
-        protected bool isPause = false;//是否处于暂停状态
         /// <summary>
-        /// 总暂停时间（单位秒）
+        /// Whether in pause status
+        /// </summary>
+        protected bool isPause = false;
+        /// <summary>
+        /// Total paused time,unit by seconds
         /// </summary>
         protected float totalPausedTime;
         /// <summary>
-        /// 上次 开始暂停时 的时间点
+        /// Last pause started time,unit by seconds
         /// </summary>
         protected float lastPausedTime;
 
         public abstract void Run();
         /// <summary>
-        /// 返回值指示是否完成补间
+        /// Tween execute effect in Update function, the returned boolean indicate whether the tween has finished
         /// </summary>
         /// <returns></returns>
         public abstract bool Update();
@@ -68,48 +68,35 @@ namespace ZGame.cc
         public abstract void Finish();
 
 
-        /// <summary>
-        /// 返回一个克隆的对象
-        /// </summary>
-        /// <returns></returns>
-        public abstract Tween Clone();
-        /// <summary>
-        /// 补间是否完成，true 是， false 否
-        /// </summary>
-        /// <returns></returns>
+
+
         public bool IsDone()
         {
             return this.isDone;
         }
 
-
-        /// <summary>
-        /// 是否在暂停状态
-        /// </summary>
-        /// <returns></returns>
         public bool IsPause()
         {
             return this.isPause;
         }
 
-        /// <summary>
-        /// 暂停补间
-        /// </summary>
+
         public abstract void Pause();
         /// <summary>
-        /// 把补间从暂停中唤醒
+        /// Wake up tween from pause
         /// </summary>
         public abstract void Resume();
 
+        /// <summary>
+        /// Get total paused time,unit by seconds
+        /// </summary>
+        /// <returns></returns>
         public float GetTotalPausedTime()
         {
             return this.totalPausedTime;
         }
 
-        /// <summary>
-        /// Get the tag of an tween
-        /// </summary>
-        /// <returns></returns>
+
         public int GetTag()
         {
             return this.tag;
@@ -120,33 +107,21 @@ namespace ZGame.cc
             return this.tweenName;
         }
 
-        /// <summary>
-        /// 获得执行当前补间的目标节点
-        /// </summary>
-        /// <returns></returns>
-        public GameObject GetTarget()
+
+        public GameObject GetHolder()
         {
-            return this.target;
+            return this.holder;
         }
 
-        /// <summary>
-        /// 为补间设置执行的目标节点
-        /// </summary>
-        /// <param name="target"></param>
-        public abstract void SetTarget(GameObject target);
 
-        /// <summary>
-        /// 获得原始目标节点
-        /// </summary>
-        /// <returns></returns>
-        public abstract GameObject GetOriginalTarget();
+        public abstract void SetHolder(GameObject holder);
 
 
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="callback">参数为update从开始到当前的时间</param>
+        /// <param name="callback">The float param is the time from update start to now</param>
         /// <returns></returns>
         public abstract Tween OnUpdate(Action<float> callback);
         protected Action<float> updateCallback;

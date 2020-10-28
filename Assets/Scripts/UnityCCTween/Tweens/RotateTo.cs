@@ -8,7 +8,8 @@ namespace ZGame.cc
     {
         Vector3 startAngle;
         Vector3 targetAngle;
-        public RotateTo(float duration, Vector3 targetAngle)
+        Space relativeSpace;
+        public RotateTo(float duration, Vector3 targetAngle, Space relativeSpace)
         {
             if (duration < 0)
             {
@@ -17,15 +18,13 @@ namespace ZGame.cc
             }
             this.SetDuration(duration);
             this.targetAngle = targetAngle;
+            this.relativeSpace = relativeSpace;
             this.SetTweenName("RotateTo");
         }
 
         public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
-        public override Tween Clone()
-        {
-            throw new NotImplementedException();
-        }
+
 
         public override FiniteTimeTween Delay(float time)
         {
@@ -48,26 +47,14 @@ namespace ZGame.cc
             }
             if (this.TweenFinished != null)
             {
-                this.TweenFinished(this, new TweenFinishedEventArgs(this.GetTarget(), this));
+                this.TweenFinished(this, new TweenFinishedEventArgs(this.GetHolder(), this));
             }
-        }
-
-   
-
-        public override GameObject GetOriginalTarget()
-        {
-            throw new NotImplementedException();
         }
 
         public override int GetRepeatTimes()
         {
             return this.repeatTimes;
-
         }
-
-    
-
-        
 
         public override FiniteTimeTween OnComplete(Action<object[]> callback, params object[] param)
         {
@@ -111,7 +98,7 @@ namespace ZGame.cc
             this.isDone = false;
             if (this.repeatedTimes == 0)
             {
-                this.startAngle = this.target.transform.localEulerAngles;
+                this.startAngle = this.relativeSpace == Space.Self ? this.holder.transform.localEulerAngles : this.holder.transform.eulerAngles;
             }
             else
             {
@@ -152,9 +139,9 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void SetTarget(GameObject target)
+        public override void SetHolder(GameObject target)
         {
-            this.target = target;
+            this.holder = target;
         }
 
         public override FiniteTimeTween SetTweenName(string name)
@@ -196,9 +183,14 @@ namespace ZGame.cc
             t = t > 1 ? 1 : t;
             var dir = this.tweenDiretion == 1 ? (this.targetAngle - this.startAngle) : (this.startAngle - this.targetAngle);
             var desAngle = (this.tweenDiretion == 1 ? this.startAngle : this.targetAngle) + dir * (this.easeFunc(t));
-            this.target.transform.localEulerAngles = desAngle;
-
-
+            if (this.relativeSpace == Space.Self)
+            {
+                this.holder.transform.localEulerAngles = desAngle;
+            }
+            else
+            {
+                this.holder.transform.eulerAngles = desAngle;
+            }
         }
 
         private void doUpdateCallback()

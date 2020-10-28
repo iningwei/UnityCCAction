@@ -21,7 +21,7 @@ namespace ZGame.cc
             }
 
 
-            tween.SetTarget(target);
+            tween.SetHolder(target);
             tween.TweenFinished += TweenFinished;
             var tweenComp = target.AddComponent<TweenComp>();
             tweenComp.AddTween(tween);

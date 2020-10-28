@@ -32,10 +32,7 @@ namespace ZGame.cc
             this.targetScale = targetPos;
             this.SetTweenName("ScaleTo");
         }
-        public override Tween Clone()
-        {
-            throw new System.NotImplementedException();
-        }
+    
 
         public override FiniteTimeTween Delay(float time)
         {
@@ -56,15 +53,12 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetHolder(), this));
         }
 
      
 
-        public override GameObject GetOriginalTarget()
-        {
-            throw new System.NotImplementedException();
-        }
+ 
 
         public override int GetRepeatTimes()
         {
@@ -105,7 +99,7 @@ namespace ZGame.cc
 
             if (this.repeatedTimes == 0)
             {
-                this.startScale = this.target.transform.localScale;
+                this.startScale = this.holder.transform.localScale;
             }
             else
             {
@@ -139,9 +133,9 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void SetTarget(GameObject target)
+        public override void SetHolder(GameObject target)
         {
-            this.target = target;
+            this.holder = target;
         }
 
         public override bool Update()
@@ -189,7 +183,7 @@ namespace ZGame.cc
             float t = this.truePartialRunTime / this.duration;
             t = t > 1 ? 1 : t;
             var desScale = (this.tweenDiretion == 1 ? this.startScale : this.targetScale) + dir * (this.easeFunc(t));
-            this.target.transform.localScale = desScale;
+            this.holder.transform.localScale = desScale;
         }
 
 

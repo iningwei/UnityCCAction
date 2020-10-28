@@ -17,10 +17,7 @@ namespace ZGame.cc
 
         public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
-        public override Tween Clone()
-        {
-            throw new System.NotImplementedException();
-        }
+       
 
         /// <summary>
         /// Please do not Set delay for DelayTime
@@ -46,15 +43,12 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetHolder(), this));
         }
 
      
 
-        public override GameObject GetOriginalTarget()
-        {
-            throw new System.NotImplementedException();
-        }
+    
 
         public override int GetRepeatTimes()
         {
@@ -113,9 +107,9 @@ namespace ZGame.cc
 
         }
 
-        public override void SetTarget(GameObject target)
+        public override void SetHolder(GameObject target)
         {
-            this.target = target;
+            this.holder = target;
         }
 
         public override bool Update()

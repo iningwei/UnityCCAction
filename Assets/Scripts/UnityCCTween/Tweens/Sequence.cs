@@ -39,10 +39,7 @@ namespace ZGame.cc
             this.SetTweenName("Sequence");
         }
 
-        public override Tween Clone()
-        {
-            throw new System.NotImplementedException();
-        }
+
 
         public override FiniteTimeTween Delay(float time)
         {
@@ -70,22 +67,17 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetHolder(), this));
         }
 
-     
 
-        public override GameObject GetOriginalTarget()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override int GetRepeatTimes()
         {
             return this.repeatTimes;
         }
 
-        
+
 
         public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
         {
@@ -153,14 +145,14 @@ namespace ZGame.cc
 
         }
 
-        public override void SetTarget(GameObject target)
+        public override void SetHolder(GameObject target)
         {
-            this.target = target;
+            this.holder = target;
 
             //set target for child-tweens            
             foreach (var item in this.tweenSequences)
             {
-                item.SetTarget(this.target);
+                item.SetHolder(this.holder);
             }
 
         }
@@ -205,7 +197,7 @@ namespace ZGame.cc
             return this;
         }
 
-        
+
         public override void Pause()
         {
             if (this.isPause)
@@ -238,14 +230,14 @@ namespace ZGame.cc
             }
         }
 
-       
+
         public override Tween OnUpdate(Action<float> callback)
         {
             this.updateCallback = callback;
             return this;
         }
 
-     
+
 
         public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
         {

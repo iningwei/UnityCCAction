@@ -32,18 +32,11 @@ namespace ZGame.cc
             this.targetAlpha = targetAlpha;
             this.includeChilds = includeChilds;
             this.includeInactive = includeInactive;
-
-
-
-
             this.SetTweenName("AlphaTo");
         }
 
 
-        public override Tween Clone()
-        {
-            throw new NotImplementedException();
-        }
+   
 
         public override FiniteTimeTween Delay(float time)
         {
@@ -64,16 +57,13 @@ namespace ZGame.cc
             {
                 this.completeCallback(this.completeCallbackParams);
             }
-            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetHolder(), this));
         }
  
 
  
 
-        public override GameObject GetOriginalTarget()
-        {
-            throw new NotImplementedException();
-        }
+   
 
         public override int GetRepeatTimes()
         {
@@ -105,11 +95,11 @@ namespace ZGame.cc
                 Renderer[] allRenderers;
                 if (includeChilds)
                 {
-                    allRenderers = this.GetTarget().GetComponentsInChildren<Renderer>(includeInactive);
+                    allRenderers = this.GetHolder().GetComponentsInChildren<Renderer>(includeInactive);
                 }
                 else
                 {
-                    allRenderers = this.GetTarget().GetComponents<Renderer>();
+                    allRenderers = this.GetHolder().GetComponents<Renderer>();
                 }
 
                 for (int i = 0; i < allRenderers.Length; i++)
@@ -138,19 +128,19 @@ namespace ZGame.cc
 
                 if (includeChilds)
                 {
-                    var imgs = this.GetTarget().GetComponentsInChildren<UnityEngine.UI.Image>(includeInactive);
+                    var imgs = this.GetHolder().GetComponentsInChildren<UnityEngine.UI.Image>(includeInactive);
                     for (int i = 0; i < imgs.Length; i++)
                     {
                         this.allImages.Add(imgs[i], imgs[i].color.a);
                     }
 
-                    var rawImgs = this.GetTarget().GetComponentsInChildren<UnityEngine.UI.RawImage>(includeInactive);
+                    var rawImgs = this.GetHolder().GetComponentsInChildren<UnityEngine.UI.RawImage>(includeInactive);
                     for (int i = 0; i < rawImgs.Length; i++)
                     {
                         this.allRawImages.Add(rawImgs[i], rawImgs[i].color.a);
                     }
 
-                    var texts = this.GetTarget().GetComponentsInChildren<UnityEngine.UI.Text>(includeInactive);
+                    var texts = this.GetHolder().GetComponentsInChildren<UnityEngine.UI.Text>(includeInactive);
                     for (int i = 0; i < texts.Length; i++)
                     {
                         this.allTexts.Add(texts[i], texts[i].color.a);
@@ -158,13 +148,13 @@ namespace ZGame.cc
                 }
                 else
                 {
-                    var img = this.GetTarget().GetComponent<UnityEngine.UI.Image>();
+                    var img = this.GetHolder().GetComponent<UnityEngine.UI.Image>();
                     this.allImages.Add(img, img.color.a);
 
-                    var rawImg = this.GetTarget().GetComponent<UnityEngine.UI.RawImage>();
+                    var rawImg = this.GetHolder().GetComponent<UnityEngine.UI.RawImage>();
                     this.allRawImages.Add(rawImg, rawImg.color.a);
 
-                    var text = this.GetTarget().GetComponent<UnityEngine.UI.Text>();
+                    var text = this.GetHolder().GetComponent<UnityEngine.UI.Text>();
                     this.allTexts.Add(text, text.color.a);
                 }
 
@@ -213,9 +203,9 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void SetTarget(GameObject target)
+        public override void SetHolder(GameObject target)
         {
-            this.target = target;
+            this.holder = target;
         }
 
         public override bool Update()

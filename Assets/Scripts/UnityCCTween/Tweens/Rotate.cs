@@ -34,29 +34,15 @@ namespace ZGame.cc
 
         public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
-        public override Tween Clone()
-        {
-            throw new System.NotImplementedException();
-        }
+     
 
         public override void Finish()
         {
             this.isDone = true;
-            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetTarget(), this));
+            this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetHolder(), this));
         }
 
-        
-
-        public override GameObject GetOriginalTarget()
-        {
-            throw new System.NotImplementedException();
-        }
-
-     
- 
-
-     
-
+    
         public override void Run()
         {
 
@@ -74,9 +60,9 @@ namespace ZGame.cc
             return this;
         }
 
-        public override void SetTarget(GameObject target)
+        public override void SetHolder(GameObject target)
         {
-            this.target = target;            
+            this.holder = target;            
         }
 
 
@@ -113,7 +99,7 @@ namespace ZGame.cc
             {
                 return;
             }
-            this.target.transform.Rotate(xValue * Time.deltaTime, yValue * Time.deltaTime, zValue * Time.deltaTime, this.relativeSpace);
+            this.holder.transform.Rotate(xValue * Time.deltaTime, yValue * Time.deltaTime, zValue * Time.deltaTime, this.relativeSpace);
 
         }
 

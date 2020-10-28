@@ -6,21 +6,21 @@ using UnityEngine;
 namespace ZGame.cc
 {
     /// <summary>
-    /// 有限时长的补间
+    /// Tween will finished in certain times
     /// </summary>
     public abstract class FiniteTimeTween : Tween
     {
         /// <summary>
-        /// 补间持续时间
+        /// how long will the tween last
         /// </summary>
         protected float duration = 0;
 
         /// <summary>
-        /// 1表示补间只播放一遍；2、3、4...表示补间播放指定次数; 小于1表示补间循环播放；
+        /// 1 means tween only play once；2、3、4...means tween will play specific times;less than 1 means tween will play circle；
         /// </summary>
         protected int repeatTimes = 1;
         /// <summary>
-        /// 补间已播放的次数
+        /// tween has played times
         /// </summary>
         protected int repeatedTimes = 0;
 
@@ -32,12 +32,12 @@ namespace ZGame.cc
         public abstract FiniteTimeTween SetRepeatType(RepeatType repeatType);
 
         /// <summary>
-        /// 1为正向，-1为反向     
+        /// 1 means positive dir，-1 means negative dir
         /// </summary>
         protected int tweenDiretion = 1;
 
         /// <summary>
-        /// 获得补间持续时间，单位秒
+        /// get tween lasted times,unit by seconds
         /// </summary>
         /// <returns></returns>
         public float GetDuration() {
@@ -45,14 +45,14 @@ namespace ZGame.cc
         }
 
         /// <summary>
-        /// 设置补间持续时间，单位秒
+        /// set tween's time, unit by seconds
         /// </summary>
         /// <param name="time"></param>
         public abstract void SetDuration(float time);
 
 
         /// <summary>
-        /// 为补间设置标签，用于识别补间
+        /// set tag for tween
         /// </summary>
         /// <param name="tag"></param>
         public abstract FiniteTimeTween SetTag(int tag);
@@ -60,7 +60,7 @@ namespace ZGame.cc
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="times">1表示补间只播放一遍；2、3、4...表示补间播放指定次数; 小于1表示补间循环播放；</param>
+        /// <param name="times">1 means tween only play once；2、3、4...means tween will play specific times;less than 1 means tween will play circle；</param>
         /// <returns></returns>
         public abstract FiniteTimeTween SetRepeatTimes(int times);
 
@@ -70,13 +70,10 @@ namespace ZGame.cc
         public abstract FiniteTimeTween SetTweenName(string name);
 
 
-        /// <summary>
-        /// 由子类重写该类
-        /// 某次补间完成后，判断是否完成所有补间次数的播放
-        /// </summary>
+        
         protected abstract void OnPartialTweenFinished();
         /// <summary>
-        /// 返回一个新补间，新补间的执行与原补间完全相反
+        /// reverse the tween
         /// </summary>
         public abstract void Reverse();
 
@@ -84,8 +81,7 @@ namespace ZGame.cc
         public abstract FiniteTimeTween Delay(float time);
 
         /// <summary>
-        /// 补间完成后的一些回调
-        /// 若补间多次重复（即repeatTimes>1），那么必须所有补间重复完毕后才会触发回调
+        /// call after tween finished.If the tween repeat more than one time,then it only call after all the repeats finished.
         /// </summary>
         /// <param name="callback"></param>
         /// <param name="param"></param>
