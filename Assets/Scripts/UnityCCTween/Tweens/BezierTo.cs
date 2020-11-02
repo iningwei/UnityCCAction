@@ -10,7 +10,7 @@ namespace ZGame.cc
         Vector3 startPos = Vector3.zero;
         Vector3 targetPos;
         Vector3[] controlPoints;
-
+        Space relativeSpace;
         public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace ZGame.cc
         /// <param name="duration"></param>
         /// <param name="controlPoints"></param>
         /// <param name="targetPos">移动的目标位置，基于</param>
-        public BezierTo(float duration, Vector3[] controlPoints, Vector3 targetPos)
+        public BezierTo(float duration, Vector3[] controlPoints, Vector3 targetPos, Space relativeSpace)
         {
             if (duration <= 0)
             {
@@ -40,10 +40,11 @@ namespace ZGame.cc
             this.SetDuration(duration);
             this.controlPoints = controlPoints;
             this.targetPos = targetPos;
+            this.relativeSpace = relativeSpace;
             this.SetTweenName("BezierTo");
 
         }
-   
+
 
         public override FiniteTimeTween Delay(float time)
         {
@@ -67,16 +68,16 @@ namespace ZGame.cc
             this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetHolder(), this));
         }
 
-    
 
-       
+
+
 
         public override int GetRepeatTimes()
         {
             throw new NotImplementedException();
         }
 
-         
+
 
         public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
         {
@@ -108,7 +109,7 @@ namespace ZGame.cc
             this.isDone = false;
             if (this.repeatedTimes == 0)
             {
-                this.startPos = this.holder.transform.localPosition;
+                this.startPos = relativeSpace == Space.Self ? this.holder.transform.localPosition : this.holder.transform.position;
             }
             else
             {
@@ -206,7 +207,15 @@ namespace ZGame.cc
                 Debug.LogError("some thing wrong");
             }
 
-            this.holder.transform.localPosition = pos;
+            if (this.relativeSpace == Space.Self)
+            {
+                this.holder.transform.localPosition = pos;
+            }
+            else
+            {
+                this.holder.transform.position = pos;
+            }
+
         }
 
         public override FiniteTimeTween SetTweenName(string name)
@@ -215,7 +224,7 @@ namespace ZGame.cc
             return this;
         }
 
-      
+
 
         public override void Pause()
         {
@@ -238,7 +247,7 @@ namespace ZGame.cc
             this.totalPausedTime += (Time.time - this.lastPausedTime);
         }
 
-    
+
 
         public override Tween OnUpdate(Action<float> callback)
         {
@@ -246,7 +255,7 @@ namespace ZGame.cc
             return this;
         }
 
- 
+
 
         public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
         {

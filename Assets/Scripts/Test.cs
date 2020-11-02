@@ -36,10 +36,10 @@ public class Test : MonoBehaviour
         {
             //new MoveTo(3, new Vector3(2, 3, 0))
             this.gameObject.RunTween(
-                new BezierTo(2, new Vector3[] { new Vector3(-3, 6) }, new Vector3(7, -1, 0)).OnComplete((a) =>
-                {
-                    Debug.Log("bezier finished");
-                }).SetTag(999).SetRepeatTimes(3).SetRepeatType(RepeatType.PingPong));
+                new BezierTo(2, new Vector3[] { new Vector3(-3, 6) }, new Vector3(7, -1, 0), Space.Self).OnComplete((a) =>
+                 {
+                     Debug.Log("bezier finished");
+                 }).SetTag(999).SetRepeatTimes(3).SetRepeatType(RepeatType.PingPong));
         }
         if (GUI.Button(new Rect(90, 70, 70, 25), "暂停"))
         {
@@ -83,10 +83,10 @@ public class Test : MonoBehaviour
         if (GUI.Button(new Rect(10, 250, 70, 25), "顺序序列"))
         {
             this.gameObject.RunTween(new Sequence(
-                new BezierTo(2, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0)).OnComplete((a) =>
-                {
-                    Debug.Log("bezier finished");
-                }),
+                new BezierTo(2, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0), Space.Self).OnComplete((a) =>
+                 {
+                     Debug.Log("bezier finished");
+                 }),
                 new DelayTime(1).OnComplete((a) =>
                 {
                     Debug.Log("dealy finished");
@@ -95,10 +95,10 @@ public class Test : MonoBehaviour
                 {
                     Debug.Log("callFunc finished");
                 }),
-                new MoveTo(1, new Vector3(-2, -2, 0)).Easing(Ease.InBack).OnComplete((a) =>
-                {
-                    Debug.Log("moveTo finished");
-                }).SetRepeatTimes(3)).SetTag(1000));
+                new MoveTo(1, new Vector3(-2, -2, 0), Space.Self).Easing(Ease.InBack).OnComplete((a) =>
+                 {
+                     Debug.Log("moveTo finished");
+                 }).SetRepeatTimes(3)).SetTag(1000));
         }
 
         if (GUI.Button(new Rect(90, 250, 70, 25), "暂停"))
@@ -115,10 +115,10 @@ public class Test : MonoBehaviour
         if (GUI.Button(new Rect(10, 310, 70, 25), "repeated tween"))
         {
             this.gameObject.RunTween(new Repeat(2,
-                new BezierTo(5, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0)).OnComplete((a) =>
-                {
-                    Debug.Log("bezier finished");
-                }),
+                new BezierTo(5, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0), Space.Self).OnComplete((a) =>
+                 {
+                     Debug.Log("bezier finished");
+                 }),
                 new DelayTime(2).OnComplete((a) =>
                 {
                     Debug.Log("dealy finished");
@@ -127,10 +127,10 @@ public class Test : MonoBehaviour
             {
                 Debug.Log("callFunc finished");
             }),
-            new MoveTo(2, new Vector3(-2, -2, 0)).OnComplete((a) =>
-            {
-                Debug.Log("moveTo finished");
-            }).SetRepeatTimes(3)).SetTag(2000));
+            new MoveTo(2, new Vector3(-2, -2, 0), Space.Self).OnComplete((a) =>
+             {
+                 Debug.Log("moveTo finished");
+             }).SetRepeatTimes(3)).SetTag(2000));
         }
 
         if (GUI.Button(new Rect(90, 310, 70, 25), "pause"))
