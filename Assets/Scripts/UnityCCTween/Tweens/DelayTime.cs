@@ -24,13 +24,13 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
-        public override FiniteTimeTween Delay(float time)
+        public override Tween Delay(float time)
         {
             Debug.LogError("Set delay for DelayTime will not take effect");
             return this;
         }
 
-        public override TweenInterval Easing(Ease ease)
+        public override Tween Easing(Ease ease)
         {
             throw new System.NotImplementedException();
         }
@@ -46,18 +46,9 @@ namespace ZGame.cc
             this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetHolder(), this));
         }
 
-     
+ 
 
-    
-
-        public override int GetRepeatTimes()
-        {
-            return this.repeatTimes;
-        }
-
-        
-
-        public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
+        public override Tween OnComplete(Action<object[]> callback, object[] param)
         {
             this.completeCallback = callback;
             this.completeCallbackParams = param;
@@ -76,42 +67,16 @@ namespace ZGame.cc
                 this.Run();
             }
         }
-
-        public override void Reverse()
-        {
-            throw new System.NotImplementedException();
-        }
+ 
 
         public override void Run()
         {
             this.isDone = false;
-            this.startTime = Time.time - this.GetTotalPausedTime();
+            this.startTime = this.GetTime() - this.GetTotalPausedTime();
             this.truePartialRunTime = 0;
         }
 
-        public override void SetDuration(float time)
-        {
-            this.duration = time;
-        }
-
-        public override FiniteTimeTween SetRepeatTimes(int times)
-        {
-            this.repeatTimes = times;
-            return this;
-        }
-
-        public override FiniteTimeTween SetTag(int tag)
-        {
-            this.tag = tag;
-            return this;
-
-        }
-
-        public override void SetHolder(GameObject target)
-        {
-            this.holder = target;
-        }
-
+       
         public override bool Update()
         {
             if (this.IsDone())
@@ -122,7 +87,7 @@ namespace ZGame.cc
             {
                 return false;
             }
-            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            this.truePartialRunTime = this.GetTime() - startTime - this.GetTotalPausedTime();
             if (this.truePartialRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
@@ -144,11 +109,7 @@ namespace ZGame.cc
 
 
 
-        public override FiniteTimeTween SetTweenName(string name)
-        {
-            this.tweenName = name;
-            return this;
-        }
+ 
 
       
 
@@ -160,7 +121,7 @@ namespace ZGame.cc
             }
 
             this.isPause = true;
-            this.lastPausedTime = Time.time;
+            this.lastPausedTime = this.GetTime();
         }
 
         public override void Resume()
@@ -170,7 +131,7 @@ namespace ZGame.cc
                 return;
             }
             this.isPause = false;
-            this.totalPausedTime += (Time.time - this.lastPausedTime);
+            this.totalPausedTime += (this.GetTime() - this.lastPausedTime);
         }
 
         
@@ -181,11 +142,6 @@ namespace ZGame.cc
             return this;
         }
  
-
-        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
-        {
-            Debug.LogError("Do not set repeatType to DelayTime, it will not take effect");
-            return this;
-        }
+ 
     }
 }

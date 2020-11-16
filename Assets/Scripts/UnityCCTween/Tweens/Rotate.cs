@@ -47,23 +47,9 @@ namespace ZGame.cc
         {
 
         }
-
-        public override InfiniteTimeTween SetTweenName(string name)
-        {
-            this.tweenName = name;
-            return this;
-        }
-
-        public override InfiniteTimeTween SetTag(int tag)
-        {
-            this.tag = tag;
-            return this;
-        }
-
-        public override void SetHolder(GameObject target)
-        {
-            this.holder = target;            
-        }
+ 
+ 
+ 
 
 
         public override bool Update()
@@ -77,7 +63,7 @@ namespace ZGame.cc
                 return false;
             }
 
-            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            this.truePartialRunTime = this.GetTime() - startTime - this.GetTotalPausedTime();
             this.doRotate();
             this.doUpdateCallback();
 
@@ -114,7 +100,7 @@ namespace ZGame.cc
             }
 
             this.isPause = true;
-            this.lastPausedTime = Time.time;
+            this.lastPausedTime = this.GetTime();
         }
 
         public override void Resume()
@@ -124,7 +110,7 @@ namespace ZGame.cc
                 return;
             }
             this.isPause = false;
-            this.totalPausedTime += (Time.time - this.lastPausedTime);
+            this.totalPausedTime += (this.GetTime() - this.lastPausedTime);
         }
 
        
@@ -132,6 +118,11 @@ namespace ZGame.cc
         public override Tween OnUpdate(Action<float> callback)
         {
             this.updateCallback = callback;
+            return this;
+        }
+        public override Tween OnComplete(Action<object[]> callback, params object[] param)
+        {
+            this.completeCallback = callback;
             return this;
         }
     }

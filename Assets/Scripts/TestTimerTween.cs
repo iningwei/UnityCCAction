@@ -21,26 +21,26 @@ class TestTimerTween : MonoBehaviour
     }
     private void Start()
     {
-        //Timer timer = TimerTween.Value(-50, 50, 2, 0.03f,
-        //      (v) =>
-        //  {
-        //      obj.transform.position = new Vector3(v, y, z);
-        //  },
-        //      () =>
-        //  {
-        //      Debug.Log("onComplete!");
-        //  }).SetEase(Ease.InOutBounce).SetLoop(0);
+        Timer timer = TimerTween.Value(-50, 50, 2, 0.03f,
+              (v) =>
+          {
+              obj.transform.position = new Vector3(v, y, z);
+          },
+              () =>
+          {
+              Debug.Log("onComplete!");
+          }).SetEase(Ease.InOutBounce).SetLoop(0);
 
-        int count = 0;
-        TimerTween.RepeatCount(0.8f, 10, () =>
-        {
-            count++;
-            Debug.Log("ticked:" + count);
-            //if (count > 5)
-            //{
-            //    return false;
-            //}
-            return true;
-        });
+        //////int count = 0;
+        //////TimerTween.RepeatCount(0.8f, 10, () =>
+        //////{
+        //////    count++;
+        //////    Debug.Log("ticked:" + count);
+        //////    //if (count > 5)
+        //////    //{
+        //////    //    return false;
+        //////    //}
+        //////    return true;
+        //////});
     }
 }

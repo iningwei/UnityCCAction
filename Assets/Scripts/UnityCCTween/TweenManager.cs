@@ -10,25 +10,56 @@ namespace ZGame.cc
     {
         Dictionary<GameObject, List<TweenComp>> dicOfObjTweens = new Dictionary<GameObject, List<TweenComp>>();
 
+        int maxCount = 100;
 
-        public void AddTween(GameObject target, Tween tween)
+
+        public int AddTween(GameObject target, Tween tween)
         {
-            if (this.existSameTween(target, tween))
+            if (dicOfObjTweens.Count == maxCount)
             {
-                Debug.LogError(target.name + "already have tag:" + tween.GetTag() + ", you can not add");
-
-                return;
+                Debug.LogError("can not add tween to target:" + target.name + ", for tween has reached max:" + maxCount);
+                return -1;
             }
-
-
+            int id = getFreeId();
+            if (id == -1)
+            {
+                return id;
+            }
             tween.SetHolder(target);
+            tween.SetId(id);
+
+
             tween.TweenFinished += TweenFinished;
             var tweenComp = target.AddComponent<TweenComp>();
             tweenComp.AddTween(tween);
 
             this.addTweenComp(target, tweenComp);
+            return id;
         }
 
+        int getFreeId()
+        {
+            for (int i = 1; i <= maxCount; i++)
+            {
+                bool flag = false;
+                foreach (var pair in this.dicOfObjTweens)
+                {
+                    if (pair.Value.Find((a) => a.GetTween().GetId() == i))
+                    {
+                        flag = true;
+                        continue;
+                    }
+                }
+                if (flag)
+                {
+                    continue;
+                }
+                return i;
+            }
+
+            Debug.LogError("no free id left");
+            return -1;
+        }
         private void TweenFinished(object sender, TweenFinishedEventArgs e)
         {
             //Currently TweenManager  listened to each tween's finish event.
@@ -38,22 +69,7 @@ namespace ZGame.cc
 
         }
 
-        bool existSameTween(GameObject target, Tween tween)
-        {
-            if (dicOfObjTweens.ContainsKey(target))
-            {
-                var tweenComps = dicOfObjTweens[target];
-                for (int i = 0; i < tweenComps.Count; i++)
-                {
-                    if (tweenComps[i].tweenTag == tween.GetTag())
-                    {
-                        return true;
-                    }
-                }
-            }
 
-            return false;
-        }
         bool addTweenComp(GameObject target, TweenComp tweenComp)
         {
             if (!dicOfObjTweens.ContainsKey(target))
@@ -153,11 +169,11 @@ namespace ZGame.cc
 
 
         /// <summary>
-        /// remove tween by tag from target
+        /// remove tween by id from target
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="tag"></param>
-        public bool RemoveTweenByTag(GameObject target, int tag)
+        /// <param name="id"></param>
+        public bool RemoveTweenById(GameObject target, int id)
         {
             if (target == null)
             {
@@ -175,21 +191,21 @@ namespace ZGame.cc
             for (int i = tweenComps.Count - 1; i >= 0; i--)
             {
                 tweenComp = tweenComps[i];
-                if (tweenComp.tweenTag == tag)
+                if (tweenComp.GetTween().GetId() == id)
                 {
                     tweenComps.Remove(tweenComp);
                     GameObject.Destroy(tweenComp);
                     return true;
                 }
             }
-            Debug.LogWarning("target does not have the tween of tag:" + tag);
+            Debug.LogWarning("target does not have the tween of id:" + id);
             return false;
         }
 
 
 
 
-        public Tween GetTweenByTag(GameObject target, int tag)
+        public Tween GetTweenById(GameObject target, int id)
         {
             if (target == null)
             {
@@ -207,13 +223,13 @@ namespace ZGame.cc
             for (int i = tweenComps.Count - 1; i >= 0; i--)
             {
                 tweenComp = tweenComps[i];
-                if (tweenComp.tweenTag == tag)
+                if (tweenComp.GetTween().GetId() == id)
                 {
                     return tweenComp.GetTween();
                 }
             }
 
-            Debug.LogWarning("target does not have the tween of tag:" + tag);
+            Debug.LogWarning("target does not have the tween of id:" + id);
             return null;
         }
 
@@ -252,9 +268,9 @@ namespace ZGame.cc
             }
         }
 
-        public void PauseTweenByTag(GameObject target, int tag)
+        public void PauseTweenById(GameObject target, int id)
         {
-            Tween tween = GetTweenByTag(target, tag);
+            Tween tween = GetTweenById(target, id);
             this.PauseTween(target, tween);
         }
 
@@ -266,9 +282,9 @@ namespace ZGame.cc
             }
         }
 
-        public void ResumeTweennByTag(GameObject target, int tag)
+        public void ResumeTweennById(GameObject target, int id)
         {
-            Tween tween = GetTweenByTag(target, tag);
+            Tween tween = GetTweenById(target, id);
             this.ResumeTween(target, tween);
         }
     }

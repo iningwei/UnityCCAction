@@ -9,10 +9,10 @@ namespace ZGame.cc
      */
     public class TweenComp : MonoBehaviour
     {
-        /// <summary>
-        /// TweenComp上挂载的最外层的补间的tag
-        /// </summary>
-        public int tweenTag;
+
+        [SerializeField]
+        int tweenId;
+
         public string tweenName;
         public bool isFinished = false;
 
@@ -24,16 +24,16 @@ namespace ZGame.cc
                 Debug.LogError("该TweenComp已经运行，无法中途插入补间");
                 return;
             }
-            this.tweenTag = tween.GetTag();
+
             this.tweenName = tween.GetTweenName();
             this.tween = tween;
+            tweenId = this.tween.GetId();
 
             this.tween.Run();
         }
 
         public Tween GetTween()
         {
-
             return this.tween;
         }
 

@@ -46,12 +46,12 @@ namespace ZGame.cc
         }
 
 
-        public override FiniteTimeTween Delay(float time)
+        public override Tween Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
         }
 
-        public override TweenInterval Easing(Ease ease)
+        public override Tween Easing(Ease ease)
         {
             this.easeFunc = EaseTool.Get(ease);
             return this;
@@ -71,15 +71,10 @@ namespace ZGame.cc
 
 
 
-
-        public override int GetRepeatTimes()
-        {
-            throw new NotImplementedException();
-        }
+ 
 
 
-
-        public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
+        public override Tween OnComplete(Action<object[]> callback, object[] param)
         {
             this.completeCallback = callback;
             this.completeCallbackParams = param;
@@ -99,17 +94,14 @@ namespace ZGame.cc
             }
         }
 
-        public override void Reverse()
-        {
-            throw new NotImplementedException();
-        }
+    
 
         public override void Run()
         {
             this.isDone = false;
             if (this.repeatedTimes == 0)
             {
-                this.startPos = relativeSpace == Space.Self ? this.holder.transform.localPosition : this.holder.transform.position;
+                this.startPos = relativeSpace == Space.Self ? this.GetHolder().transform.localPosition : this.GetHolder().transform.position;
             }
             else
             {
@@ -122,31 +114,11 @@ namespace ZGame.cc
                     this.tweenDiretion = -this.tweenDiretion;
                 }
             }
-            this.startTime = Time.time - this.GetTotalPausedTime();
+            this.startTime = this.GetTime() - this.GetTotalPausedTime();
             this.truePartialRunTime = 0f;
         }
 
-        public override void SetDuration(float time)
-        {
-            this.duration = time;
-        }
-
-        public override FiniteTimeTween SetRepeatTimes(int times)
-        {
-            this.repeatTimes = times;
-            return this;
-        }
-
-        public override FiniteTimeTween SetTag(int tag)
-        {
-            this.tag = tag;
-            return this;
-        }
-
-        public override void SetHolder(GameObject target)
-        {
-            this.holder = target;
-        }
+         
 
         public override bool Update()
         {
@@ -159,7 +131,7 @@ namespace ZGame.cc
                 return false;
             }
 
-            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            this.truePartialRunTime = this.GetTime() - startTime - this.GetTotalPausedTime();
             if (this.truePartialRunTime > this.duration)
             {
                 this.OnPartialTweenFinished();
@@ -209,20 +181,16 @@ namespace ZGame.cc
 
             if (this.relativeSpace == Space.Self)
             {
-                this.holder.transform.localPosition = pos;
+                this.GetHolder().transform.localPosition = pos;
             }
             else
             {
-                this.holder.transform.position = pos;
+                this.GetHolder().transform.position = pos;
             }
 
         }
 
-        public override FiniteTimeTween SetTweenName(string name)
-        {
-            this.tweenName = name;
-            return this;
-        }
+ 
 
 
 
@@ -234,7 +202,7 @@ namespace ZGame.cc
             }
 
             this.isPause = true;
-            this.lastPausedTime = Time.time;
+            this.lastPausedTime = this.GetTime();
         }
 
         public override void Resume()
@@ -244,7 +212,7 @@ namespace ZGame.cc
                 return;
             }
             this.isPause = false;
-            this.totalPausedTime += (Time.time - this.lastPausedTime);
+            this.totalPausedTime += (this.GetTime() - this.lastPausedTime);
         }
 
 
@@ -257,10 +225,6 @@ namespace ZGame.cc
 
 
 
-        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
-        {
-            this.repeatType = repeatType;
-            return this;
-        }
+   
     }
 }

@@ -6,9 +6,10 @@ namespace ZGame.cc
 {
     public static class TweenExt
     {
-        public static void RunTween(this GameObject target, Tween tween)
+        public static int RunTween(this GameObject target, Tween tween)
         {
-            TweenManager.Instance.AddTween(target, tween);
+            int id = TweenManager.Instance.AddTween(target, tween);
+            return id;
         }
 
 
@@ -17,19 +18,19 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="target"></param>
         /// <param name="tween"></param>
-        public static bool StopTween(this GameObject target, Tween tween)
+        public static bool RemoveTween(this GameObject target, Tween tween)
         {
             return TweenManager.Instance.RemoveTween(target, tween);
         }
 
         /// <summary>
-        /// stop and remove tween of specific tag from target
+        /// stop and remove tween of specific id from target
         /// </summary>
         /// <param name="target"></param>
-        /// <param name="tag"></param>
-        public static bool RemoveTween(this GameObject target, int tag)
+        /// <param name="id"></param>
+        public static bool RemoveTween(this GameObject target, int id)
         {
-            return TweenManager.Instance.RemoveTweenByTag(target, tag);
+            return TweenManager.Instance.RemoveTweenById(target, id);
         }
 
         /// <summary>
@@ -45,18 +46,18 @@ namespace ZGame.cc
         {
             TweenManager.Instance.PauseTween(target, tween);
         }
-        public static void PauseTween(this GameObject target, int tag)
+        public static void PauseTween(this GameObject target, int id)
         {
-            TweenManager.Instance.PauseTweenByTag(target, tag);
+            TweenManager.Instance.PauseTweenById(target, id);
         }
 
         public static void ResumeTween(this GameObject target, Tween tween)
         {
             TweenManager.Instance.ResumeTween(target, tween);
         }
-        public static void ResumeTween(this GameObject target, int tag)
+        public static void ResumeTween(this GameObject target, int id)
         {
-            TweenManager.Instance.ResumeTweennByTag(target, tag);
+            TweenManager.Instance.ResumeTweennById(target, id);
         }
     }
 }

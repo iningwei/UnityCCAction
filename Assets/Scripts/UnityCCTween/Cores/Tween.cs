@@ -14,7 +14,6 @@ namespace ZGame.cc
         {
             this.Target = target;
             this.Tween = tween;
-
         }
     }
 
@@ -26,7 +25,7 @@ namespace ZGame.cc
         public abstract event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
         protected GameObject holder = null;
-        protected int tag = 0;
+        protected int id = 0;
         protected string tweenName = string.Empty;
 
 
@@ -58,6 +57,31 @@ namespace ZGame.cc
         /// </summary>
         protected float lastPausedTime;
 
+
+
+        protected bool ignoreTimeScale = false;
+
+        /// <summary>
+        /// 1 means tween only play once；2、3、4...means tween will play specific times;less than 1 means tween will play circle；
+        /// </summary>
+        protected int repeatTimes = 1;
+        /// <summary>
+        /// tween has played times
+        /// </summary>
+        protected int repeatedTimes = 0;
+
+        protected RepeatType repeatType = RepeatType.Clamp;
+        public RepeatType GetRepeatType()
+        {
+            return this.repeatType;
+        }
+        public Tween SetRepeatType(RepeatType repeatType)
+        {
+            this.repeatType = repeatType;
+            return this;
+        }
+
+
         public abstract void Run();
         /// <summary>
         /// Tween execute effect in Update function, the returned boolean indicate whether the tween has finished
@@ -80,6 +104,12 @@ namespace ZGame.cc
             return this.isPause;
         }
 
+        public Tween IgnoreTimeScale(bool ignore)
+        {
+            this.ignoreTimeScale = ignore;
+            return this;
+        }
+
 
         public abstract void Pause();
         /// <summary>
@@ -97,26 +127,91 @@ namespace ZGame.cc
         }
 
 
-        public int GetTag()
+        public int GetId()
         {
-            return this.tag;
+            return this.id;
         }
 
-        public string GetTweenName()
+        public void SetId(int id)
         {
-            return this.tweenName;
+            Debug.LogError("set id:" + id);
+            this.id = id;
         }
 
+
+
+        public virtual void SetHolder(GameObject holder)
+        {
+            this.holder = holder;
+
+        }
 
         public GameObject GetHolder()
         {
             return this.holder;
         }
 
+        public float GetTime()
+        {
+            if (ignoreTimeScale)
+            {
+                return Time.realtimeSinceStartup;
+            }
+            return Time.time;
+        }
 
-        public abstract void SetHolder(GameObject holder);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="times">1 means tween only play once；2、3、4...means tween will play specific times;less than 1 means tween will play circle；</param>
+        /// <returns></returns>
+        public Tween SetRepeatTimes(int times)
+        {
+            this.repeatTimes = times;
+            return this;
+        }
 
 
+
+        public int GetRepeatTimes()
+        {
+            return this.repeatTimes;
+        }
+
+        /// <summary>
+        /// how long will the tween last
+        /// </summary>
+        protected float duration = 0;
+        /// <summary>
+        /// get tween lasted times,unit by seconds
+        /// </summary>
+        /// <returns></returns>
+        public float GetDuration()
+        {
+            return this.duration;
+        }
+
+        /// <summary>
+        /// set tween's time, unit by seconds
+        /// </summary>
+        /// <param name="time"></param>
+        public Tween SetDuration(float time)
+        {
+            this.duration = time;
+            return this;
+        }
+
+        public Tween SetTweenName(string name)
+        {
+            this.tweenName = name;
+            return this;
+        }
+
+        public string GetTweenName()
+        {
+            return this.tweenName;
+        }
 
         /// <summary>
         /// 
@@ -125,5 +220,17 @@ namespace ZGame.cc
         /// <returns></returns>
         public abstract Tween OnUpdate(Action<float> callback);
         protected Action<float> updateCallback;
+
+
+
+        /// <summary>
+        /// call after tween finished.If the tween repeat more than one time,then it only call after all the repeats finished.
+        /// </summary>
+        /// <param name="callback"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public abstract Tween OnComplete(Action<object[]> callback, params object[] param);
+        protected Action<object[]> completeCallback;
+        protected object[] completeCallbackParams;
     }
 }

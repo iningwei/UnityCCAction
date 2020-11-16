@@ -12,9 +12,9 @@ namespace ZGame.cc
     /// </summary>
     public class Sequence : TweenInterval
     {
-        public FiniteTimeTween[] tweenSequences;
-        Queue<FiniteTimeTween> legalTweens = new Queue<FiniteTimeTween>();
-        FiniteTimeTween curRunningTween = null;
+        public Tween[] tweenSequences;
+        Queue<Tween> legalTweens = new Queue<Tween>();
+        Tween curRunningTween = null;
 
         public override event EventHandler<TweenFinishedEventArgs> TweenFinished;
 
@@ -22,7 +22,7 @@ namespace ZGame.cc
         /// child-tweens will be called one by one.
         ///  SetRepeatTimes for sequence will not work.
         /// </summary>
-        public Sequence(params FiniteTimeTween[] tweens)
+        public Sequence(params Tween[] tweens)
         {
             if (tweens == null || tweens.Length == 0)
             {
@@ -41,7 +41,7 @@ namespace ZGame.cc
 
 
 
-        public override FiniteTimeTween Delay(float time)
+        public override Tween Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
         }
@@ -52,7 +52,7 @@ namespace ZGame.cc
         /// </summary>
         /// <param name="ease"></param>
         /// <returns></returns>
-        public override TweenInterval Easing(Ease ease)
+        public override Tween Easing(Ease ease)
         {
             Debug.LogError("Sequence set easing will not work");
             return this;
@@ -72,14 +72,7 @@ namespace ZGame.cc
 
 
 
-        public override int GetRepeatTimes()
-        {
-            return this.repeatTimes;
-        }
-
-
-
-        public override FiniteTimeTween OnComplete(Action<object[]> callback, object[] param)
+        public override Tween OnComplete(Action<object[]> callback, object[] param)
         {
             this.completeCallback = callback;
             this.completeCallbackParams = param;
@@ -99,16 +92,12 @@ namespace ZGame.cc
             }
         }
 
-        public override void Reverse()
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override void Run()
         {
             this.isDone = false;
             this.curRunningTween = null;
-            this.startTime = Time.time - this.GetTotalPausedTime();
+            this.startTime = this.GetTime() - this.GetTotalPausedTime();
             this.truePartialRunTime = 0f;
             if (this.legalTweens.Count > 0)
             {
@@ -121,35 +110,13 @@ namespace ZGame.cc
             }
         }
 
-        public override void SetDuration(float time)
-        {
-            throw new System.NotImplementedException();
-        }
 
-
-        /// <summary>
-        /// Do not SetRepeatTimes for Sequence.It is designed for one sequence.
-        /// </summary>
-        /// <param name="times"></param>
-        /// <returns></returns>
-        public override FiniteTimeTween SetRepeatTimes(int times)
-        {
-            Debug.LogError("SetRepeatTimes for Sequence will not take effect");
-            return this;
-        }
-
-        public override FiniteTimeTween SetTag(int tag)
-        {
-            this.tag = tag;
-            return this;
-
-        }
 
         public override void SetHolder(GameObject target)
         {
             this.holder = target;
 
-            //set target for child-tweens            
+            //set target for child-tweens
             foreach (var item in this.tweenSequences)
             {
                 item.SetHolder(this.holder);
@@ -175,7 +142,7 @@ namespace ZGame.cc
                     this.Run();
                 }
             }
-            this.truePartialRunTime = Time.time - startTime - this.GetTotalPausedTime();
+            this.truePartialRunTime = this.GetTime() - startTime - this.GetTotalPausedTime();
             this.doUpdateCallback();
             return this.IsDone();
         }
@@ -191,11 +158,7 @@ namespace ZGame.cc
 
 
 
-        public override FiniteTimeTween SetTweenName(string name)
-        {
-            this.tweenName = name;
-            return this;
-        }
+
 
 
         public override void Pause()
@@ -206,7 +169,7 @@ namespace ZGame.cc
             }
 
             this.isPause = true;
-            this.lastPausedTime = Time.time;
+            this.lastPausedTime = this.GetTime();
 
             if (this.curRunningTween != null)
             {
@@ -221,7 +184,7 @@ namespace ZGame.cc
                 return;
             }
             this.isPause = false;
-            this.totalPausedTime += (Time.time - this.lastPausedTime);
+            this.totalPausedTime += (this.GetTime() - this.lastPausedTime);
 
 
             if (this.curRunningTween != null)
@@ -238,11 +201,5 @@ namespace ZGame.cc
         }
 
 
-
-        public override FiniteTimeTween SetRepeatType(RepeatType repeatType)
-        {
-            Debug.LogError("Do not set repeatType for Sequence,it will not work");
-            return this;
-        }
     }
 }

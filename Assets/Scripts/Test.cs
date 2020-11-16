@@ -8,14 +8,21 @@ using cc = ZGame.cc;
 
 public class Test : MonoBehaviour
 {
-    cc.FiniteTimeTween alphaTween;
+    cc.Tween alphaTween;
 
 
-    private FiniteTimeTween getAlphaTween()
+    private Tween getAlphaTween()
     {
         return new cc.AlphaTo(2, 0f, true).SetRepeatTimes(0);
     }
 
+
+
+    int moveId;
+    int rotateId;
+
+    int sequenceId;
+    int repeatId;
 
     private void OnGUI()
     {
@@ -32,22 +39,23 @@ public class Test : MonoBehaviour
 
 
         #region 移动
+
         if (GUI.Button(new Rect(10, 70, 70, 25), "移动"))
         {
             //new MoveTo(3, new Vector3(2, 3, 0))
-            this.gameObject.RunTween(
+            moveId = this.gameObject.RunTween(
                 new BezierTo(2, new Vector3[] { new Vector3(-3, 6) }, new Vector3(7, -1, 0), Space.Self).OnComplete((a) =>
                  {
                      Debug.Log("bezier finished");
-                 }).SetTag(999).SetRepeatTimes(3).SetRepeatType(RepeatType.PingPong));
+                 }).SetRepeatTimes(3).SetRepeatType(RepeatType.PingPong));
         }
         if (GUI.Button(new Rect(90, 70, 70, 25), "暂停"))
         {
-            this.gameObject.PauseTween(999);
+            this.gameObject.PauseTween(moveId);
         }
         if (GUI.Button(new Rect(170, 70, 70, 25), "恢复"))
         {
-            this.gameObject.ResumeTween(999);
+            this.gameObject.ResumeTween(moveId);
         }
         #endregion
 
@@ -56,33 +64,38 @@ public class Test : MonoBehaviour
             this.gameObject.RunTween(new AlphaTo(3, 0, true, true).SetRepeatTimes(2).OnComplete((a) =>
               {
 
-              }).SetRepeatType(RepeatType.PingPong).SetRepeatTimes(3));
+              }).SetRepeatType(RepeatType.PingPong));
         }
+
+
 
         #region 旋转
         if (GUI.Button(new Rect(10, 190, 70, 25), "旋转"))
         {
-            this.gameObject.RunTween(new Rotate(60, 0, 0, Space.Self).SetTag(100));
+            rotateId = this.gameObject.RunTween(new Rotate(60, 0, 0, Space.Self));
         }
 
         if (GUI.Button(new Rect(90, 190, 70, 25), "暂停旋转"))
         {
-            this.gameObject.PauseTween(100);
+            this.gameObject.PauseTween(rotateId);
         }
         if (GUI.Button(new Rect(170, 190, 70, 25), "恢复旋转"))
         {
-            this.gameObject.ResumeTween(100);
+            this.gameObject.ResumeTween(rotateId);
         }
         if (GUI.Button(new Rect(250, 190, 70, 25), "移除 旋转"))
         {
-            this.gameObject.RemoveTween(100);
+            this.gameObject.RemoveTween(rotateId);
         }
         #endregion
+
+
+
 
         #region 顺序序列
         if (GUI.Button(new Rect(10, 250, 70, 25), "顺序序列"))
         {
-            this.gameObject.RunTween(new Sequence(
+            sequenceId = this.gameObject.RunTween(new Sequence(
                 new BezierTo(2, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0), Space.Self).OnComplete((a) =>
                  {
                      Debug.Log("bezier finished");
@@ -98,23 +111,23 @@ public class Test : MonoBehaviour
                 new MoveTo(1, new Vector3(-2, -2, 0), Space.Self).Easing(Ease.InBack).OnComplete((a) =>
                  {
                      Debug.Log("moveTo finished");
-                 }).SetRepeatTimes(3)).SetTag(1000));
+                 }).SetRepeatTimes(3)));
         }
 
         if (GUI.Button(new Rect(90, 250, 70, 25), "暂停"))
         {
-            this.gameObject.PauseTween(1000);
+            this.gameObject.PauseTween(sequenceId);
         }
         if (GUI.Button(new Rect(170, 250, 70, 25), "恢复"))
         {
-            this.gameObject.ResumeTween(1000);
+            this.gameObject.ResumeTween(sequenceId);
         }
         #endregion
 
         #region 重复序列
-        if (GUI.Button(new Rect(10, 310, 70, 25), "repeated tween"))
+        if (GUI.Button(new Rect(10, 310, 100, 35), "repeated tween"))
         {
-            this.gameObject.RunTween(new Repeat(2,
+            repeatId = this.gameObject.RunTween(new Repeat(2,
                 new BezierTo(5, new Vector3[] { new Vector3(-2, 2) }, new Vector3(4, 1, 0), Space.Self).OnComplete((a) =>
                  {
                      Debug.Log("bezier finished");
@@ -130,16 +143,16 @@ public class Test : MonoBehaviour
             new MoveTo(2, new Vector3(-2, -2, 0), Space.Self).OnComplete((a) =>
              {
                  Debug.Log("moveTo finished");
-             }).SetRepeatTimes(3)).SetTag(2000));
+             }).SetRepeatTimes(3)));
         }
 
-        if (GUI.Button(new Rect(90, 310, 70, 25), "pause"))
+        if (GUI.Button(new Rect(190, 310, 70, 25), "pause"))
         {
-            this.gameObject.PauseTween(2000);
+            this.gameObject.PauseTween(repeatId);
         }
-        if (GUI.Button(new Rect(170, 310, 70, 25), "resume"))
+        if (GUI.Button(new Rect(270, 310, 70, 25), "resume"))
         {
-            this.gameObject.ResumeTween(2000);
+            this.gameObject.ResumeTween(repeatId);
         }
         #endregion
 
@@ -154,6 +167,31 @@ public class Test : MonoBehaviour
              {
                  Debug.Log("time:" + t + ", localEulerAngles:" + this.gameObject.transform.localEulerAngles);
              }));
+        }
+
+        if (GUI.Button(new Rect(10, 490, 220, 40), "MoveTo+IgnoreTimeScale"))
+        {
+            this.gameObject.RunTween(new MoveTo(11, new Vector3(5, 0, 0), Space.World).OnComplete((a) =>
+            {
+                Debug.LogError("move finished");
+            }).IgnoreTimeScale(true));
+        }
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            if (Time.timeScale >= 0.2f)
+            {
+                Time.timeScale -= 0.2f;
+            }
+
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Time.timeScale = 1f;
         }
     }
 }
