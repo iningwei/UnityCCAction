@@ -74,6 +74,18 @@ namespace ZGame.TimerTween
             return timer;
         }
 
+        public static Timer Delay(float delayTime, Action call)
+        {
+            Timer timer = new Timer(delayTime, onComplete: () =>
+            {
+                if (call != null)
+                {
+                    call();
+                }
+            });
+            TimerManager.Instance.RegisterTimer(timer);
+            return timer;
+        }
 
         public static Timer Repeat(float interval, Func<bool> repeatCallback)
         {

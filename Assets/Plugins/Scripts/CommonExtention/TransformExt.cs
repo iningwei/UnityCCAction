@@ -10,11 +10,16 @@ using UnityEngine;
 public static class TransformExt
 {
 
-    public static void DestroyAllChilds(this Transform transform, bool destroyImmediate)
+    public static void DestroyAllChilds(this Transform transform, bool destroyImmediate,Action beforeDestroyFunc=null)
     {
         int count = transform.childCount;
         for (int i = count - 1; i >= 0; i--)
         {
+            if (beforeDestroyFunc != null)
+            {
+                beforeDestroyFunc();
+            }
+
             if (destroyImmediate)
             {
                 GameObject.DestroyImmediate(transform.GetChild(i).gameObject);

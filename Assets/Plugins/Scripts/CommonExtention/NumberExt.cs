@@ -4,12 +4,13 @@ using UnityEngine;
 
 public static class NumberExt
 {
-    public static string FormatMK(this float value)
+    public static string FormatKM(this float value)
     {
-        return FormatMK((int)value);
+        return FormatKM((int)value);
     }
-    public static string FormatMK(this int value)
+    public static string FormatKM(this int value, int precise = 1)
     {
+        string preciseStr = "f" + precise;
         string formatStr;
         if (value < 1000)
         {
@@ -17,11 +18,11 @@ public static class NumberExt
         }
         else if (value >= 1000 && value < 1000000)
         {
-            formatStr = (value / 1000f).ToString("f1") + "K";
+            formatStr = (value / 1000f).ToString(preciseStr) + "K";
         }
         else
         {
-            formatStr = (value / 1000f).ToString("f1") + "M";
+            formatStr = (value / 1000000f).ToString(preciseStr) + "M";
         }
 
         return formatStr;

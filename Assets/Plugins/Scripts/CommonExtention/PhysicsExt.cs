@@ -33,4 +33,14 @@ public class PhysicsExt
 
         return false;
     }
+
+    public static bool CheckBoxCollider(BoxCollider targetBoxArea, int layerMask)
+    {
+        Vector3 center = targetBoxArea.transform.position + targetBoxArea.center.MultiplyVector3(targetBoxArea.transform.lossyScale);
+        Vector3 halfExtents = targetBoxArea.size.MultiplyVector3(targetBoxArea.transform.lossyScale) * 0.5f;
+        Quaternion oritation = targetBoxArea.transform.rotation;
+        return Physics.CheckBox(center, halfExtents, oritation, layerMask);
+
+         
+    }
 }

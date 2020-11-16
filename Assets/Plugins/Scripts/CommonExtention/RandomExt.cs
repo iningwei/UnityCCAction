@@ -26,7 +26,7 @@ public class RandomExt
         }
         if (v1 == v2)
         {
-            Debug.LogError("error, generateValue input is not valid");
+            Debug.LogWarning("error, generateValue input is not valid, v1:" + v1 + ", v2:" + v2);
             return v1;
         }
         int seed = DateTime.Now.Millisecond + randomTimes + lastValue;
@@ -76,6 +76,45 @@ public class RandomExt
         int ran = GenerateValue(v1New, v2New);
 
         return (float)(ran / (Math.Pow(10, L)));
+    }
+
+
+    public static bool Ratio(float r)
+    {
+        if (r < 0 || r > 1)
+        {
+            Debug.LogError("error, r should [0,1]");
+            return false;
+        }
+        int v = 0;
+        int b = 1;
+        if (r >= 0.01 && r <= 1)
+        {
+            b = 100;
+            v = (int)(r * b);
+        }
+        else if (r >= 0.001 && r < 0.01)
+        {
+            b = 1000;
+            v = (int)(r * b);
+        }
+        else if (r >= 0.0001 && r < 0.001)
+        {
+            b = 10000;
+            v = (int)(r * b);
+        }
+        else
+        {
+            Debug.LogError("r should at least>=0.0001");
+        }
+
+        int randomV = GenerateValue(0, b);
+        //Debug.LogError("randomV:" + randomV + ", v:" + v);
+        if (randomV < v)
+        {
+            return true;
+        }
+        return false;
     }
 
 }
