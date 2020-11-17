@@ -57,7 +57,7 @@ namespace ZGame.cc
             this.TweenFinished?.Invoke(this, new TweenFinishedEventArgs(this.GetHolder(), this));
         }
 
-    
+
 
 
         public override Tween OnComplete(Action<object[]> callback, object[] param)
@@ -80,7 +80,7 @@ namespace ZGame.cc
             }
 
         }
- 
+
 
         public override void Run()
         {
@@ -107,7 +107,7 @@ namespace ZGame.cc
 
         }
 
-         
+
 
         public override bool Update()
         {
@@ -167,7 +167,7 @@ namespace ZGame.cc
             }
 
         }
- 
+
 
 
 
@@ -199,6 +199,6 @@ namespace ZGame.cc
             this.updateCallback = callback;
             return this;
         }
- 
+
     }
 }

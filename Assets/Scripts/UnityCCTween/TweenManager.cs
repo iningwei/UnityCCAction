@@ -10,15 +10,15 @@ namespace ZGame.cc
     {
         Dictionary<GameObject, List<TweenComp>> dicOfObjTweens = new Dictionary<GameObject, List<TweenComp>>();
 
-        int maxCount = 10;
+        int maxCount = 100;
 
-
+        int curCount = 0;
         public int AddTween(GameObject target, Tween tween)
         {
-            //Debug.LogError("dicOfObjTweens count:" + dicOfObjTweens.Count);
+            Debug.LogError("curCount:" + curCount);
 
 
-            if (dicOfObjTweens.Count == maxCount)
+            if (curCount == maxCount)
             {
                 Debug.LogError("can not add tween to target:" + target.name + ", for tween has reached max:" + maxCount);
                 return -1;
@@ -35,7 +35,7 @@ namespace ZGame.cc
             tween.TweenFinished += TweenFinished;
             var tweenComp = target.AddComponent<TweenComp>();
             tweenComp.AddTween(tween);
-
+            curCount++;
             this.addTweenComp(target, tweenComp);
             return id;
         }
@@ -102,7 +102,7 @@ namespace ZGame.cc
             {
                 this.RemoveAllTweensFromTarget(item);
             }
-
+            curCount = 0;
         }
 
         public bool RemoveAllTweensFromTarget(GameObject target)
@@ -124,6 +124,7 @@ namespace ZGame.cc
             {
                 tweenComp = tweenComps[i];
                 GameObject.Destroy(tweenComp);
+                this.curCount--;
             }
             dicOfObjTweens.Remove(target);
             return true;
@@ -172,11 +173,10 @@ namespace ZGame.cc
                 {
                     tweenComps.Remove(tweenComp);
                     GameObject.Destroy(tweenComp);
-
+                    this.curCount--;
                     if (tweenComps.Count == 0)
                     {
                         dicOfObjTweens.Remove(target);
-                        Debug.LogError("remove!!! left:" + dicOfObjTweens.Count);
                     }
 
                     return true;
