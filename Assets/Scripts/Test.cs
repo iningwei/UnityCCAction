@@ -171,7 +171,7 @@ public class Test : MonoBehaviour
 
         if (GUI.Button(new Rect(10, 490, 220, 40), "MoveTo+IgnoreTimeScale"))
         {
-            this.gameObject.RunTween(new MoveTo(11, new Vector3(5, 0, 0), Space.World).OnComplete((a) =>
+            this.gameObject.RunTween(new MoveTo(3, new Vector3(5, 0, 0), Space.World).OnComplete((a) =>
             {
                 Debug.LogError("move finished");
             }).IgnoreTimeScale(true));
