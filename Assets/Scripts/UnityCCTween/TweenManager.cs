@@ -10,11 +10,14 @@ namespace ZGame.cc
     {
         Dictionary<GameObject, List<TweenComp>> dicOfObjTweens = new Dictionary<GameObject, List<TweenComp>>();
 
-        int maxCount = 100;
+        int maxCount = 10;
 
 
         public int AddTween(GameObject target, Tween tween)
         {
+            //Debug.LogError("dicOfObjTweens count:" + dicOfObjTweens.Count);
+
+
             if (dicOfObjTweens.Count == maxCount)
             {
                 Debug.LogError("can not add tween to target:" + target.name + ", for tween has reached max:" + maxCount);
@@ -64,8 +67,8 @@ namespace ZGame.cc
         {
             //Currently TweenManager  listened to each tween's finish event.
             //TweenManager will remove finished tween.
-            //TODO:tween can not be remove after finish            
-            this.RemoveTween(e.Target, e.Tween);
+            //TODO:tween can not be remove after finish
+            this.RemoveTween(e.Holder, e.Tween);
 
         }
 
@@ -133,38 +136,12 @@ namespace ZGame.cc
         /// <param name="tween"></param>
         public bool RemoveTween(GameObject target, Tween tween)
         {
-            if (target == null)
-            {
-                Debug.LogError("error, target is null");
-                return false;
-            }
-
             if (tween == null)
             {
-                Debug.LogError("tween is null");
+                Debug.LogError("error, tween is null");
                 return false;
             }
-            if (!dicOfObjTweens.ContainsKey(target))
-            {
-                Debug.LogError("error, dicOfTweenss not contain target");
-                return false;
-            }
-            var tweenComps = dicOfObjTweens[target];
-            TweenComp tweenComp = null;
-            for (int i = tweenComps.Count - 1; i >= 0; i--)
-            {
-                tweenComp = tweenComps[i];
-                if (tweenComp.GetTween() == tween)
-                {
-                    tweenComps.Remove(tweenComp);
-                    GameObject.Destroy(tweenComp);
-                    return true;
-                }
-            }
-
-            Debug.LogError("target does not have the tween");
-            return false;
-
+            return this.RemoveTweenById(target, tween.GetId());
         }
 
 
@@ -195,6 +172,13 @@ namespace ZGame.cc
                 {
                     tweenComps.Remove(tweenComp);
                     GameObject.Destroy(tweenComp);
+
+                    if (tweenComps.Count == 0)
+                    {
+                        dicOfObjTweens.Remove(target);
+                        Debug.LogError("remove!!! left:" + dicOfObjTweens.Count);
+                    }
+
                     return true;
                 }
             }

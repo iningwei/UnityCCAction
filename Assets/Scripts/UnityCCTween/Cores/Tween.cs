@@ -7,12 +7,12 @@ namespace ZGame.cc
 {
     public class TweenFinishedEventArgs : EventArgs
     {
-        public GameObject Target { get; set; }
+        public GameObject Holder { get; set; }
         public Tween Tween { get; set; }
 
-        public TweenFinishedEventArgs(GameObject target, Tween tween)
+        public TweenFinishedEventArgs(GameObject holer, Tween tween)
         {
-            this.Target = target;
+            this.Holder = holer;
             this.Tween = tween;
         }
     }
@@ -134,7 +134,7 @@ namespace ZGame.cc
 
         public void SetId(int id)
         {
-            Debug.LogError("set id:" + id);
+            //Debug.LogError("set id:" + id);
             this.id = id;
         }
 
