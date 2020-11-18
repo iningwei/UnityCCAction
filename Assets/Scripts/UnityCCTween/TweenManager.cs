@@ -10,14 +10,12 @@ namespace ZGame.cc
     {
         Dictionary<GameObject, List<TweenComp>> dicOfObjTweens = new Dictionary<GameObject, List<TweenComp>>();
 
-        int maxCount = 100;
+        int maxCount = 10000;
 
         int curCount = 0;
         public int AddTween(GameObject target, Tween tween)
         {
-            Debug.LogError("curCount:" + curCount);
-
-
+            //Debug.LogError("curCount:" + curCount);
             if (curCount == maxCount)
             {
                 Debug.LogError("can not add tween to target:" + target.name + ", for tween has reached max:" + maxCount);
