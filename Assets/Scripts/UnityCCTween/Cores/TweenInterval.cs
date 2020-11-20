@@ -10,8 +10,6 @@ namespace ZGame.cc
     /// </summary>
     public abstract class TweenInterval : FiniteTimeTween
     {
-        protected Func<float, float> easeFunc = EaseTool.Get(Ease.Linear);
-
-        public abstract Tween Easing(Ease ease);
+        
     }
 }

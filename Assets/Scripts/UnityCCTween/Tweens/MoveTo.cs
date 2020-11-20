@@ -29,17 +29,32 @@ namespace ZGame.cc
             this.SetTweenName("MoveTo");
         }
 
+        public override Tween From(object para)
+        {
+            if (!(para is Vector3))
+            {
+                Debug.LogError("wrong type,para should be Vector3");
+                return this;
+            }
+            Vector3 fromPos = (Vector3)para;
+
+            if (relativeSpace == Space.Self)
+            {
+                this.holder.transform.localPosition = fromPos;
+            }
+            else
+            {
+                this.holder.transform.position = fromPos;
+            }
+            return this;
+        }
 
         public override Tween Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
         }
 
-        public override Tween Easing(Ease ease)
-        {
-            this.easeFunc = EaseTool.Get(ease);
-            return this;
-        }
+
 
 
         public override event EventHandler<TweenFinishedEventArgs> TweenFinished;

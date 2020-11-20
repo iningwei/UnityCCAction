@@ -51,11 +51,7 @@ namespace ZGame.cc
             return new Sequence(new DelayTime(time), this);
         }
 
-        public override Tween Easing(Ease ease)
-        {
-            this.easeFunc = EaseTool.Get(ease);
-            return this;
-        }
+      
 
         public override void Finish()
         {

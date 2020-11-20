@@ -35,7 +35,19 @@ namespace ZGame.cc
             this.SetTweenName("AlphaTo");
         }
 
+        public override Tween From(object para)
+        {
+            if (float.TryParse(para.ToString(), out float r))
+            {
+                Debug.LogError("wrong type,para should be float");
+                return this;
+            }
 
+
+            //TODO:set from alpha
+            return this;
+
+        }
 
 
         public override Tween Delay(float time)
@@ -43,11 +55,7 @@ namespace ZGame.cc
             return new Sequence(new DelayTime(time), this);
         }
 
-        public override Tween Easing(Ease ease)
-        {
-            this.easeFunc = EaseTool.Get(ease);
-            return this;
-        }
+      
 
         public override void Finish()
         {
@@ -68,7 +76,7 @@ namespace ZGame.cc
             return this;
         }
 
-      
+
 
         public override void Run()
         {
@@ -80,11 +88,11 @@ namespace ZGame.cc
                 Renderer[] allRenderers;
                 if (includeChilds)
                 {
-                    allRenderers = this.GetHolder().GetComponentsInChildren<Renderer>(includeInactive);
+                    allRenderers = this.holder.GetComponentsInChildren<Renderer>(includeInactive);
                 }
                 else
                 {
-                    allRenderers = this.GetHolder().GetComponents<Renderer>();
+                    allRenderers = this.holder.GetComponents<Renderer>();
                 }
 
                 for (int i = 0; i < allRenderers.Length; i++)
@@ -160,13 +168,13 @@ namespace ZGame.cc
             }
 
             //Debug.Log(this.GetTarget() + "  AlphaTo 相关mat个数：" + allMaterials.Count);
-            this.startTime =this.GetTime() - this.GetTotalPausedTime();
+            this.startTime = this.GetTime() - this.GetTotalPausedTime();
             this.truePartialRunTime = 0f;
         }
 
 
 
-         
+
 
         public override bool Update()
         {
