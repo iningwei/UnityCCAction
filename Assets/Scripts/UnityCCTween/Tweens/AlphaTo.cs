@@ -34,28 +34,16 @@ namespace ZGame.cc
             this.includeInactive = includeInactive;
             this.SetTweenName("AlphaTo");
         }
-
-        public override Tween From(object para)
-        {
-            if (float.TryParse(para.ToString(), out float r))
-            {
-                Debug.LogError("wrong type,para should be float");
-                return this;
-            }
-
-
-            //TODO:set from alpha
-            return this;
-
-        }
-
-
         public override Tween Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
         }
 
-      
+        public override Tween Easing(Ease ease)
+        {
+            this.easeFunc = EaseTool.Get(ease);
+            return this;
+        }
 
         public override void Finish()
         {
@@ -84,6 +72,7 @@ namespace ZGame.cc
 
             if (this.repeatedTimes == 0)
             {
+                //TODO:Set From Alpha
                 #region 3D物体或者Unity2D物体
                 Renderer[] allRenderers;
                 if (includeChilds)

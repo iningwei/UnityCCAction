@@ -47,7 +47,16 @@ namespace ZGame.cc
         }
 
 
-       
+        /// <summary>
+        /// do not set easing for sequence
+        /// </summary>
+        /// <param name="ease"></param>
+        /// <returns></returns>
+        public override Tween Easing(Ease ease)
+        {
+            Debug.LogError("Sequence set easing will not work");
+            return this;
+        }
 
         public override void Finish()
         {

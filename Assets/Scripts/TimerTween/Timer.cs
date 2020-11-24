@@ -95,8 +95,18 @@ namespace ZGame.TimerTween
             this.UseRealTime = useRealTime;
             this.autoDestroyOwner = autoDestroyOwner;
             this.hasAutoDestroyOwner = autoDestroyOwner != null;
+            //////this.startTime = this.getWorldTime();
+            //////this.lastUpdateTime = this.startTime;
+        }
+
+
+
+        bool startFlag = false;
+        public void Start()
+        {
             this.startTime = this.getWorldTime();
             this.lastUpdateTime = this.startTime;
+            startFlag = true;
         }
 
 
@@ -168,6 +178,10 @@ namespace ZGame.TimerTween
 
         public void Update()
         {
+            if (this.startFlag == false)
+            {
+                return;
+            }
             if (this.IsDone)
             {
                 return;

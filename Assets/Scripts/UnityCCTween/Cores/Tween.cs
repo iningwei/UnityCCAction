@@ -220,8 +220,10 @@ namespace ZGame.cc
             return this.tweenName;
         }
 
+        public object fromPara = null;
         public virtual Tween From(object para)
         {
+            fromPara = para;
             return this;
         }
         /// <summary>

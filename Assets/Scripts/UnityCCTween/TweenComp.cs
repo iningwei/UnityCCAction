@@ -61,7 +61,7 @@ namespace ZGame.cc
 
                 if (this.tween.Update())
                 {
-                    Debug.Log(this.gameObject.name + " 上的补间播完了 ");
+                    //Debug.Log(this.gameObject.name + " 上的补间播完了 ");
                     this.tween = null;
                     this.isFinished = true;
                 }

@@ -66,7 +66,11 @@ namespace ZGame.cc
             return new Sequence(new DelayTime(time), this);
         }
 
-   
+        public override Tween Easing(Ease ease)
+        {
+            Debug.LogError("set easing for repeat tween will not work");
+            return this;
+        }
 
         public override void Finish()
         {

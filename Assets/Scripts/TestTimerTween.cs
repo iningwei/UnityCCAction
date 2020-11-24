@@ -17,19 +17,19 @@ class TestTimerTween : MonoBehaviour
     {
         Application.targetFrameRate = 30;
         y = obj.transform.position.y;
-        z = obj.transform.position.z; 
+        z = obj.transform.position.z;
     }
     private void Start()
     {
-        Timer timer = TimerTween.Value(-50, 50, 2, 0.03f,
-              (v) =>
-          {
-              obj.transform.position = new Vector3(v, y, z);
-          },
-              () =>
-          {
-              Debug.Log("onComplete!");
-          }).SetEase(Ease.InOutBounce).SetLoop(0);
+        //////Timer timer = TimerTween.Value(-50, 50, 2, 0.03f,
+        //////      (v) =>
+        //////  {
+        //////      obj.transform.position = new Vector3(v, y, z);
+        //////  },
+        //////      () =>
+        //////  {
+        //////      Debug.Log("onComplete!");
+        //////  }).SetEase(Ease.InOutBounce).SetLoop(0);
 
         //////int count = 0;
         //////TimerTween.RepeatCount(0.8f, 10, () =>
@@ -42,5 +42,17 @@ class TestTimerTween : MonoBehaviour
         //////    //}
         //////    return true;
         //////});
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Debug.LogError("now---->time:" + Time.time + ",real:" + Time.realtimeSinceStartup);
+            TimerTween.Delay(5, () =>
+            {
+                Debug.LogError("delay---->time:" + Time.time + ",real:" + Time.realtimeSinceStartup);
+            }).SetUseRealTime(true).Start();
+        }
     }
 }

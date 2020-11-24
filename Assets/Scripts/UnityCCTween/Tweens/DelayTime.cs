@@ -30,7 +30,10 @@ namespace ZGame.cc
             return this;
         }
 
-       
+        public override Tween Easing(Ease ease)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public override void Finish()
         {

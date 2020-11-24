@@ -29,25 +29,7 @@ namespace ZGame.cc
             this.SetTweenName("MoveTo");
         }
 
-        public override Tween From(object para)
-        {
-            if (!(para is Vector3))
-            {
-                Debug.LogError("wrong type,para should be Vector3");
-                return this;
-            }
-            Vector3 fromPos = (Vector3)para;
 
-            if (relativeSpace == Space.Self)
-            {
-                this.holder.transform.localPosition = fromPos;
-            }
-            else
-            {
-                this.holder.transform.position = fromPos;
-            }
-            return this;
-        }
 
         public override Tween Delay(float time)
         {
@@ -103,6 +85,27 @@ namespace ZGame.cc
 
             if (this.repeatedTimes == 0)
             {
+                if (fromPara != null)
+                {
+                    if (!(fromPara is Vector3))
+                    {
+                        Debug.LogError("wrong type,para should be Vector3");
+
+                    }
+
+                    if (relativeSpace == Space.Self)
+                    {
+                        this.holder.transform.localPosition = (Vector3)fromPara;
+                    }
+                    else
+                    {
+                        this.holder.transform.position = (Vector3)fromPara;
+                    }
+                }
+
+
+
+
                 this.startPos = relativeSpace == Space.Self ? this.holder.transform.localPosition : this.holder.transform.position;
             }
             else

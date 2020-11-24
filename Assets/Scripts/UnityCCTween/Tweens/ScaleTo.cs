@@ -35,24 +35,18 @@ namespace ZGame.cc
             this.SetTweenName("ScaleTo");
         }
 
-        public override Tween From(object para)
-        {
-            if (!(para is Vector3))
-            {
-                Debug.LogError("wrong type,para should be Vector3");
-                return this;
-            }
-            Vector3 fromScale = (Vector3)para;
-            this.holder.transform.localScale = fromScale;
-            return this;
-        }
+
 
         public override Tween Delay(float time)
         {
             return new Sequence(new DelayTime(time), this);
         }
 
-      
+        public override Tween Easing(Ease ease)
+        {
+            this.easeFunc = EaseTool.Get(ease);
+            return this;
+        }
 
         public override void Finish()
         {
@@ -99,6 +93,18 @@ namespace ZGame.cc
 
             if (this.repeatedTimes == 0)
             {
+                if (fromPara != null)
+                {
+                    if (!(fromPara is Vector3))
+                    {
+                        Debug.LogError("SceleTo's From para should be Vector3");
+                    }
+                    else
+                    {
+                        this.holder.transform.localScale = (Vector3)fromPara;
+                    }
+                }
+
                 this.startScale = this.holder.transform.localScale;
             }
             else
