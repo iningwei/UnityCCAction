@@ -18,6 +18,7 @@ namespace ZGame.cc
             }
             this.SetDuration(duration);
             this.targetAngle = targetAngle;
+            //Debug.LogError("targetAngle:" + this.targetAngle);
             this.relativeSpace = relativeSpace;
             this.SetTweenName("RotateTo");
         }
@@ -92,6 +93,15 @@ namespace ZGame.cc
             if (this.repeatedTimes == 0)
             {
                 this.startAngle = this.relativeSpace == Space.Self ? this.holder.transform.localEulerAngles : this.holder.transform.eulerAngles;
+
+                //caculate more suitable targetAngle
+                //if not
+                //Such as statAngle x=300, targetAngle x=10, then it will rotate from 300 to 10 like 290¡¢270¡¢260...10. It rotated 290 degree.In fact we need it rotate 70 degree in xAxis
+
+                Vector3 suitTargetAngle = new Vector3(closestRot(this.startAngle.x, this.targetAngle.x), closestRot(this.startAngle.y, this.targetAngle.y), closestRot(this.startAngle.z, this.targetAngle.z));
+                Debug.LogError($"startAngle:{startAngle}, targetAngle:{targetAngle},suitTargetAngle:{suitTargetAngle}");
+
+                this.targetAngle = suitTargetAngle;
             }
             else
             {
@@ -173,6 +183,33 @@ namespace ZGame.cc
             else
             {
                 this.Run();
+            }
+        }
+
+
+
+        //this code from LeanTween
+        float closestRot(float from, float to)
+        {
+            float minusWhole = 0 - (360 - to);
+            float plusWhole = 360 + to;
+            float toDiffAbs = Mathf.Abs(to - from);
+            float minusDiff = Mathf.Abs(minusWhole - from);
+            float plusDiff = Mathf.Abs(plusWhole - from);
+            if (toDiffAbs < minusDiff && toDiffAbs < plusDiff)
+            {
+                return to;
+            }
+            else
+            {
+                if (minusDiff < plusDiff)
+                {
+                    return minusWhole;
+                }
+                else
+                {
+                    return plusWhole;
+                }
             }
         }
     }

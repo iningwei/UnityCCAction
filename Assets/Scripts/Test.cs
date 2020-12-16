@@ -161,9 +161,9 @@ public class Test : MonoBehaviour
             this.gameObject.RemoveAllTweens();
         }
 
-        if (GUI.Button(new Rect(10, 430, 120, 50), "RotateTo"))
+        if (GUI.Button(new Rect(10, 430, 120, 50), "RotateBy"))
         {
-            this.gameObject.RunTween(new RotateTo(5, new Vector3(400, 0, 0), Space.Self).SetRepeatTimes(2).OnUpdate((t) =>
+            this.gameObject.RunTween(new RotateBy(2, new Vector3(400, 0, 0), Space.Self).SetRepeatTimes(2).OnUpdate((t) =>
              {
                  Debug.Log("time:" + t + ", localEulerAngles:" + this.gameObject.transform.localEulerAngles);
              }));
